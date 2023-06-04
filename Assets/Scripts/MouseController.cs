@@ -23,6 +23,7 @@ public class MouseController : MonoBehaviour
     [SerializeField] private CharacterSpawner characterSpawner;
 
     private bool isMoving = false;
+    public bool hasMoved = false;
     public bool isAtkMode = false;
 
     public void Start()
@@ -60,7 +61,7 @@ public class MouseController : MonoBehaviour
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
-                if (!isAtkMode && character.GetPlayable())
+                if (!isAtkMode && character.GetPlayable() && !isMoving && !hasMoved)
                 {
                     GetInRangeTiles();
                     HandleArrowDisplay(overlayTile);
@@ -81,6 +82,13 @@ public class MouseController : MonoBehaviour
         if (!character.GetPlayable())
         {
             isAtkMode = false;
+            return;
+        }
+
+        if (hasMoved)
+        {
+            isAtkMode = true;
+            GetAttackableTiles();
             return;
         }
 
@@ -131,8 +139,10 @@ public class MouseController : MonoBehaviour
                 overlayTile.isStartingTile
             );
 #endif
-
-            characterSpawner.SpawnCharacterOnTile(overlayTile);
+            if (phaseManager.phaseState == Phase.Start)
+            {
+                characterSpawner.SpawnCharacterOnTile(overlayTile);
+            }
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
@@ -163,19 +173,8 @@ public class MouseController : MonoBehaviour
         if (targetCharacter)
         {
             character.Attack(targetCharacter);
-            MapManager.Instance.HideAllTiles();
-            MapManager.Instance.RemovePlayableUnit(targetCharacter);
-
-            if (MapManager.Instance.GetPlayableUnits().Count == 0)
-            {
-                // Switch phase
-                return;
-            }
-
-            character = MapManager.Instance.GetPlayableUnits()[0];
-            character.DisplayInfo();
+            phaseManager.PlayAction(character);
         }
-
     }
 
     private void ClickOnCharacter(OverlayTile overlayTile)
@@ -234,8 +233,8 @@ public class MouseController : MonoBehaviour
 
         if (path.Count == 0)
         {
-            GetInRangeTiles();
-
+            hasMoved = true;
+            SwitchMode();
             isMoving = false;
         }
     }

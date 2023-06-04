@@ -53,7 +53,6 @@ public class CharacterInfo : MonoBehaviour
         if (!_isPlayable) return;
 
         unit.TakeDamage(stats.baseAttack);
-        SetPlayable(false);
     }
 
     public void TakeDamage(int damage)

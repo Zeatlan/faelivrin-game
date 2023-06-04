@@ -91,4 +91,9 @@ public class CharacterSpawner : MonoBehaviour
             }
         }
     }
+
+    public void DestroyPreview()
+    {
+        Destroy(previewCharacter);
+    }
 }

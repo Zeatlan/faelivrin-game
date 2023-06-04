@@ -15,5 +15,5 @@ MonoBehaviour:
   characterName: Tudors
   baseHealth: 50
   baseAttack: 5
-  baseRange: 3
+  baseRange: 20
   icon: {fileID: 21300000, guid: 26ded62a3d42f2c40aedd000a497240c, type: 3}

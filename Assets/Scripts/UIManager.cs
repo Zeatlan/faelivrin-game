@@ -6,33 +6,38 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Phase de placement")]
     [SerializeField] private Transform startingPhaseObj;
     [SerializeField] private Transform readyButton;
 
+    [Header("Tour du joueur")]
     [SerializeField] private Transform playerPhaseObj;
     [SerializeField] private Transform playerPhaseUI;
-
     [SerializeField] private TextMeshProUGUI modeText;
 
-    private MouseController mouseController;
+    [Header("Tour de l'ennemie")]
+    [SerializeField] private Transform enemyPhaseObj;
+
+    [Header("UI général")]
+    [SerializeField] private Transform unitPanel;
+
+    [Header("Autres scripts")]
+    [SerializeField] private MouseController mouseController;
+
+    private LTDescr leanTweenDescription;
 
     void Awake()
     {
         LeanTween.init(1000);
 
-        mouseController = GameObject.Find("Cursor").GetComponent<MouseController>();
+        readyButton.gameObject.SetActive(true);
+        startingPhaseObj.gameObject.SetActive(true);
+        playerPhaseObj.gameObject.SetActive(true);
+        enemyPhaseObj.gameObject.SetActive(true);
 
-        startingPhaseObj = transform.Find("StartingPhase");
         ResetObjPos(startingPhaseObj);
-
-        readyButton = transform.Find("ReadyButton");
-
-        playerPhaseObj = transform.Find("PlayerPhase");
         ResetObjPos(playerPhaseObj);
-
-        playerPhaseUI = transform.Find("PlayerPhaseUI");
-
-        modeText = playerPhaseUI.Find("Action").GetChild(0).GetComponent<TextMeshProUGUI>();
+        ResetObjPos(enemyPhaseObj);
     }
 
     private void ResetObjPos(Transform obj)
@@ -50,12 +55,23 @@ public class UIManager : MonoBehaviour
         StartCoroutine(PhaseMovementCoroutine(playerPhaseObj));
     }
 
+    public void EnemyPhaseAnim()
+    {
+        StartCoroutine(PhaseMovementCoroutine(enemyPhaseObj));
+    }
+
     private IEnumerator PhaseMovementCoroutine(Transform obj)
     {
         ResetObjPos(obj);
-        obj.LeanMoveLocal(new Vector3(0, 0, 0), 1).setEaseOutExpo().delay = 0.1f;
-        yield return new WaitForSeconds(2f);
-        obj.LeanMoveLocal(new Vector3(Screen.width, 0, 0), 2).setEaseOutExpo();
+        yield return new WaitForSeconds(0.001f);
+
+        leanTweenDescription = LeanTween.moveLocal(obj.gameObject, new Vector3(0, 0, 0), 1)
+            .setEaseOutExpo()
+            .setOnComplete(() =>
+            {
+                LeanTween.moveLocal(obj.gameObject, new Vector3(Screen.width, 0, 0), 1).setDelay(1).setEaseOutExpo();
+            }
+        );
     }
 
     public void hideStartingUI()
@@ -66,6 +82,13 @@ public class UIManager : MonoBehaviour
     public void ShowPlayerPhaseUI()
     {
         playerPhaseUI.gameObject.SetActive(true);
+        unitPanel.gameObject.SetActive(true);
+    }
+
+    public void ShowEnemyPhaseUI()
+    {
+        playerPhaseUI.gameObject.SetActive(false);
+        unitPanel.gameObject.SetActive(true);
     }
 
     private IEnumerator HideStartingUICoroutine()
@@ -78,6 +101,7 @@ public class UIManager : MonoBehaviour
     public void SwitchMode()
     {
         mouseController.SwitchMode();
-        modeText.SetText(mouseController.isAtkMode ? "Deplacer" : "Attaquer");
+        if (!mouseController.hasMoved)
+            modeText.SetText(mouseController.isAtkMode ? "Deplacer" : "Attaquer");
     }
 }
