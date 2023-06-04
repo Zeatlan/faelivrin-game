@@ -14,8 +14,6 @@ public class UnitPanel : MonoBehaviour
     public void SetMaxHealth(int health)
     {
         slider.maxValue = health;
-        slider.value = health;
-        healthText.SetText(health + "/" + health);
     }
 
     public void SetHealth(int health)

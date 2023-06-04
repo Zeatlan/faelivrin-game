@@ -2,15 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+struct CharStats
+{
+    public int maxHealth;
+    public int currentHealth;
+    public int attack;
+    public int range;
+}
+
 public class CharacterInfo : MonoBehaviour
 {
     public OverlayTile activeTile;
     public CharacterStatsSO stats;
 
-    [SerializeField] private int currentHealth;
+    private UnitPanel _unitPanel;
+    private Stats _statsUI;
 
-    private UnitPanel unitPanel;
-    private Stats statsUI;
+    [SerializeField] private CharStats charStats;
+
+    void Start()
+    {
+        charStats.maxHealth = stats.baseHealth;
+        charStats.currentHealth = stats.baseHealth;
+        charStats.attack = stats.baseAttack;
+        charStats.range = stats.baseRange;
+    }
 
     void Update()
     {
@@ -24,34 +41,36 @@ public class CharacterInfo : MonoBehaviour
 
     public void DisplayInfo()
     {
-        unitPanel = GameObject.Find("UnitPanel").GetComponent<UnitPanel>();
-        unitPanel.SetIcon(stats.icon);
+        Debug.Log(charStats.currentHealth);
+        _unitPanel = GameObject.Find("UnitPanel").GetComponent<UnitPanel>();
+        _unitPanel.SetIcon(stats.icon);
 
-        unitPanel.SetName(stats.characterName);
+        _unitPanel.SetName(stats.characterName);
 
-        currentHealth = stats.baseHealth;
+        _unitPanel.SetMaxHealth(charStats.maxHealth);
+        _unitPanel.SetHealth(charStats.currentHealth);
 
-        unitPanel.SetMaxHealth(stats.baseHealth);
-
-        statsUI = GameObject.Find("Stats").GetComponent<Stats>();
-        statsUI.SetAttack(stats.baseAttack);
-        statsUI.SetRange(stats.baseRange);
+        _statsUI = GameObject.Find("Stats").GetComponent<Stats>();
+        _statsUI.SetAttack(charStats.attack);
+        _statsUI.SetRange(charStats.range);
     }
 
     public void Attack(CharacterInfo unit)
     {
+        Debug.Log(stats.characterName + " is attacking " + unit.stats.characterName);
         unit.TakeDamage(stats.baseAttack);
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        Debug.Log(stats.characterName + " took " + damage + " damage");
+        charStats.currentHealth -= damage;
 
-        if (currentHealth < 0)
+        if (charStats.currentHealth < 0)
         {
-            currentHealth = 0;
+            charStats.currentHealth = 0;
         }
 
-        unitPanel.SetHealth(currentHealth);
+        if (_unitPanel) _unitPanel.SetHealth(charStats.currentHealth);
     }
 }

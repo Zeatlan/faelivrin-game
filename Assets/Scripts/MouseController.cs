@@ -117,7 +117,13 @@ public class MouseController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
 #if UNITY_EDITOR
-            Debug.LogFormat("Click grid location: {0} ", overlayTile.gridLocation);
+            Debug.LogFormat(
+                "{0} isBlocked({1}) isAttackable({2}) isStarting({3}) ",
+                overlayTile.gridLocation,
+                overlayTile.isBlocked,
+                overlayTile.isAttackableTile,
+                overlayTile.isStartingTile
+            );
 #endif
 
             characterSpawner.SpawnCharacterOnTile(overlayTile);
@@ -125,20 +131,21 @@ public class MouseController : MonoBehaviour
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
                 ClickOnMap(overlayTile);
-                if (overlayTile.isBlocked) ClickOnCharacter(overlayTile);
+                if (overlayTile.isBlocked && !overlayTile.isAttackableTile) ClickOnCharacter(overlayTile);
             }
         }
     }
 
     private void ClickOnMap(OverlayTile overlayTile)
     {
-        if (inRangeTiles.Contains(overlayTile) && character.activeTile != overlayTile && !overlayTile.isBlocked)
+        if (inRangeTiles.Contains(overlayTile) && character.activeTile != overlayTile)
         {
             if (overlayTile.isAttackableTile)
             {
-                // do something
+                CharacterInfo targetCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
+                if (targetCharacter) character.Attack(targetCharacter);
             }
-            else
+            else if (!overlayTile.isBlocked)
             {
                 isMoving = true;
             }
@@ -147,13 +154,8 @@ public class MouseController : MonoBehaviour
 
     private void ClickOnCharacter(OverlayTile overlayTile)
     {
-        List<CharacterInfo> activeUnits = MapManager.Instance.GetPlayerUnits();
-        activeUnits.AddRange(MapManager.Instance.GetEnemyUnits());
-
-        foreach (CharacterInfo unit in activeUnits)
-        {
-            if (unit.activeTile == overlayTile) unit.DisplayInfo();
-        }
+        CharacterInfo clickedCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
+        if (clickedCharacter) clickedCharacter.DisplayInfo();
     }
 
     private void GetInRangeTiles()
@@ -170,7 +172,6 @@ public class MouseController : MonoBehaviour
 
     private void GetAttackableTiles()
     {
-        Debug.Log("Get attaclable tiles");
         ResetInRangeTile();
 
         inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, 1, true);
@@ -179,7 +180,6 @@ public class MouseController : MonoBehaviour
         {
             item.ShowAttackableTile();
         }
-        Debug.Log("END:! Get attaclable tiles");
     }
 
     private void ResetInRangeTile()

@@ -166,4 +166,17 @@ public class MapManager : MonoBehaviour
             if (!isTileAssignedToUnit) tile.SetBlocked(false);
         }
     }
+
+    public CharacterInfo FindCharacterOnTile(OverlayTile overlayTile)
+    {
+        List<CharacterInfo> activeUnits = MapManager.Instance.GetPlayerUnits();
+        activeUnits.AddRange(MapManager.Instance.GetEnemyUnits());
+
+        foreach (CharacterInfo unit in activeUnits)
+        {
+            if (unit.activeTile == overlayTile) return unit;
+        }
+
+        return null;
+    }
 }
