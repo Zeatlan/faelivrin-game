@@ -4524,6 +4524,7 @@ GameObject:
   - component: {fileID: 1559056276}
   - component: {fileID: 1559056278}
   - component: {fileID: 1559056277}
+  - component: {fileID: 1559056279}
   m_Layer: 5
   m_Name: UnitPanel
   m_TagString: Untagged
@@ -4590,6 +4591,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559056275}
   m_CullTransparentMesh: 1
+--- !u!114 &1559056279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559056275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f3cd013a8ddb345b38c6b6e69ef460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 507124782}
+  healthText: {fileID: 882873397}
+  nameText: {fileID: 1456221653}
+  icon: {fileID: 2109474542}
 --- !u!1 &1630724716
 GameObject:
   m_ObjectHideFlags: 0

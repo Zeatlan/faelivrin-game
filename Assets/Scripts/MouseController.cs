@@ -60,11 +60,7 @@ public class MouseController : MonoBehaviour
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
-                if (isAtkMode)
-                {
-                    GetAttackableTiles();
-                }
-                else
+                if (!isAtkMode)
                 {
                     GetInRangeTiles();
                     HandleArrowDisplay(overlayTile);
@@ -83,6 +79,14 @@ public class MouseController : MonoBehaviour
     public void SwitchMode()
     {
         isAtkMode = !isAtkMode;
+        if (isAtkMode)
+        {
+            GetAttackableTiles();
+        }
+        else
+        {
+            GetInRangeTiles();
+        }
     }
 
     private void HandleArrowDisplay(OverlayTile overlayTile)
@@ -166,6 +170,7 @@ public class MouseController : MonoBehaviour
 
     private void GetAttackableTiles()
     {
+        Debug.Log("Get attaclable tiles");
         ResetInRangeTile();
 
         inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, 1, true);
@@ -174,6 +179,7 @@ public class MouseController : MonoBehaviour
         {
             item.ShowAttackableTile();
         }
+        Debug.Log("END:! Get attaclable tiles");
     }
 
     private void ResetInRangeTile()
