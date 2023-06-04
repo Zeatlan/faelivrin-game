@@ -21,6 +21,7 @@ public class CharacterInfo : MonoBehaviour
 
     [SerializeField] private CharStats charStats;
     private bool _isPlayable;
+    private CharacterAnimation _animation;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class CharacterInfo : MonoBehaviour
         charStats.attack = stats.baseAttack;
         charStats.range = stats.baseRange;
         _isPlayable = true;
+        _animation = GetComponent<CharacterAnimation>();
     }
 
     public void DisplayInfo()
@@ -57,6 +59,7 @@ public class CharacterInfo : MonoBehaviour
     public void TakeDamage(int damage)
     {
         charStats.currentHealth -= damage;
+        _animation.TakeDamageAnim(this);
 
         if (charStats.currentHealth < 0)
         {

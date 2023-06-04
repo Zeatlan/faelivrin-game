@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7875414144489794994}
   - component: {fileID: 4431755537057064639}
   - component: {fileID: 409437123900460136}
+  - component: {fileID: 6381879358611343180}
   m_Layer: 0
   m_Name: badMonster
   m_TagString: Untagged
@@ -99,4 +100,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeTile: {fileID: 0}
   stats: {fileID: 11400000, guid: 4eff077ab40013842840c91ffa505d5e, type: 2}
-  currentHealth: 0
+  charStats:
+    maxHealth: 0
+    currentHealth: 0
+    attack: 0
+    range: 0
+--- !u!114 &6381879358611343180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022562023336559474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edb48d8c4b689148960fa4aeb08f74c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _leanDuration: 0.3
+  _maxLeanAngle: 15
