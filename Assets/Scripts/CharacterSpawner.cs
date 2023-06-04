@@ -36,6 +36,7 @@ public class CharacterSpawner : MonoBehaviour
             currentCharacter = Instantiate(characterPrefab).GetComponent<CharacterInfo>();
             MapManager.Instance.PositionCharacterOnTile(tile, currentCharacter);
             MapManager.Instance.AddPlayerUnit(currentCharacter);
+            MapManager.Instance.AddPlayableUnit(currentCharacter);
         }
     }
 

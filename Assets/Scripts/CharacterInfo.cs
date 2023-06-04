@@ -20,6 +20,7 @@ public class CharacterInfo : MonoBehaviour
     private Stats _statsUI;
 
     [SerializeField] private CharStats charStats;
+    private bool _isPlayable;
 
     void Start()
     {
@@ -27,21 +28,11 @@ public class CharacterInfo : MonoBehaviour
         charStats.currentHealth = stats.baseHealth;
         charStats.attack = stats.baseAttack;
         charStats.range = stats.baseRange;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-
-            //Attack(this);
-            Debug.Log(stats.characterName + " - " + activeTile.isBlocked);
-        }
+        _isPlayable = true;
     }
 
     public void DisplayInfo()
     {
-        Debug.Log(charStats.currentHealth);
         _unitPanel = GameObject.Find("UnitPanel").GetComponent<UnitPanel>();
         _unitPanel.SetIcon(stats.icon);
 
@@ -57,13 +48,14 @@ public class CharacterInfo : MonoBehaviour
 
     public void Attack(CharacterInfo unit)
     {
-        Debug.Log(stats.characterName + " is attacking " + unit.stats.characterName);
+        if (!_isPlayable) return;
+
         unit.TakeDamage(stats.baseAttack);
+        SetPlayable(false);
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log(stats.characterName + " took " + damage + " damage");
         charStats.currentHealth -= damage;
 
         if (charStats.currentHealth < 0)
@@ -72,5 +64,13 @@ public class CharacterInfo : MonoBehaviour
         }
 
         if (_unitPanel) _unitPanel.SetHealth(charStats.currentHealth);
+    }
+
+    public bool GetPlayable() { return _isPlayable; }
+
+    public void SetPlayable(bool play)
+    {
+        _isPlayable = play;
+        GetComponent<SpriteRenderer>().color = (_isPlayable) ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.7f);
     }
 }

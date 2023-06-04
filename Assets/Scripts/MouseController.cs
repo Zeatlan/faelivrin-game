@@ -60,7 +60,7 @@ public class MouseController : MonoBehaviour
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
-                if (!isAtkMode)
+                if (!isAtkMode && character.GetPlayable())
                 {
                     GetInRangeTiles();
                     HandleArrowDisplay(overlayTile);
@@ -78,6 +78,12 @@ public class MouseController : MonoBehaviour
 
     public void SwitchMode()
     {
+        if (!character.GetPlayable())
+        {
+            isAtkMode = false;
+            return;
+        }
+
         isAtkMode = !isAtkMode;
         if (isAtkMode)
         {
@@ -130,7 +136,7 @@ public class MouseController : MonoBehaviour
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
-                ClickOnMap(overlayTile);
+                if (character.GetPlayable()) ClickOnMap(overlayTile);
                 if (overlayTile.isBlocked && !overlayTile.isAttackableTile) ClickOnCharacter(overlayTile);
             }
         }
@@ -142,14 +148,34 @@ public class MouseController : MonoBehaviour
         {
             if (overlayTile.isAttackableTile)
             {
-                CharacterInfo targetCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
-                if (targetCharacter) character.Attack(targetCharacter);
+                AttackCharacterOnTile(overlayTile);
             }
             else if (!overlayTile.isBlocked)
             {
                 isMoving = true;
             }
         }
+    }
+
+    private void AttackCharacterOnTile(OverlayTile overlayTile)
+    {
+        CharacterInfo targetCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
+        if (targetCharacter)
+        {
+            character.Attack(targetCharacter);
+            MapManager.Instance.HideAllTiles();
+            MapManager.Instance.RemovePlayableUnit(targetCharacter);
+
+            if (MapManager.Instance.GetPlayableUnits().Count == 0)
+            {
+                // Switch phase
+                return;
+            }
+
+            character = MapManager.Instance.GetPlayableUnits()[0];
+            character.DisplayInfo();
+        }
+
     }
 
     private void ClickOnCharacter(OverlayTile overlayTile)

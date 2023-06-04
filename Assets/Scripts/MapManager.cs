@@ -18,6 +18,7 @@ public class MapManager : MonoBehaviour
     public BattleMapSO battleMapData;
     [SerializeField] private List<CharacterInfo> playerUnits;
     [SerializeField] private List<CharacterInfo> enemyUnits;
+    [SerializeField] private List<CharacterInfo> playableUnits;
 
     private CharacterSpawner characterSpawner;
 
@@ -156,6 +157,10 @@ public class MapManager : MonoBehaviour
     public void AddEnemyUnit(CharacterInfo unit) { enemyUnits.Add(unit); }
     public void RemoveEnemyUnit(CharacterInfo unit) { enemyUnits.Remove(unit); }
 
+    public List<CharacterInfo> GetPlayableUnits() { return playableUnits; }
+    public void AddPlayableUnit(CharacterInfo unit) { playableUnits.Add(unit); }
+    public void RemovePlayableUnit(CharacterInfo unit) { playableUnits.Remove(unit); }
+
     public void HideStartingTiles()
     {
         foreach (OverlayTile tile in startingTiles)
@@ -167,10 +172,20 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public void HideAllTiles()
+    {
+        foreach (KeyValuePair<Vector2Int, OverlayTile> kvp in map)
+        {
+            OverlayTile tile = kvp.Value;
+
+            tile.HideTile();
+        }
+    }
+
     public CharacterInfo FindCharacterOnTile(OverlayTile overlayTile)
     {
-        List<CharacterInfo> activeUnits = MapManager.Instance.GetPlayerUnits();
-        activeUnits.AddRange(MapManager.Instance.GetEnemyUnits());
+        List<CharacterInfo> activeUnits = GetPlayerUnits();
+        activeUnits.AddRange(GetEnemyUnits());
 
         foreach (CharacterInfo unit in activeUnits)
         {
