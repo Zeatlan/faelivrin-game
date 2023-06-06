@@ -95,9 +95,11 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator HideStartingUICoroutine()
     {
+        characterList.LeanMoveLocalY(-Screen.height, 2f).setEaseOutExpo().delay = 0.1f;
         readyButton.LeanMoveLocalY(Screen.height, 2f).setEaseOutExpo().delay = 0.1f;
         yield return new WaitForSeconds(2f);
         readyButton.gameObject.SetActive(false);
+        characterList.gameObject.SetActive(false);
     }
 
     public void SwitchMode()
