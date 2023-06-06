@@ -107,14 +107,14 @@ public class PhaseManager : MonoBehaviour
             {
                 mouseController.character = MapManager.Instance.GetPlayableUnits()[0];
                 character.DisplayInfo();
-
             }
         }
     }
 
     public void EndTurn()
     {
-        foreach (CharacterInfo playableUnit in MapManager.Instance.GetPlayableUnits())
+        List<CharacterInfo> playableUnitsCopy = new List<CharacterInfo>(MapManager.Instance.GetPlayableUnits());
+        foreach (CharacterInfo playableUnit in playableUnitsCopy)
         {
             PlayAction(playableUnit, ActionCharacter.Idle);
         }
