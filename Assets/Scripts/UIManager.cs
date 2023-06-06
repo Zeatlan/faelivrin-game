@@ -105,7 +105,7 @@ public class UIManager : MonoBehaviour
     public void SwitchMode()
     {
         mouseController.SwitchMode();
-        if (!mouseController.hasMoved)
+        if (mouseController.character.CanMove())
             modeText.SetText(mouseController.isAtkMode ? "Deplacer" : "Attaquer");
     }
 }

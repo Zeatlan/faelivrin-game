@@ -22,7 +22,6 @@ public class MouseController : MonoBehaviour
     [SerializeField] private CharacterSpawner characterSpawner;
 
     private bool isMoving = false;
-    public bool hasMoved = false;
     public bool isAtkMode = false;
 
     public void Start()
@@ -60,7 +59,7 @@ public class MouseController : MonoBehaviour
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
-                if (!isAtkMode && character.GetPlayable() && !isMoving && !hasMoved)
+                if (!isAtkMode && !isMoving && character.CanMove())
                 {
                     GetInRangeTiles();
                     HandleArrowDisplay(overlayTile);
@@ -78,27 +77,25 @@ public class MouseController : MonoBehaviour
 
     public void SwitchMode()
     {
-        if (!character.GetPlayable())
-        {
-            isAtkMode = false;
-            return;
-        }
-
-        if (hasMoved)
-        {
-            isAtkMode = true;
-            GetAttackableTiles();
-            return;
-        }
-
         isAtkMode = !isAtkMode;
-        if (isAtkMode)
+
+        if (character.CanAttack())
         {
-            GetAttackableTiles();
+            if (isAtkMode) GetAttackableTiles();
         }
         else
         {
-            GetInRangeTiles();
+            isAtkMode = false;
+        }
+
+        if (character.CanMove())
+        {
+            if (!isAtkMode) GetInRangeTiles();
+        }
+        else
+        {
+            isAtkMode = true;
+            GetAttackableTiles();
         }
     }
 
@@ -145,7 +142,7 @@ public class MouseController : MonoBehaviour
 
             if (phaseManager.phaseState == Phase.PlayerTurn)
             {
-                if (character.GetPlayable()) ClickOnMap(overlayTile);
+                if (character.CanMove() || character.CanAttack()) ClickOnMap(overlayTile);
                 if (overlayTile.isBlocked && !overlayTile.isAttackableTile) ClickOnCharacter(overlayTile);
             }
         }
@@ -155,11 +152,11 @@ public class MouseController : MonoBehaviour
     {
         if (inRangeTiles.Contains(overlayTile) && character.activeTile != overlayTile)
         {
-            if (overlayTile.isAttackableTile)
+            if (overlayTile.isAttackableTile && character.CanAttack())
             {
                 AttackCharacterOnTile(overlayTile);
             }
-            else if (!overlayTile.isBlocked)
+            else if (!overlayTile.isBlocked && character.CanMove())
             {
                 isMoving = true;
             }
@@ -172,7 +169,7 @@ public class MouseController : MonoBehaviour
         if (targetCharacter)
         {
             character.Attack(targetCharacter);
-            phaseManager.PlayAction(character);
+            phaseManager.PlayAction(character, ActionCharacter.Attack);
         }
     }
 
@@ -182,6 +179,12 @@ public class MouseController : MonoBehaviour
         if (clickedCharacter)
         {
             clickedCharacter.DisplayInfo();
+
+            if (MapManager.Instance.GetPlayerUnits().Contains(clickedCharacter) && (clickedCharacter.CanMove() || clickedCharacter.CanAttack()))
+            {
+                character = clickedCharacter;
+                SwitchMode();
+            }
         }
     }
 
@@ -235,7 +238,7 @@ public class MouseController : MonoBehaviour
 
         if (path.Count == 0)
         {
-            hasMoved = true;
+            phaseManager.PlayAction(character, ActionCharacter.Move);
             SwitchMode();
             isMoving = false;
         }

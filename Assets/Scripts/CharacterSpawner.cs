@@ -32,7 +32,6 @@ public class CharacterSpawner : MonoBehaviour
 
     public void SpawnCharacterOnTile(OverlayTile tile)
     {
-        Debug.Log("Spawn character on tile called, size : " + MapManager.Instance.GetPlayerUnits().Count);
 
         if (tile.isStartingTile)
         {
@@ -49,9 +48,6 @@ public class CharacterSpawner : MonoBehaviour
             }
             MapManager.Instance.PositionCharacterOnTile(tile, currentCharacter);
             MapManager.Instance.AddPlayerUnit(currentCharacter);
-            MapManager.Instance.AddPlayableUnit(currentCharacter);
-
-            Debug.Log("SIZE " + MapManager.Instance.GetPlayerUnits().Count);
         }
     }
 
@@ -142,7 +138,6 @@ public class CharacterSpawner : MonoBehaviour
                     CharacterInfo enemy = Instantiate(battleMapData.ennemies[i]).GetComponent<CharacterInfo>();
                     MapManager.Instance.PositionCharacterOnTile(map[enemyCoordinate], enemy);
                     MapManager.Instance.AddEnemyUnit(enemy);
-                    MapManager.Instance.AddPlayableUnit(enemy);
                 }
             }
         }

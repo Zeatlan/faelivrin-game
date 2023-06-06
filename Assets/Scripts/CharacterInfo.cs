@@ -20,7 +20,8 @@ public class CharacterInfo : MonoBehaviour
     private Stats _statsUI;
 
     [SerializeField] private CharStats charStats;
-    private bool _isPlayable;
+    private bool _canAttack;
+    private bool _canMove;
     private CharacterAnimation _animation;
 
     void Start()
@@ -29,7 +30,8 @@ public class CharacterInfo : MonoBehaviour
         charStats.currentHealth = stats.baseHealth;
         charStats.attack = stats.baseAttack;
         charStats.range = stats.baseRange;
-        _isPlayable = true;
+        _canAttack = true;
+        _canMove = true;
         _animation = GetComponent<CharacterAnimation>();
     }
 
@@ -50,7 +52,7 @@ public class CharacterInfo : MonoBehaviour
 
     public void Attack(CharacterInfo unit)
     {
-        if (!_isPlayable) return;
+        if (!_canAttack) return;
 
         unit.TakeDamage(stats.baseAttack);
     }
@@ -68,11 +70,27 @@ public class CharacterInfo : MonoBehaviour
         if (_unitPanel) _unitPanel.SetHealth(charStats.currentHealth);
     }
 
-    public bool GetPlayable() { return _isPlayable; }
+    public bool CanAttack() { return _canAttack == true; }
 
-    public void SetPlayable(bool play)
+    public void SetCanAttack(bool atk)
     {
-        _isPlayable = play;
-        GetComponent<SpriteRenderer>().color = (_isPlayable) ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.7f);
+        _canAttack = atk;
+        SetInactive();
+    }
+
+    public bool CanMove() { return _canMove == true; }
+
+    public void SetCanMove(bool move)
+    {
+        _canMove = move;
+        SetInactive();
+    }
+
+    public void SetInactive()
+    {
+        if (!_canAttack && !_canMove)
+        {
+            GetComponent<SpriteRenderer>().color = (_canMove) ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.7f);
+        }
     }
 }

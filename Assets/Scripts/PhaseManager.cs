@@ -26,6 +26,14 @@ public class PhaseManager : MonoBehaviour
         uiManager.StartingPhaseAnim();
     }
 
+    private void RefillPlayableCharacter(List<CharacterInfo> characters)
+    {
+        foreach (CharacterInfo character in characters)
+        {
+            MapManager.Instance.AddPlayableUnit(character);
+        }
+    }
+
     public void SwitchToPlayerTurn()
     {
         if (phaseState == Phase.Start)
@@ -34,15 +42,8 @@ public class PhaseManager : MonoBehaviour
         }
 
         phaseState = Phase.PlayerTurn;
-        foreach (CharacterInfo unit in MapManager.Instance.GetPlayerUnits())
-        {
-            Debug.Log("UNIT PLAYER LIST : " + unit.stats.name);
-        }
-        foreach (CharacterInfo unit in MapManager.Instance.GetEnemyUnits())
-        {
-            Debug.Log("UNIT ENNEMY LIST : " + unit.stats.name);
-        }
 
+        RefillPlayableCharacter(MapManager.Instance.GetPlayerUnits());
         mouseController.character = MapManager.Instance.GetPlayerUnits()[0];
         uiManager.PlayerPhaseAnim();
         uiManager.ShowPlayerPhaseUI();
@@ -52,6 +53,7 @@ public class PhaseManager : MonoBehaviour
     public void SwitchToEnemyTurn()
     {
         phaseState = Phase.EnnemyTurn;
+        RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
         mouseController.character = MapManager.Instance.GetEnemyUnits()[0];
         uiManager.EnemyPhaseAnim();
         uiManager.ShowEnemyPhaseUI();
@@ -72,11 +74,27 @@ public class PhaseManager : MonoBehaviour
         characterSpawner.DestroyPreview();
     }
 
-    public void PlayAction(CharacterInfo character)
+    public void PlayAction(CharacterInfo character, ActionCharacter action)
     {
-        character.SetPlayable(false);
+        switch (action)
+        {
+            case ActionCharacter.Attack:
+                character.SetCanAttack(false);
+                break;
+            case ActionCharacter.Move:
+                character.SetCanMove(false);
+                break;
+            case ActionCharacter.Idle:
+                MapManager.Instance.RemovePlayableUnit(character);
+                break;
+            default:
+                return;
+        }
+
         MapManager.Instance.HideAllTiles();
-        MapManager.Instance.RemovePlayableUnit(character);
+
+        if (!character.CanAttack() && !character.CanMove())
+            MapManager.Instance.RemovePlayableUnit(character);
 
         if (MapManager.Instance.GetPlayableUnits().Count == 0)
         {
@@ -84,8 +102,13 @@ public class PhaseManager : MonoBehaviour
         }
         else
         {
-            mouseController.character = MapManager.Instance.GetPlayableUnits()[0];
-            character.DisplayInfo();
+
+            if (!character.CanAttack() && !character.CanMove())
+            {
+                mouseController.character = MapManager.Instance.GetPlayableUnits()[0];
+                character.DisplayInfo();
+
+            }
         }
     }
 
@@ -93,7 +116,7 @@ public class PhaseManager : MonoBehaviour
     {
         foreach (CharacterInfo playableUnit in MapManager.Instance.GetPlayableUnits())
         {
-            PlayAction(playableUnit);
+            PlayAction(playableUnit, ActionCharacter.Idle);
         }
     }
 }
