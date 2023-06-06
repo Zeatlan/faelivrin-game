@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> characterList;
+
     private CharacterInfo currentCharacter;
     private int cursor;
 
@@ -18,10 +20,8 @@ public class CharacterSpawner : MonoBehaviour
 
     public void Start()
     {
-        cursor = 0;
         _unitPortraits = new List<UnitPortrait>();
-        SwitchCharacter(cursor);
-        SwitchPreviewCharacter();
+        UpdateCursor(0);
         GenerateCharacterListUI();
     }
 
@@ -32,15 +32,21 @@ public class CharacterSpawner : MonoBehaviour
 
     public void SpawnCharacterOnTile(OverlayTile tile)
     {
+
         if (tile.isStartingTile)
         {
-            if (currentCharacter != null)
-            {
-                MapManager.Instance.RemovePlayerUnit(currentCharacter);
-                Destroy(currentCharacter.gameObject);
-            }
+
+            if (MapManager.Instance.FindCharacterOnTile(tile) != null) return;
 
             currentCharacter = Instantiate(characterPrefab).GetComponent<CharacterInfo>();
+            CharacterInfo existingCharacter = MapManager.Instance.GetPlayerUnitByName(currentCharacter.gameObject.name);
+
+            if (existingCharacter != null)
+            {
+                MapManager.Instance.RemovePlayerUnit(existingCharacter);
+                Destroy(existingCharacter.gameObject);
+            }
+
             MapManager.Instance.PositionCharacterOnTile(tile, currentCharacter);
             MapManager.Instance.AddPlayerUnit(currentCharacter);
             MapManager.Instance.AddPlayableUnit(currentCharacter);
@@ -60,12 +66,26 @@ public class CharacterSpawner : MonoBehaviour
         _unitPortraits[0].SetActive();
     }
 
+    private void UpdateCursor(int newCursor)
+    {
+        cursor = newCursor;
+        SwitchCharacter(cursor);
+        SwitchPreviewCharacter();
+    }
+
     public void ChangeCharacterActiveUI(UnitPortrait selectedCard)
     {
-        foreach (UnitPortrait card in _unitPortraits)
+        for (int i = 0; i < _unitPortraits.Count; i++)
         {
-            if (card.isActive) card.SetInactive();
+
+            if (_unitPortraits[i].isActive) _unitPortraits[i].SetInactive();
+
+            if (_unitPortraits[i] == selectedCard)
+            {
+                UpdateCursor(i);
+            }
         }
+
         selectedCard.SetActive();
     }
 
@@ -88,7 +108,11 @@ public class CharacterSpawner : MonoBehaviour
 
         if (currentCharacter)
         {
-            if (currentCharacter.activeTile == tile) return;
+            if (currentCharacter.activeTile == tile || MapManager.Instance.FindCharacterOnTile(tile))
+            {
+                HidePreview();
+                return;
+            }
         }
 
         previewCharacter.SetActive(true);

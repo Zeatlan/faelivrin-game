@@ -153,6 +153,7 @@ public class MapManager : MonoBehaviour
     }
 
     public List<CharacterInfo> GetPlayerUnits() { return playerUnits; }
+    public CharacterInfo GetPlayerUnitByName(string name) { return playerUnits.Find(x => x.gameObject.name == name); }
     public void AddPlayerUnit(CharacterInfo unit) { playerUnits.Add(unit); }
     public void RemovePlayerUnit(CharacterInfo unit) { playerUnits.Remove(unit); }
 
