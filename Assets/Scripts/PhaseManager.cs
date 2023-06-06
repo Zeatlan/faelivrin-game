@@ -34,6 +34,15 @@ public class PhaseManager : MonoBehaviour
         }
 
         phaseState = Phase.PlayerTurn;
+        foreach (CharacterInfo unit in MapManager.Instance.GetPlayerUnits())
+        {
+            Debug.Log("UNIT PLAYER LIST : " + unit.stats.name);
+        }
+        foreach (CharacterInfo unit in MapManager.Instance.GetEnemyUnits())
+        {
+            Debug.Log("UNIT ENNEMY LIST : " + unit.stats.name);
+        }
+
         mouseController.character = MapManager.Instance.GetPlayerUnits()[0];
         uiManager.PlayerPhaseAnim();
         uiManager.ShowPlayerPhaseUI();

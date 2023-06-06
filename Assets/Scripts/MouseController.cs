@@ -9,7 +9,6 @@ using static PhaseManager;
 public class MouseController : MonoBehaviour
 {
     public float speed;
-    public GameObject characterPrefab;
     public CharacterInfo character;
 
     private PathFinder pathFinder;
@@ -180,7 +179,10 @@ public class MouseController : MonoBehaviour
     private void ClickOnCharacter(OverlayTile overlayTile)
     {
         CharacterInfo clickedCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
-        if (clickedCharacter) clickedCharacter.DisplayInfo();
+        if (clickedCharacter)
+        {
+            clickedCharacter.DisplayInfo();
+        }
     }
 
     private void GetInRangeTiles()
