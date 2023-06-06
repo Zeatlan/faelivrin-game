@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 409437123900460136}
   - component: {fileID: 741402830457365730}
   m_Layer: 0
-  m_Name: coolCharacter
+  m_Name: secondCoolCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 50
-  m_Sprite: {fileID: 21300000, guid: 26ded62a3d42f2c40aedd000a497240c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e0a73995203a7f24ab1d5ae57ebd1fe8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activeTile: {fileID: 0}
-  stats: {fileID: 11400000, guid: 7f7e627299ca01c4e82366063809594a, type: 2}
+  stats: {fileID: 11400000, guid: c4c10cefce80bc74a94ae366fa0e7565, type: 2}
   charStats:
     maxHealth: 0
     currentHealth: 0

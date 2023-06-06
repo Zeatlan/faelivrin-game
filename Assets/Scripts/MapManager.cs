@@ -16,6 +16,9 @@ public class MapManager : MonoBehaviour
     private List<OverlayTile> startingTiles;
 
     public BattleMapSO battleMapData;
+
+
+    [Header("Test")]
     [SerializeField] private List<CharacterInfo> playerUnits;
     [SerializeField] private List<CharacterInfo> enemyUnits;
     [SerializeField] private List<CharacterInfo> playableUnits;

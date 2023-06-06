@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("Phase de placement")]
     [SerializeField] private Transform startingPhaseObj;
     [SerializeField] private Transform readyButton;
+    [SerializeField] private Transform characterList;
 
     [Header("Tour du joueur")]
     [SerializeField] private Transform playerPhaseObj;
@@ -32,6 +33,7 @@ public class UIManager : MonoBehaviour
 
         readyButton.gameObject.SetActive(true);
         startingPhaseObj.gameObject.SetActive(true);
+        characterList.gameObject.SetActive(true);
         playerPhaseObj.gameObject.SetActive(true);
         enemyPhaseObj.gameObject.SetActive(true);
 

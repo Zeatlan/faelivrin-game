@@ -11,11 +11,18 @@ public class CharacterSpawner : MonoBehaviour
     [SerializeField] private GameObject characterPrefab;
     [SerializeField] private GameObject previewCharacter;
 
+    [Header("UI")]
+    [SerializeField] private Transform characterListUI;
+    [SerializeField] private GameObject characterCardPrefab;
+    private List<UnitPortrait> _unitPortraits;
+
     public void Start()
     {
         cursor = 0;
+        _unitPortraits = new List<UnitPortrait>();
         SwitchCharacter(cursor);
         SwitchPreviewCharacter();
+        GenerateCharacterListUI();
     }
 
     public void SwitchCharacter(int targetCursor)
@@ -38,6 +45,28 @@ public class CharacterSpawner : MonoBehaviour
             MapManager.Instance.AddPlayerUnit(currentCharacter);
             MapManager.Instance.AddPlayableUnit(currentCharacter);
         }
+    }
+
+
+    private void GenerateCharacterListUI()
+    {
+        foreach (GameObject character in characterList)
+        {
+            UnitPortrait newCard = Instantiate(characterCardPrefab, characterListUI).GetComponent<UnitPortrait>();
+            newCard.SetIcon(character.GetComponent<CharacterInfo>().stats.icon);
+            _unitPortraits.Add(newCard);
+        }
+
+        _unitPortraits[0].SetActive();
+    }
+
+    public void ChangeCharacterActiveUI(UnitPortrait selectedCard)
+    {
+        foreach (UnitPortrait card in _unitPortraits)
+        {
+            if (card.isActive) card.SetInactive();
+        }
+        selectedCard.SetActive();
     }
 
     private void SwitchPreviewCharacter()
