@@ -171,10 +171,16 @@ public class MouseController : MonoBehaviour
     private void AttackCharacterOnTile(OverlayTile overlayTile)
     {
         CharacterInfo targetCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
+
         if (targetCharacter && !MapManager.Instance.GetPlayerUnits().Contains(targetCharacter))
         {
             character.Attack(targetCharacter);
             phaseManager.PlayAction(character, ActionCharacter.Attack);
+        }
+
+        if (MapManager.Instance.GetPlayerUnits().Contains(targetCharacter))
+        {
+            ClickOnCharacter(overlayTile);
         }
     }
 
