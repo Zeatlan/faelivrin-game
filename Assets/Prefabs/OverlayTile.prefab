@@ -122,6 +122,7 @@ MonoBehaviour:
   - {fileID: 1893288985, guid: 48c3e5bb82e0784439ee126f08bbadba, type: 3}
   - {fileID: -125112267, guid: 48c3e5bb82e0784439ee126f08bbadba, type: 3}
   - {fileID: -2076784915, guid: 48c3e5bb82e0784439ee126f08bbadba, type: 3}
+  previewAttack: {fileID: 5007234158729434833}
 --- !u!60 &4462591919354625963
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -309,7 +310,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0b4cc4d01eaa18a4c9fc6609370ad971, type: 3}
-  m_Color: {r: 0.9245283, g: 0.23985407, b: 0.39131868, a: 0}
+  m_Color: {r: 0.9245283, g: 0.23985407, b: 0.39131868, a: 0.8}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

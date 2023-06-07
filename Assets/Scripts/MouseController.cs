@@ -17,6 +17,7 @@ public class MouseController : MonoBehaviour
 
     private List<OverlayTile> path = new List<OverlayTile>();
     private List<OverlayTile> inRangeTiles = new List<OverlayTile>();
+    private List<OverlayTile> previewedTiles = new List<OverlayTile>();
 
     [SerializeField] private PhaseManager phaseManager;
     [SerializeField] private CharacterSpawner characterSpawner;
@@ -105,9 +106,9 @@ public class MouseController : MonoBehaviour
         {
             path = pathFinder.FindPath(character.activeTile, overlayTile, new List<OverlayTile>());
 
-            foreach (OverlayTile item in inRangeTiles)
+            foreach (OverlayTile tile in inRangeTiles)
             {
-                item.SetArrowSprite(ArrowDirection.None);
+                tile.SetArrowSprite(ArrowDirection.None);
             }
 
             for (int i = 0; i < path.Count; i++)
@@ -118,6 +119,8 @@ public class MouseController : MonoBehaviour
                 ArrowDirection arrowDir = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
                 path[i].SetArrowSprite(arrowDir);
             }
+
+            GetPreviewAttackableTiles(path[path.Count - 1]);
         }
 
     }
@@ -150,8 +153,10 @@ public class MouseController : MonoBehaviour
 
     private void ClickOnMap(OverlayTile overlayTile)
     {
+
         if (inRangeTiles.Contains(overlayTile) && character.activeTile != overlayTile)
         {
+
             if (overlayTile.isAttackableTile && character.CanAttack())
             {
                 AttackCharacterOnTile(overlayTile);
@@ -206,17 +211,39 @@ public class MouseController : MonoBehaviour
 
         inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, 1, true);
 
-        foreach (OverlayTile item in inRangeTiles)
+        foreach (OverlayTile tile in inRangeTiles)
         {
-            item.ShowAttackableTile();
+            tile.ShowAttackableTile();
+        }
+    }
+
+    private void GetPreviewAttackableTiles(OverlayTile startingTile)
+    {
+        ResetPreviewedTiles();
+
+        previewedTiles = rangeFinder.GetTilesInRange(startingTile, 1, true);
+
+        foreach (OverlayTile tile in previewedTiles)
+        {
+            tile.ShowPreviewAtackableTile();
+        }
+    }
+
+    private void ResetPreviewedTiles()
+    {
+        List<OverlayTile> previewedTilesCopy = new List<OverlayTile>(previewedTiles);
+        foreach (OverlayTile tile in previewedTilesCopy)
+        {
+            tile.HidePreview();
+            previewedTiles.Remove(tile);
         }
     }
 
     private void ResetInRangeTile()
     {
-        foreach (OverlayTile item in inRangeTiles)
+        foreach (OverlayTile tile in inRangeTiles)
         {
-            item.HideTile();
+            tile.HideTile();
         }
     }
 
@@ -240,6 +267,7 @@ public class MouseController : MonoBehaviour
         {
             phaseManager.PlayAction(character, ActionCharacter.Move);
             SwitchMode();
+            if (previewedTiles.Count > 0) ResetPreviewedTiles();
             isMoving = false;
         }
     }

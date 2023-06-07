@@ -22,6 +22,8 @@ public class OverlayTile : MonoBehaviour
 
     public List<Sprite> arrows;
 
+    [SerializeField] private GameObject previewAttack;
+
     public void ShowTile()
     {
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
@@ -45,6 +47,16 @@ public class OverlayTile : MonoBehaviour
     {
         isAttackableTile = true;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(1, 0.23f, 0.34f, 1);
+    }
+
+    public void ShowPreviewAtackableTile()
+    {
+        previewAttack.SetActive(true);
+    }
+
+    public void HidePreview()
+    {
+        previewAttack.SetActive(false);
     }
 
     public void SetBlocked(bool b)
