@@ -7,14 +7,9 @@ using UnityEngine.UI;
 public class Stats : MonoBehaviour
 {
 
-    private TextMeshProUGUI atkAmount;
-    private TextMeshProUGUI rangeAmount;
-
-    void Start()
-    {
-        atkAmount = transform.Find("ATK").GetComponentsInChildren<TextMeshProUGUI>()[1];
-        rangeAmount = transform.Find("RANGE").GetComponentsInChildren<TextMeshProUGUI>()[1];
-    }
+    [SerializeField] private TextMeshProUGUI atkAmount;
+    [SerializeField] private TextMeshProUGUI rangeAmount;
+    [SerializeField] private TextMeshProUGUI atkRangeAmount;
 
     public void SetAttack(int atk)
     {
@@ -24,5 +19,10 @@ public class Stats : MonoBehaviour
     public void SetRange(int range)
     {
         rangeAmount.SetText(range.ToString());
+    }
+
+    public void SetAtkRange(int range)
+    {
+        atkRangeAmount.SetText(range.ToString());
     }
 }

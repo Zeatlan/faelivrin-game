@@ -9,6 +9,7 @@ struct CharStats
     public int currentHealth;
     public int attack;
     public int range;
+    public int atkRange;
 }
 
 public class CharacterInfo : MonoBehaviour
@@ -30,6 +31,7 @@ public class CharacterInfo : MonoBehaviour
         charStats.currentHealth = stats.baseHealth;
         charStats.attack = stats.baseAttack;
         charStats.range = stats.baseRange;
+        charStats.atkRange = stats.baseAtkRange;
         _canAttack = true;
         _canMove = true;
         _animation = GetComponent<CharacterAnimation>();
@@ -48,6 +50,7 @@ public class CharacterInfo : MonoBehaviour
         _statsUI = GameObject.Find("Stats").GetComponent<Stats>();
         _statsUI.SetAttack(charStats.attack);
         _statsUI.SetRange(charStats.range);
+        _statsUI.SetAtkRange(charStats.atkRange);
     }
 
     public void Attack(CharacterInfo unit)

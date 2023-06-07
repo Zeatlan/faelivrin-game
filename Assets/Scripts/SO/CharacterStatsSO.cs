@@ -9,5 +9,6 @@ public class CharacterStatsSO : ScriptableObject
     public int baseHealth;
     public int baseAttack;
     public int baseRange;
+    public int baseAtkRange = 1;
     public Sprite icon;
 }

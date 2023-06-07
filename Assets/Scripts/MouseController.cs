@@ -215,7 +215,7 @@ public class MouseController : MonoBehaviour
     {
         ResetInRangeTile();
 
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, 1, true);
+        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.stats.baseAtkRange, true);
 
         foreach (OverlayTile tile in inRangeTiles)
         {
@@ -227,7 +227,7 @@ public class MouseController : MonoBehaviour
     {
         ResetPreviewedTiles();
 
-        previewedTiles = rangeFinder.GetTilesInRange(startingTile, 1, true);
+        previewedTiles = rangeFinder.GetTilesInRange(startingTile, character.stats.baseAtkRange, true);
 
         foreach (OverlayTile tile in previewedTiles)
         {
