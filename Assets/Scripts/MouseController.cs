@@ -8,7 +8,6 @@ using static PhaseManager;
 
 public class MouseController : MonoBehaviour
 {
-    public float speed;
     public CharacterInfo character;
 
     private PathFinder pathFinder;
@@ -73,7 +72,16 @@ public class MouseController : MonoBehaviour
 
         if (path.Count > 0 && isMoving)
         {
-            MoveAlongPath();
+            character.Move(path);
+
+            if (path.Count == 0)
+            {
+                phaseManager.PlayAction(character, ActionCharacter.Move);
+                SwitchMode();
+                uiManager.SwitchMode();
+                if (previewedTiles.Count > 0) ResetPreviewedTiles();
+                isMoving = false;
+            }
         }
     }
 
@@ -280,32 +288,6 @@ public class MouseController : MonoBehaviour
         foreach (OverlayTile tile in inRangeTiles)
         {
             tile.HideTile();
-        }
-    }
-
-    private void MoveAlongPath()
-    {
-        float step = speed * Time.deltaTime;
-
-        float zIndex = path[0].transform.position.z;
-
-        character.activeTile.isBlocked = false;
-        character.transform.position = Vector2.MoveTowards(character.transform.position, path[0].transform.position, step);
-        character.transform.position = new Vector3(character.transform.position.x, character.transform.position.y, zIndex);
-
-        if (Vector2.Distance(character.transform.position, path[0].transform.position) < 0.0001f)
-        {
-            MapManager.Instance.PositionCharacterOnTile(path[0], character);
-            path.RemoveAt(0);
-        }
-
-        if (path.Count == 0)
-        {
-            phaseManager.PlayAction(character, ActionCharacter.Move);
-            SwitchMode();
-            uiManager.SwitchMode();
-            if (previewedTiles.Count > 0) ResetPreviewedTiles();
-            isMoving = false;
         }
     }
 

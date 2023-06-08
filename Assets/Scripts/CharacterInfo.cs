@@ -20,18 +20,19 @@ public class CharacterInfo : MonoBehaviour
     private UnitPanel _unitPanel;
     private Stats _statsUI;
 
-    [SerializeField] private CharStats charStats;
+    [SerializeField] private CharStats _charStats;
     private bool _canAttack;
     private bool _canMove;
     private CharacterAnimation _animation;
+    private float _speed = 3f;
 
     void Start()
     {
-        charStats.maxHealth = stats.baseHealth;
-        charStats.currentHealth = stats.baseHealth;
-        charStats.attack = stats.baseAttack;
-        charStats.range = stats.baseRange;
-        charStats.atkRange = stats.baseAtkRange;
+        _charStats.maxHealth = stats.baseHealth;
+        _charStats.currentHealth = stats.baseHealth;
+        _charStats.attack = stats.baseAttack;
+        _charStats.range = stats.baseRange;
+        _charStats.atkRange = stats.baseAtkRange;
         _canAttack = true;
         _canMove = true;
         _animation = GetComponent<CharacterAnimation>();
@@ -44,13 +45,13 @@ public class CharacterInfo : MonoBehaviour
 
         _unitPanel.SetName(stats.characterName);
 
-        _unitPanel.SetMaxHealth(charStats.maxHealth);
-        _unitPanel.SetHealth(charStats.currentHealth);
+        _unitPanel.SetMaxHealth(_charStats.maxHealth);
+        _unitPanel.SetHealth(_charStats.currentHealth);
 
         _statsUI = GameObject.Find("Stats").GetComponent<Stats>();
-        _statsUI.SetAttack(charStats.attack);
-        _statsUI.SetRange(charStats.range);
-        _statsUI.SetAtkRange(charStats.atkRange);
+        _statsUI.SetAttack(_charStats.attack);
+        _statsUI.SetRange(_charStats.range);
+        _statsUI.SetAtkRange(_charStats.atkRange);
     }
 
     public void Attack(CharacterInfo unit)
@@ -62,20 +63,37 @@ public class CharacterInfo : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        charStats.currentHealth -= damage;
+        _charStats.currentHealth -= damage;
         _animation.TakeDamageAnim(this);
 
-        if (charStats.currentHealth < 0)
+        if (_charStats.currentHealth < 0)
         {
             Die();
         }
 
-        if (_unitPanel) _unitPanel.SetHealth(charStats.currentHealth);
+        if (_unitPanel) _unitPanel.SetHealth(_charStats.currentHealth);
+    }
+
+    public void Move(List<OverlayTile> path)
+    {
+        float step = _speed * Time.deltaTime;
+
+        float zIndex = path[0].transform.position.z;
+
+        activeTile.isBlocked = false;
+        transform.position = Vector2.MoveTowards(transform.position, path[0].transform.position, step);
+        transform.position = new Vector3(transform.position.x, transform.position.y, zIndex);
+
+        if (Vector2.Distance(transform.position, path[0].transform.position) < 0.0001f)
+        {
+            MapManager.Instance.PositionCharacterOnTile(path[0], this);
+            path.RemoveAt(0);
+        }
     }
 
     private void Die()
     {
-        charStats.currentHealth = 0;
+        _charStats.currentHealth = 0;
         _animation.DieAnim(this);
 
         if (MapManager.Instance.GetEnemyUnits().Contains(this))
@@ -112,5 +130,5 @@ public class CharacterInfo : MonoBehaviour
         }
     }
 
-    public CharStats GetStats() { return charStats; }
+    public CharStats GetStats() { return _charStats; }
 }
