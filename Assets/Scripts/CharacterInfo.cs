@@ -67,10 +67,16 @@ public class CharacterInfo : MonoBehaviour
 
         if (charStats.currentHealth < 0)
         {
-            charStats.currentHealth = 0;
+            Die();
         }
 
         if (_unitPanel) _unitPanel.SetHealth(charStats.currentHealth);
+    }
+
+    private void Die()
+    {
+        charStats.currentHealth = 0;
+        _animation.DieAnim(this);
     }
 
     public bool CanAttack() { return _canAttack == true; }
