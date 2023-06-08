@@ -153,10 +153,8 @@ public class MouseController : MonoBehaviour
 
     private void ClickOnMap(OverlayTile overlayTile)
     {
-
         if (inRangeTiles.Contains(overlayTile) && character.activeTile != overlayTile)
         {
-
             if (overlayTile.isAttackableTile && character.CanAttack())
             {
                 AttackCharacterOnTile(overlayTile);
@@ -186,6 +184,7 @@ public class MouseController : MonoBehaviour
 
     private void ClickOnCharacter(OverlayTile overlayTile)
     {
+        Debug.Log("Click on character");
         CharacterInfo clickedCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
         if (clickedCharacter)
         {

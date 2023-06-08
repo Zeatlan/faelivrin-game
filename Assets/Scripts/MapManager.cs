@@ -188,8 +188,10 @@ public class MapManager : MonoBehaviour
 
     public CharacterInfo FindCharacterOnTile(OverlayTile overlayTile)
     {
+        List<CharacterInfo> allUnits = new List<CharacterInfo>(playerUnits);
+        allUnits.AddRange(enemyUnits);
 
-        foreach (CharacterInfo unit in playableUnits)
+        foreach (CharacterInfo unit in allUnits)
         {
             if (unit.activeTile == overlayTile) return unit;
         }
