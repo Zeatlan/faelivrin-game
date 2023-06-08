@@ -21,6 +21,7 @@ public class MouseController : MonoBehaviour
 
     [SerializeField] private PhaseManager phaseManager;
     [SerializeField] private CharacterSpawner characterSpawner;
+    [SerializeField] private UIManager uiManager;
 
     private bool isMoving = false;
     public bool isAtkMode = false;
@@ -80,14 +81,29 @@ public class MouseController : MonoBehaviour
     {
         isAtkMode = !isAtkMode;
 
-        if (character.CanMove())
+        if (character.CanMove() || character.CanAttack())
         {
-            if (!isAtkMode) GetInRangeTiles();
-        }
+            ResetInRangeTile();
+            ResetPreviewedTiles();
 
-        if (character.CanAttack())
-        {
-            if (isAtkMode) GetAttackableTiles();
+            if (character.CanMove())
+            {
+                if (!isAtkMode) GetInRangeTiles();
+            }
+            else
+            {
+                isAtkMode = true;
+            }
+
+            if (character.CanAttack())
+            {
+                if (isAtkMode) GetAttackableTiles();
+            }
+            else
+            {
+                isAtkMode = false;
+                GetInRangeTiles();
+            }
         }
     }
 
@@ -99,10 +115,12 @@ public class MouseController : MonoBehaviour
 
         if (character.CanMove())
         {
+            uiManager.SetModeTextToAtk();
             GetInRangeTiles();
         }
         else
         {
+            uiManager.SetModeTextToMove();
             GetAttackableTiles();
         }
     }
@@ -285,6 +303,7 @@ public class MouseController : MonoBehaviour
         {
             phaseManager.PlayAction(character, ActionCharacter.Move);
             SwitchMode();
+            uiManager.SwitchMode();
             if (previewedTiles.Count > 0) ResetPreviewedTiles();
             isMoving = false;
         }
