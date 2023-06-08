@@ -26,6 +26,22 @@ public class PhaseManager : MonoBehaviour
         uiManager.StartingPhaseAnim();
     }
 
+    void Update()
+    {
+        if (phaseState != Phase.Start)
+        {
+            if (MapManager.Instance.GetPlayerUnits().Count == 0)
+            {
+                uiManager.DefeatPhaseAnim();
+            }
+
+            if (MapManager.Instance.GetEnemyUnits().Count == 0)
+            {
+                uiManager.VictoryPhaseAnim();
+            }
+        }
+    }
+
     private void RefillPlayableCharacter(List<CharacterInfo> characters)
     {
         foreach (CharacterInfo character in characters)
@@ -41,6 +57,8 @@ public class PhaseManager : MonoBehaviour
             DestroyStartingPhase();
         }
 
+        if (MapManager.Instance.GetPlayerUnits().Count == 0) return;
+
         phaseState = Phase.PlayerTurn;
 
         RefillPlayableCharacter(MapManager.Instance.GetPlayerUnits());
@@ -52,7 +70,10 @@ public class PhaseManager : MonoBehaviour
 
     public void SwitchToEnemyTurn()
     {
+        if (MapManager.Instance.GetEnemyUnits().Count == 0) return;
+
         phaseState = Phase.EnnemyTurn;
+
         RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
         mouseController.character = MapManager.Instance.GetEnemyUnits()[0];
         uiManager.EnemyPhaseAnim();

@@ -21,6 +21,8 @@ public class UIManager : MonoBehaviour
 
     [Header("UI général")]
     [SerializeField] private Transform unitPanel;
+    [SerializeField] private Transform victoryPhase;
+    [SerializeField] private Transform defeatPhase;
 
     [Header("Autres scripts")]
     [SerializeField] private MouseController mouseController;
@@ -36,10 +38,14 @@ public class UIManager : MonoBehaviour
         characterList.gameObject.SetActive(true);
         playerPhaseObj.gameObject.SetActive(true);
         enemyPhaseObj.gameObject.SetActive(true);
+        victoryPhase.gameObject.SetActive(true);
+        defeatPhase.gameObject.SetActive(true);
 
         ResetObjPos(startingPhaseObj);
         ResetObjPos(playerPhaseObj);
         ResetObjPos(enemyPhaseObj);
+        ResetObjPos(victoryPhase);
+        ResetObjPos(defeatPhase);
     }
 
     private void ResetObjPos(Transform obj)
@@ -60,6 +66,16 @@ public class UIManager : MonoBehaviour
     public void EnemyPhaseAnim()
     {
         StartCoroutine(PhaseMovementCoroutine(enemyPhaseObj));
+    }
+
+    public void VictoryPhaseAnim()
+    {
+        StartCoroutine(PhaseMovementCoroutine(victoryPhase));
+    }
+
+    public void DefeatPhaseAnim()
+    {
+        StartCoroutine(PhaseMovementCoroutine(defeatPhase));
     }
 
     private IEnumerator PhaseMovementCoroutine(Transform obj)

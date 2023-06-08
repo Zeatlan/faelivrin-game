@@ -174,6 +174,12 @@ public class MouseController : MonoBehaviour
         {
             character.Attack(targetCharacter);
             phaseManager.PlayAction(character, ActionCharacter.Attack);
+
+            if (targetCharacter.GetStats().currentHealth <= 0)
+            {
+                overlayTile.isAttackableTile = false;
+                overlayTile.isBlocked = false;
+            }
         }
 
         if (MapManager.Instance.GetPlayerUnits().Contains(targetCharacter))
@@ -184,8 +190,8 @@ public class MouseController : MonoBehaviour
 
     private void ClickOnCharacter(OverlayTile overlayTile)
     {
-        Debug.Log("Click on character");
         CharacterInfo clickedCharacter = MapManager.Instance.FindCharacterOnTile(overlayTile);
+
         if (clickedCharacter)
         {
             clickedCharacter.DisplayInfo();

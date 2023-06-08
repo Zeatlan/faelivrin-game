@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-struct CharStats
+public struct CharStats
 {
     public int maxHealth;
     public int currentHealth;
@@ -77,6 +77,15 @@ public class CharacterInfo : MonoBehaviour
     {
         charStats.currentHealth = 0;
         _animation.DieAnim(this);
+
+        if (MapManager.Instance.GetEnemyUnits().Contains(this))
+        {
+            MapManager.Instance.RemoveEnemyUnit(this);
+        }
+        if (MapManager.Instance.GetPlayerUnits().Contains(this))
+        {
+            MapManager.Instance.RemovePlayerUnit(this);
+        }
     }
 
     public bool CanAttack() { return _canAttack == true; }
@@ -102,4 +111,6 @@ public class CharacterInfo : MonoBehaviour
             GetComponent<SpriteRenderer>().color = (_canMove) ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.7f);
         }
     }
+
+    public CharStats GetStats() { return charStats; }
 }
