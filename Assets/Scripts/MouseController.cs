@@ -80,22 +80,29 @@ public class MouseController : MonoBehaviour
     {
         isAtkMode = !isAtkMode;
 
-        if (character.CanAttack())
-        {
-            if (isAtkMode) GetAttackableTiles();
-        }
-        else
-        {
-            isAtkMode = false;
-        }
-
         if (character.CanMove())
         {
             if (!isAtkMode) GetInRangeTiles();
         }
+
+        if (character.CanAttack())
+        {
+            if (isAtkMode) GetAttackableTiles();
+        }
+    }
+
+    private void SwitchCharacter()
+    {
+        isAtkMode = false;
+        ResetInRangeTile();
+        ResetPreviewedTiles();
+
+        if (character.CanMove())
+        {
+            GetInRangeTiles();
+        }
         else
         {
-            isAtkMode = true;
             GetAttackableTiles();
         }
     }
@@ -199,7 +206,7 @@ public class MouseController : MonoBehaviour
             if (MapManager.Instance.GetPlayerUnits().Contains(clickedCharacter) && (clickedCharacter.CanMove() || clickedCharacter.CanAttack()))
             {
                 character = clickedCharacter;
-                SwitchMode();
+                SwitchCharacter();
             }
         }
     }
