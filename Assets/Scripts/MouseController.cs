@@ -22,8 +22,12 @@ public class MouseController : MonoBehaviour
     [SerializeField] private CharacterSpawner characterSpawner;
     [SerializeField] private UIManager uiManager;
 
+    [SerializeField] private OrderRecorder _orderRecorder;
+    private OverlayTile _clickedTile;
+
     private bool isMoving = false;
     public bool isAtkMode = false;
+    private bool moveOrderInit = false;
 
     public void Start()
     {
@@ -32,12 +36,19 @@ public class MouseController : MonoBehaviour
         arrowTranslator = new ArrowTranslator();
         phaseManager = GameObject.Find("PhaseManager").GetComponent<PhaseManager>();
         characterSpawner = GameObject.Find("CharacterSpawner").GetComponent<CharacterSpawner>();
+
+        _orderRecorder = new OrderRecorder();
     }
 
     // Update is called once per frame
     void Update()
     {
         RaycastHit2D? focusedTileHit = GetFocusedOnTile();
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            _orderRecorder.UndoCommand();
+        }
 
         if (focusedTileHit.HasValue)
         {
@@ -67,22 +78,33 @@ public class MouseController : MonoBehaviour
                 }
 
             }
+
             HandleLeftLick(overlayTile);
-        }
 
-        if (path.Count > 0 && isMoving)
-        {
-            character.Move(path);
-
-            if (path.Count == 0)
+            if (path.Count == 0 && moveOrderInit)
             {
+                moveOrderInit = false;
                 phaseManager.PlayAction(character, ActionCharacter.Move);
                 SwitchMode();
                 uiManager.SwitchMode();
                 if (previewedTiles.Count > 0) ResetPreviewedTiles();
                 isMoving = false;
             }
+
+            if (path.Count > 0 && isMoving)
+            {
+                IOrder moveOrder = new MoveOrder(character, path);
+
+                if (!moveOrderInit)
+                {
+                    _orderRecorder.AddOrder(moveOrder);
+                    moveOrderInit = true;
+                }
+
+                moveOrder.Execute();
+            }
         }
+
     }
 
     public void SwitchMode()
@@ -194,6 +216,7 @@ public class MouseController : MonoBehaviour
             }
             else if (!overlayTile.isBlocked && character.CanMove())
             {
+                _clickedTile = overlayTile;
                 isMoving = true;
             }
         }
@@ -205,7 +228,8 @@ public class MouseController : MonoBehaviour
 
         if (targetCharacter && !MapManager.Instance.GetPlayerUnits().Contains(targetCharacter))
         {
-            character.Attack(targetCharacter);
+            IOrder attackOrder = new AttackOrder(character, targetCharacter);
+            _orderRecorder.AddOrder(attackOrder);
             phaseManager.PlayAction(character, ActionCharacter.Attack);
 
             if (targetCharacter.GetStats().currentHealth <= 0)

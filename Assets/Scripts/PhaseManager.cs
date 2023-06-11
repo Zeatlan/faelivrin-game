@@ -52,6 +52,7 @@ public class PhaseManager : MonoBehaviour
 
     public void SwitchToPlayerTurn()
     {
+        MapManager.Instance.HideAllTiles();
         if (phaseState == Phase.Start)
         {
             DestroyStartingPhase();
@@ -70,6 +71,7 @@ public class PhaseManager : MonoBehaviour
 
     public void SwitchToEnemyTurn()
     {
+        MapManager.Instance.HideAllTiles();
         if (MapManager.Instance.GetEnemyUnits().Count == 0) return;
 
         phaseState = Phase.EnnemyTurn;

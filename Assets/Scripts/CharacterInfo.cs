@@ -77,7 +77,6 @@ public class CharacterInfo : MonoBehaviour
     public void Move(List<OverlayTile> path)
     {
         float step = _speed * Time.deltaTime;
-
         float zIndex = path[0].transform.position.z;
 
         activeTile.isBlocked = false;
@@ -131,4 +130,9 @@ public class CharacterInfo : MonoBehaviour
     }
 
     public CharStats GetStats() { return _charStats; }
+
+    public void HealHealth(int amount)
+    {
+        _charStats.currentHealth += amount;
+    }
 }
