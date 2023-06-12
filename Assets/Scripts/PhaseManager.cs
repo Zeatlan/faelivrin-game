@@ -77,7 +77,6 @@ public class PhaseManager : MonoBehaviour
         phaseState = Phase.EnnemyTurn;
 
         RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
-        mouseController.character = MapManager.Instance.GetEnemyUnits()[0];
         uiManager.EnemyPhaseAnim();
         uiManager.ShowEnemyPhaseUI();
         StartCoroutine(DisplayInfo());

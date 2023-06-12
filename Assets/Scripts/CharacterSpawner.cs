@@ -136,6 +136,7 @@ public class CharacterSpawner : MonoBehaviour
                 if (map.ContainsKey(enemyCoordinate))
                 {
                     CharacterInfo enemy = Instantiate(battleMapData.ennemies[i]).GetComponent<CharacterInfo>();
+                    AIManager aiManager = enemy.gameObject.AddComponent<AIManager>();
                     MapManager.Instance.PositionCharacterOnTile(map[enemyCoordinate], enemy);
                     MapManager.Instance.AddEnemyUnit(enemy);
                 }

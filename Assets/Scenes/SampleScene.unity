@@ -419,10 +419,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923d5b11917f1c440bc2d86936b306c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
   character: {fileID: 0}
-  phaseManager: {fileID: 0}
-  characterSpawner: {fileID: 0}
+  phaseManager: {fileID: 1363686106}
+  characterSpawner: {fileID: 160786582}
   uiManager: {fileID: 1383977563}
   isAtkMode: 0
 --- !u!1 &160786581

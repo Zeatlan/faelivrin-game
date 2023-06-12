@@ -18,6 +18,6 @@ MonoBehaviour:
   - {x: -5, y: 4, z: 1}
   - {x: -6, y: 3, z: 1}
   ennemiesSpawnPos:
-  - {x: -4, y: 2, z: 1}
+  - {x: 3, y: 0, z: 1}
   ennemies:
   - {fileID: 409437123900460136, guid: 9b271bf5533b5804a85ecbf762e2373b, type: 3}
