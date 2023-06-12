@@ -67,6 +67,10 @@ public class PhaseManager : MonoBehaviour
         uiManager.PlayerPhaseAnim();
         uiManager.ShowPlayerPhaseUI();
         StartCoroutine(DisplayInfo());
+
+
+        ResetActionOfEveryone();
+        mouseController.ResetMode();
     }
 
     public void SwitchToEnemyTurn()
@@ -80,6 +84,8 @@ public class PhaseManager : MonoBehaviour
         uiManager.EnemyPhaseAnim();
         uiManager.ShowEnemyPhaseUI();
         StartCoroutine(DisplayInfo());
+
+        ResetActionOfEveryone();
 
         foreach (CharacterInfo enemy in MapManager.Instance.GetPlayableUnits())
         {
@@ -112,6 +118,15 @@ public class PhaseManager : MonoBehaviour
         else if (phaseState == Phase.EnnemyTurn)
         {
             SwitchToPlayerTurn();
+        }
+    }
+
+    private void ResetActionOfEveryone()
+    {
+        foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
+        {
+            character.SetCanAttack(true);
+            character.SetCanMove(true);
         }
     }
 

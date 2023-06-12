@@ -105,6 +105,15 @@ public class MouseController : MonoBehaviour
 
     }
 
+    public void ResetMode()
+    {
+        tilesViewer.ResetInRangeTile();
+        tilesViewer.ResetPreviewedTiles();
+
+        isAtkMode = false;
+        tilesViewer.GetInRangeTiles(character);
+    }
+
     public void SwitchMode()
     {
         isAtkMode = !isAtkMode;
@@ -258,7 +267,6 @@ public class MouseController : MonoBehaviour
             }
         }
     }
-
 
     public RaycastHit2D? GetFocusedOnTile()
     {
