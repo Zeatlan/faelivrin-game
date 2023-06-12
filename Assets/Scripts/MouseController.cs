@@ -15,8 +15,6 @@ public class MouseController : MonoBehaviour
     private ArrowTranslator arrowTranslator;
 
     private List<OverlayTile> path = new List<OverlayTile>();
-    private List<OverlayTile> inRangeTiles = new List<OverlayTile>();
-    private List<OverlayTile> previewedTiles = new List<OverlayTile>();
 
     [SerializeField] private PhaseManager phaseManager;
     [SerializeField] private CharacterSpawner characterSpawner;
@@ -24,6 +22,7 @@ public class MouseController : MonoBehaviour
 
     [SerializeField] private OrderRecorder _orderRecorder;
     private OverlayTile _clickedTile;
+    private TilesViewer tilesViewer;
 
     private bool isMoving = false;
     public bool isAtkMode = false;
@@ -34,10 +33,9 @@ public class MouseController : MonoBehaviour
         pathFinder = new PathFinder();
         rangeFinder = new RangeFinder();
         arrowTranslator = new ArrowTranslator();
-        phaseManager = GameObject.Find("PhaseManager").GetComponent<PhaseManager>();
-        characterSpawner = GameObject.Find("CharacterSpawner").GetComponent<CharacterSpawner>();
 
         _orderRecorder = new OrderRecorder();
+        tilesViewer = new TilesViewer();
     }
 
     // Update is called once per frame
@@ -73,7 +71,7 @@ public class MouseController : MonoBehaviour
             {
                 if (!isAtkMode && !isMoving && character.CanMove())
                 {
-                    GetInRangeTiles();
+                    tilesViewer.GetInRangeTiles(character);
                     HandleArrowDisplay(overlayTile);
                 }
 
@@ -87,7 +85,7 @@ public class MouseController : MonoBehaviour
                 phaseManager.PlayAction(character, ActionCharacter.Move);
                 SwitchMode();
                 uiManager.SwitchMode();
-                if (previewedTiles.Count > 0) ResetPreviewedTiles();
+                if (tilesViewer.GetPreviewedTiles().Count > 0) tilesViewer.ResetPreviewedTiles();
                 isMoving = false;
             }
 
@@ -113,12 +111,12 @@ public class MouseController : MonoBehaviour
 
         if (character.CanMove() || character.CanAttack())
         {
-            ResetInRangeTile();
-            ResetPreviewedTiles();
+            tilesViewer.ResetInRangeTile();
+            tilesViewer.ResetPreviewedTiles();
 
             if (character.CanMove())
             {
-                if (!isAtkMode) GetInRangeTiles();
+                if (!isAtkMode) tilesViewer.GetInRangeTiles(character);
             }
             else
             {
@@ -127,12 +125,12 @@ public class MouseController : MonoBehaviour
 
             if (character.CanAttack())
             {
-                if (isAtkMode) GetAttackableTiles();
+                if (isAtkMode) tilesViewer.GetAttackableTiles(character);
             }
             else
             {
                 isAtkMode = false;
-                GetInRangeTiles();
+                tilesViewer.GetInRangeTiles(character);
             }
         }
     }
@@ -140,28 +138,28 @@ public class MouseController : MonoBehaviour
     private void SwitchCharacter()
     {
         isAtkMode = false;
-        ResetInRangeTile();
-        ResetPreviewedTiles();
+        tilesViewer.ResetInRangeTile();
+        tilesViewer.ResetPreviewedTiles();
 
         if (character.CanMove())
         {
             uiManager.SetModeTextToAtk();
-            GetInRangeTiles();
+            tilesViewer.GetInRangeTiles(character);
         }
         else
         {
             uiManager.SetModeTextToMove();
-            GetAttackableTiles();
+            tilesViewer.GetAttackableTiles(character);
         }
     }
 
     private void HandleArrowDisplay(OverlayTile overlayTile)
     {
-        if (inRangeTiles.Contains(overlayTile) && !isMoving)
+        if (tilesViewer.GetInRangeTiles().Contains(overlayTile) && !isMoving)
         {
             path = pathFinder.FindPath(character.activeTile, overlayTile, new List<OverlayTile>());
 
-            foreach (OverlayTile tile in inRangeTiles)
+            foreach (OverlayTile tile in tilesViewer.GetInRangeTiles())
             {
                 tile.SetArrowSprite(ArrowDirection.None);
             }
@@ -175,7 +173,7 @@ public class MouseController : MonoBehaviour
                 path[i].SetArrowSprite(arrowDir);
             }
 
-            GetPreviewAttackableTiles(path[path.Count - 1]);
+            tilesViewer.GetPreviewAttackableTiles(path[path.Count - 1], character);
         }
 
     }
@@ -208,7 +206,7 @@ public class MouseController : MonoBehaviour
 
     private void ClickOnMap(OverlayTile overlayTile)
     {
-        if (inRangeTiles.Contains(overlayTile) && character.activeTile != overlayTile)
+        if (tilesViewer.GetInRangeTiles().Contains(overlayTile) && character.activeTile != overlayTile)
         {
             if (overlayTile.isAttackableTile && character.CanAttack())
             {
@@ -261,59 +259,6 @@ public class MouseController : MonoBehaviour
         }
     }
 
-    private void GetInRangeTiles()
-    {
-        ResetInRangeTile();
-
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.stats.baseRange);
-
-        foreach (OverlayTile item in inRangeTiles)
-        {
-            item.ShowTile();
-        }
-    }
-
-    private void GetAttackableTiles()
-    {
-        ResetInRangeTile();
-
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.stats.baseAtkRange, true);
-
-        foreach (OverlayTile tile in inRangeTiles)
-        {
-            tile.ShowAttackableTile();
-        }
-    }
-
-    private void GetPreviewAttackableTiles(OverlayTile startingTile)
-    {
-        ResetPreviewedTiles();
-
-        previewedTiles = rangeFinder.GetTilesInRange(startingTile, character.stats.baseAtkRange, true);
-
-        foreach (OverlayTile tile in previewedTiles)
-        {
-            tile.ShowPreviewAtackableTile();
-        }
-    }
-
-    private void ResetPreviewedTiles()
-    {
-        List<OverlayTile> previewedTilesCopy = new List<OverlayTile>(previewedTiles);
-        foreach (OverlayTile tile in previewedTilesCopy)
-        {
-            tile.HidePreview();
-            previewedTiles.Remove(tile);
-        }
-    }
-
-    private void ResetInRangeTile()
-    {
-        foreach (OverlayTile tile in inRangeTiles)
-        {
-            tile.HideTile();
-        }
-    }
 
     public RaycastHit2D? GetFocusedOnTile()
     {
