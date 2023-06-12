@@ -22,7 +22,7 @@ public class TilesViewer
     {
         ResetInRangeTile();
 
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.stats.baseRange);
+        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().range);
 
         foreach (OverlayTile item in inRangeTiles)
         {
@@ -34,7 +34,7 @@ public class TilesViewer
     {
         ResetInRangeTile();
 
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.stats.baseAtkRange, true);
+        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().atkRange, true);
 
         foreach (OverlayTile tile in inRangeTiles)
         {
@@ -46,7 +46,7 @@ public class TilesViewer
     {
         ResetPreviewedTiles();
 
-        previewedTiles = rangeFinder.GetTilesInRange(startingTile, character.stats.baseAtkRange, true);
+        previewedTiles = rangeFinder.GetTilesInRange(startingTile, character.GetStats().atkRange, true);
 
         foreach (OverlayTile tile in previewedTiles)
         {
