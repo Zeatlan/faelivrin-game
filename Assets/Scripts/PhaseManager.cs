@@ -81,6 +81,13 @@ public class PhaseManager : MonoBehaviour
         uiManager.EnemyPhaseAnim();
         uiManager.ShowEnemyPhaseUI();
         StartCoroutine(DisplayInfo());
+
+        foreach (CharacterInfo enemy in MapManager.Instance.GetPlayableUnits())
+        {
+            AIManager ai = enemy.GetComponent<AIManager>();
+            ai.SetPlayerUnits(MapManager.Instance.GetPlayerUnits());
+            ai.IATurn();
+        }
     }
 
     private IEnumerator DisplayInfo()
@@ -95,6 +102,18 @@ public class PhaseManager : MonoBehaviour
         uiManager.hideStartingUI();
         MapManager.Instance.HideStartingTiles();
         characterSpawner.DestroyPreview();
+    }
+
+    private void SwitchPhase()
+    {
+        if (phaseState == Phase.PlayerTurn)
+        {
+            SwitchToEnemyTurn();
+        }
+        else if (phaseState == Phase.EnnemyTurn)
+        {
+            SwitchToPlayerTurn();
+        }
     }
 
     public void PlayAction(CharacterInfo character, ActionCharacter action)
@@ -121,7 +140,7 @@ public class PhaseManager : MonoBehaviour
 
         if (MapManager.Instance.GetPlayableUnits().Count == 0)
         {
-            SwitchToEnemyTurn();
+            SwitchPhase();
         }
         else
         {
