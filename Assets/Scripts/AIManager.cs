@@ -91,6 +91,10 @@ public class AIManager : MonoBehaviour
             {
                 AttackPlayerUnit(_bestScenario.PlayerUnit);
             }
+            else
+            {
+                MoveTowardsPlayerUnit(_bestScenario.PlayerUnit);
+            }
         }
         else
         {

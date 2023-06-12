@@ -66,7 +66,7 @@ public class CharacterInfo : MonoBehaviour
         _charStats.currentHealth -= damage;
         _animation.TakeDamageAnim(this);
 
-        if (_charStats.currentHealth < 0)
+        if (_charStats.currentHealth <= 0)
         {
             Die();
         }
