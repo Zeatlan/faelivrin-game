@@ -121,6 +121,11 @@ public class CharacterInfo : MonoBehaviour
         SetInactive();
     }
 
+    public void SetActive()
+    {
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+    }
+
     public void SetInactive()
     {
         if (!_canAttack && !_canMove)

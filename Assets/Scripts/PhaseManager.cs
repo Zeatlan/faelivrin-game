@@ -63,7 +63,13 @@ public class PhaseManager : MonoBehaviour
         phaseState = Phase.PlayerTurn;
 
         RefillPlayableCharacter(MapManager.Instance.GetPlayerUnits());
-        mouseController.character = MapManager.Instance.GetPlayerUnits()[0];
+
+        foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
+        {
+            character.SetActive();
+        }
+
+        mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
         uiManager.PlayerPhaseAnim();
         uiManager.ShowPlayerPhaseUI();
         StartCoroutine(DisplayInfo());
