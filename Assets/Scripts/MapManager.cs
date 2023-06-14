@@ -85,7 +85,70 @@ public class MapManager : MonoBehaviour
 
     }
 
-    public List<OverlayTile> GetNeighbourTiles(OverlayTile currentOverlayTile, List<OverlayTile> searchableTiles, bool isAttacking = false)
+    private List<OverlayTile> CheckDiamond(OverlayTile currentOverlayTile, Dictionary<Vector2Int, OverlayTile> tileToSearch, bool isAttacking = false)
+    {
+        List<OverlayTile> neighbours = new List<OverlayTile>();
+
+        // Top
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, 1);
+
+        // Bottom
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, -1);
+
+        // Right
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, 0);
+
+        // Left
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, 0);
+
+        return neighbours;
+    }
+
+    private List<OverlayTile> CheckSquare(OverlayTile currentOverlayTile, Dictionary<Vector2Int, OverlayTile> tileToSearch, bool isAttacking = false)
+    {
+        List<OverlayTile> neighbours = new List<OverlayTile>();
+
+        // Top
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, 1);
+
+        // Bottom
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, -1);
+
+        // Right
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, 0);
+
+        // Left
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, 0);
+
+        // Top right
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, 1);
+
+        // Top left
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, 1);
+
+        // Bottom right
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, -1);
+
+        // Bottom left
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, -1);
+
+        return neighbours;
+    }
+
+    private List<OverlayTile> CheckLine(OverlayTile currentOverlayTile, Dictionary<Vector2Int, OverlayTile> tileToSearch, AbilitySO skill, Vector2Int direction)
+    {
+        List<OverlayTile> neighbours = new List<OverlayTile>();
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, true, direction.x, direction.y);
+
+        return neighbours;
+
+    }
+
+    public List<OverlayTile> GetNeighbourTiles(
+        OverlayTile currentOverlayTile,
+        List<OverlayTile> searchableTiles,
+        bool isAttacking = false
+    )
     {
         Dictionary<Vector2Int, OverlayTile> tileToSearch = new Dictionary<Vector2Int, OverlayTile>();
 
@@ -101,21 +164,50 @@ public class MapManager : MonoBehaviour
             tileToSearch = map;
         }
 
-        List<OverlayTile> neighbours = new List<OverlayTile>();
+        List<OverlayTile> neighboursFinal = new List<OverlayTile>();
 
-        // Top
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, 1);
+        neighboursFinal = CheckDiamond(currentOverlayTile, tileToSearch, isAttacking);
 
-        // Bottom
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, -1);
+        return neighboursFinal;
+    }
 
-        // Right
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1);
+    public List<OverlayTile> GetNeighbourSkillTiles(
+         OverlayTile currentOverlayTile,
+         List<OverlayTile> searchableTiles,
+         AbilitySO skill,
+         Vector2Int direction
+     )
+    {
+        Dictionary<Vector2Int, OverlayTile> tileToSearch = new Dictionary<Vector2Int, OverlayTile>();
 
-        // Left
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1);
+        if (searchableTiles.Count > 0)
+        {
+            foreach (OverlayTile item in searchableTiles)
+            {
+                tileToSearch.Add(item.grid2DLocation, item);
+            }
+        }
+        else
+        {
+            tileToSearch = map;
+        }
 
-        return neighbours;
+        List<OverlayTile> neighboursFinal = new List<OverlayTile>();
+
+        if (skill.rangeType == RangeType.Diamond)
+        {
+            neighboursFinal = CheckDiamond(currentOverlayTile, tileToSearch, true);
+        }
+        else if (skill.rangeType == RangeType.Square)
+        {
+            neighboursFinal = CheckSquare(currentOverlayTile, tileToSearch, true);
+        }
+        else if (skill.rangeType == RangeType.Line)
+        {
+            neighboursFinal = CheckLine(currentOverlayTile, tileToSearch, skill, direction);
+        }
+
+        return neighboursFinal;
     }
 
     private void LocationToCheck(

@@ -54,6 +54,45 @@ public class TilesViewer
         }
     }
 
+    public void GetSkillTiles(CharacterInfo character, AbilitySO skill)
+    {
+        ResetInRangeTile();
+
+        inRangeTiles = rangeFinder.GetSkillRange(character.activeTile, skill, new Vector2Int(1, 0));
+
+        foreach (OverlayTile tile in inRangeTiles)
+        {
+            tile.ShowAttackableTile();
+        }
+    }
+
+    public void PreviewSkillLine(CharacterInfo character, AbilitySO skill, MouseController mouseController)
+    {
+        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Vector2Int mouseGridPos = new Vector2Int(Mathf.RoundToInt(mouseWorldPos.x), Mathf.RoundToInt(mouseWorldPos.y));
+
+        RaycastHit2D? focusedTileHit = mouseController.GetFocusedOnTile();
+
+        if (!focusedTileHit.HasValue) return;
+
+        OverlayTile overlayTile = focusedTileHit.Value.collider.gameObject.GetComponent<OverlayTile>();
+
+        Vector2Int relativePos = overlayTile.grid2DLocation - character.activeTile.grid2DLocation;
+
+        Vector2Int gridPos = new Vector2Int(Mathf.Clamp(relativePos.x, -1, 1), Mathf.Clamp(relativePos.y, -1, 1));
+
+        ResetInRangeTile();
+
+        inRangeTiles = rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
+
+        foreach (OverlayTile tile in inRangeTiles)
+        {
+            tile.ShowAttackableTile();
+        }
+
+    }
+
     public void ResetPreviewedTiles()
     {
         List<OverlayTile> previewedTilesCopy = new List<OverlayTile>(previewedTiles);

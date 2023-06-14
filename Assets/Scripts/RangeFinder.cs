@@ -31,4 +31,29 @@ public class RangeFinder
         return inRangeTiles.Distinct().ToList();
     }
 
+    public List<OverlayTile> GetSkillRange(OverlayTile startingTile, AbilitySO skill, Vector2Int direction)
+    {
+        List<OverlayTile> inRangeTiles = new List<OverlayTile>();
+        int stepCount = 0;
+
+        List<OverlayTile> tileForPreviousStep = new List<OverlayTile>();
+        tileForPreviousStep.Add(startingTile);
+
+        while (stepCount < skill.range)
+        {
+            List<OverlayTile> surroundingTiles = new List<OverlayTile>();
+
+            foreach (OverlayTile tile in tileForPreviousStep)
+            {
+                surroundingTiles.AddRange(MapManager.Instance.GetNeighbourSkillTiles(tile, new List<OverlayTile>(), skill, direction));
+            }
+
+            inRangeTiles.AddRange(surroundingTiles);
+            tileForPreviousStep = surroundingTiles.Distinct().ToList();
+            stepCount++;
+        }
+
+        return inRangeTiles.Distinct().ToList();
+    }
+
 }

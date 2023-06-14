@@ -28,6 +28,7 @@ public class MouseController : MonoBehaviour
     public bool isMoving = false;
     public bool isAtkMode = false;
     private bool isSkillMode = false;
+    private bool isSkillLineMode = false;
     private bool moveOrderInit = false;
 
     public void Start()
@@ -79,6 +80,11 @@ public class MouseController : MonoBehaviour
                     HandleArrowDisplay(overlayTile);
                 }
 
+                if (isSkillLineMode)
+                {
+                    tilesViewer.PreviewSkillLine(character, character.GetComponent<AbilityHolder>().ability, this);
+                }
+
             }
 
             HandleLeftLick(overlayTile);
@@ -114,6 +120,8 @@ public class MouseController : MonoBehaviour
         tilesViewer.ResetInRangeTile();
         tilesViewer.ResetPreviewedTiles();
 
+        isSkillLineMode = false;
+        isSkillMode = false;
         isAtkMode = false;
         tilesViewer.GetInRangeTiles(character);
     }
@@ -127,6 +135,7 @@ public class MouseController : MonoBehaviour
     public void SwitchMode()
     {
         isSkillMode = false;
+        isSkillLineMode = false;
         isAtkMode = !isAtkMode;
 
         if (character.CanMove() || character.CanAttack())
@@ -306,5 +315,12 @@ public class MouseController : MonoBehaviour
     public void EnterSkillMode()
     {
         isSkillMode = (character.CanAttack()) ? true : false;
+        AbilitySO userAbility = character.GetComponent<AbilityHolder>().ability;
+        tilesViewer.GetSkillTiles(character, userAbility);
+
+        if (userAbility.rangeType == RangeType.Line)
+        {
+            isSkillLineMode = true;
+        }
     }
 }

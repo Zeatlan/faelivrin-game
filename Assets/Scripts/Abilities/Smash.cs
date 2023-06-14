@@ -11,7 +11,7 @@ public class Smash : AbilitySO
 
         if (targetCharacter != null)
         {
-            int totalDamage = Mathf.FloorToInt(user.GetStats().attack * damageMultiplicator);
+            int totalDamage = Mathf.FloorToInt(user.GetStats().attack * efficiencyMultiplicator);
             targetCharacter.TakeDamage(totalDamage);
         }
     }
