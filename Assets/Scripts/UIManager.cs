@@ -58,14 +58,14 @@ public class UIManager : MonoBehaviour
         StartCoroutine(PhaseMovementCoroutine(startingPhaseObj));
     }
 
-    public void PlayerPhaseAnim()
+    public IEnumerator PlayerPhaseAnim()
     {
-        StartCoroutine(PhaseMovementCoroutine(playerPhaseObj));
+        yield return StartCoroutine(PhaseMovementCoroutine(playerPhaseObj));
     }
 
-    public void EnemyPhaseAnim()
+    public IEnumerator EnemyPhaseAnim()
     {
-        StartCoroutine(PhaseMovementCoroutine(enemyPhaseObj));
+        yield return StartCoroutine(PhaseMovementCoroutine(enemyPhaseObj));
     }
 
     public void VictoryPhaseAnim()
@@ -80,6 +80,7 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator PhaseMovementCoroutine(Transform obj)
     {
+        PhaseManager.isGamePaused = true;
         ResetObjPos(obj);
 
         yield return new WaitForSeconds(0.001f);
@@ -89,6 +90,7 @@ public class UIManager : MonoBehaviour
             .setOnComplete(() =>
             {
                 LeanTween.moveLocal(obj.gameObject, new Vector3(Screen.width, 0, 0), 1).setDelay(1).setEaseOutExpo();
+                PhaseManager.isGamePaused = false;
             }
         );
     }

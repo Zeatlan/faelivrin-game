@@ -29,6 +29,8 @@ public class AIManager : MonoBehaviour
 
     void Update()
     {
+        if (PhaseManager.isGamePaused) return;
+
         if (_isMoving && _path.Count > 0)
         {
             _moveOrder.Execute();

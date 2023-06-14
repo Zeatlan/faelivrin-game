@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PhaseManager : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private MouseController mouseController;
     [SerializeField] private CharacterSpawner characterSpawner;
+
+    public static UnityEvent OnTurnEnded = new UnityEvent();
+    public static bool isGamePaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -50,15 +54,21 @@ public class PhaseManager : MonoBehaviour
         }
     }
 
-    public void SwitchToPlayerTurn()
+    public void StartTheGame()
     {
+        StartCoroutine(SwitchToPlayerTurn());
+    }
+
+    public IEnumerator SwitchToPlayerTurn()
+    {
+
         MapManager.Instance.HideAllTiles();
         if (phaseState == Phase.Start)
         {
             DestroyStartingPhase();
         }
 
-        if (MapManager.Instance.GetPlayerUnits().Count == 0) return;
+        if (MapManager.Instance.GetPlayerUnits().Count == 0) yield break;
 
         phaseState = Phase.PlayerTurn;
 
@@ -70,26 +80,28 @@ public class PhaseManager : MonoBehaviour
         }
 
         mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
-        uiManager.PlayerPhaseAnim();
+        yield return StartCoroutine(uiManager.PlayerPhaseAnim());
         uiManager.ShowPlayerPhaseUI();
-        StartCoroutine(DisplayInfo());
+        yield return StartCoroutine(DisplayInfo());
 
 
         ResetActionOfEveryone();
         mouseController.ResetMode();
     }
 
-    public void SwitchToEnemyTurn()
+    public IEnumerator SwitchToEnemyTurn()
     {
+
         MapManager.Instance.HideAllTiles();
-        if (MapManager.Instance.GetEnemyUnits().Count == 0) return;
+        OnTurnEnded.Invoke();
+        if (MapManager.Instance.GetEnemyUnits().Count == 0) yield break;
 
         phaseState = Phase.EnnemyTurn;
 
         RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
-        uiManager.EnemyPhaseAnim();
+        yield return StartCoroutine(uiManager.EnemyPhaseAnim());
         uiManager.ShowEnemyPhaseUI();
-        StartCoroutine(DisplayInfo());
+        yield return StartCoroutine(DisplayInfo());
 
         ResetActionOfEveryone();
 
@@ -119,11 +131,11 @@ public class PhaseManager : MonoBehaviour
     {
         if (phaseState == Phase.PlayerTurn)
         {
-            SwitchToEnemyTurn();
+            StartCoroutine(SwitchToEnemyTurn());
         }
         else if (phaseState == Phase.EnnemyTurn)
         {
-            SwitchToPlayerTurn();
+            StartCoroutine(SwitchToPlayerTurn());
         }
     }
 
@@ -149,7 +161,6 @@ public class PhaseManager : MonoBehaviour
             case ActionCharacter.Idle:
                 character.SetCanAttack(false);
                 character.SetCanMove(false);
-                MapManager.Instance.RemovePlayableUnit(character);
                 break;
             default:
                 return;
@@ -169,7 +180,7 @@ public class PhaseManager : MonoBehaviour
 
             if (!character.CanAttack() && !character.CanMove())
             {
-                mouseController.character = MapManager.Instance.GetPlayableUnits()[0];
+                mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
                 character.DisplayInfo();
             }
         }

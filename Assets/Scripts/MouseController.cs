@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static AbilityHolder;
 using static ArrowTranslator;
 using static PhaseManager;
 
@@ -26,6 +27,7 @@ public class MouseController : MonoBehaviour
 
     public bool isMoving = false;
     public bool isAtkMode = false;
+    private bool isSkillMode = false;
     private bool moveOrderInit = false;
 
     public void Start()
@@ -41,6 +43,8 @@ public class MouseController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PhaseManager.isGamePaused) return;
+
         RaycastHit2D? focusedTileHit = GetFocusedOnTile();
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -122,6 +126,7 @@ public class MouseController : MonoBehaviour
 
     public void SwitchMode()
     {
+        isSkillMode = false;
         isAtkMode = !isAtkMode;
 
         if (character.CanMove() || character.CanAttack())
@@ -152,6 +157,7 @@ public class MouseController : MonoBehaviour
 
     private void SwitchCharacter()
     {
+        isSkillMode = false;
         isAtkMode = false;
         tilesViewer.ResetInRangeTile();
         tilesViewer.ResetPreviewedTiles();
@@ -241,9 +247,17 @@ public class MouseController : MonoBehaviour
 
         if (targetCharacter && !MapManager.Instance.GetPlayerUnits().Contains(targetCharacter))
         {
+
+            if (isSkillMode && character.gameObject.GetComponent<AbilityHolder>().CurrentState != AbilityState.ready) return;
+
             IOrder attackOrder = new AttackOrder(character, targetCharacter);
             _orderRecorder.AddOrder(attackOrder);
             phaseManager.PlayAction(character, ActionCharacter.Attack);
+
+            if (isSkillMode)
+            {
+                character.gameObject.GetComponent<AbilityHolder>().UseSkill(targetCharacter.gameObject);
+            }
 
             if (targetCharacter.GetStats().currentHealth <= 0)
             {
@@ -287,5 +301,10 @@ public class MouseController : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void EnterSkillMode()
+    {
+        isSkillMode = (character.CanAttack()) ? true : false;
     }
 }
