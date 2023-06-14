@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4431755537057064639}
   - component: {fileID: 409437123900460136}
   - component: {fileID: 741402830457365730}
+  - component: {fileID: 1449679421871208670}
   m_Layer: 0
   m_Name: coolCharacter
   m_TagString: Untagged
@@ -100,11 +101,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeTile: {fileID: 0}
   stats: {fileID: 11400000, guid: 7f7e627299ca01c4e82366063809594a, type: 2}
-  charStats:
+  _charStats:
     maxHealth: 0
     currentHealth: 0
     attack: 0
     range: 0
+    atkRange: 0
 --- !u!114 &741402830457365730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,5 +119,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edb48d8c4b689148960fa4aeb08f74c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leanDuration: 0.3
-  _maxLeanAngle: 15
+  _damageLeanDuration: 0.3
+  _maxDamageLeanAngle: -15
+  _dieLeanDuration: 0.7
+  _maxDieLeanAngle: -90
+--- !u!114 &1449679421871208670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022562023336559474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5b5385cf1fa9254aa4bab609e9ce250, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ability: {fileID: 11400000, guid: 4a3bf1cba45a75845a75849ab8033153, type: 2}

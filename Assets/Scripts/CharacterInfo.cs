@@ -57,7 +57,6 @@ public class CharacterInfo : MonoBehaviour
     public void Attack(CharacterInfo unit)
     {
         if (!_canAttack) return;
-
         unit.TakeDamage(stats.baseAttack);
     }
 
