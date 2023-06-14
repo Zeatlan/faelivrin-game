@@ -141,6 +141,8 @@ public class PhaseManager : MonoBehaviour
                 character.SetCanMove(false);
                 break;
             case ActionCharacter.Idle:
+                character.SetCanAttack(false);
+                character.SetCanMove(false);
                 MapManager.Instance.RemovePlayableUnit(character);
                 break;
             default:
@@ -174,5 +176,14 @@ public class PhaseManager : MonoBehaviour
         {
             PlayAction(playableUnit, ActionCharacter.Idle);
         }
+    }
+
+    public void EndCharacterTurn()
+    {
+        if (mouseController.isMoving) return;
+
+        PlayAction(mouseController.character, ActionCharacter.Idle);
+        if (MapManager.Instance.GetPlayableUnits().Count > 0)
+            mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
     }
 }

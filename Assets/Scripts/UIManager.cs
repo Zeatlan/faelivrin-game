@@ -81,6 +81,7 @@ public class UIManager : MonoBehaviour
     private IEnumerator PhaseMovementCoroutine(Transform obj)
     {
         ResetObjPos(obj);
+
         yield return new WaitForSeconds(0.001f);
 
         leanTweenDescription = LeanTween.moveLocal(obj.gameObject, new Vector3(0, 0, 0), 1)

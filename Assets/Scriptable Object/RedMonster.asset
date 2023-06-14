@@ -15,6 +15,6 @@ MonoBehaviour:
   characterName: "Gros D\xE9mon"
   baseHealth: 10
   baseAttack: 25
-  baseRange: 5
+  baseRange: 3
   baseAtkRange: 1
   icon: {fileID: 21300000, guid: 01654de3ccf039348bc07f369e2e40c4, type: 3}

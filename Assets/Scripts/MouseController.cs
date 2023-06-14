@@ -24,7 +24,7 @@ public class MouseController : MonoBehaviour
     private OverlayTile _clickedTile;
     private TilesViewer tilesViewer;
 
-    private bool isMoving = false;
+    public bool isMoving = false;
     public bool isAtkMode = false;
     private bool moveOrderInit = false;
 
@@ -112,6 +112,12 @@ public class MouseController : MonoBehaviour
 
         isAtkMode = false;
         tilesViewer.GetInRangeTiles(character);
+    }
+
+    public void SwitchCharacter(CharacterInfo newCharacter)
+    {
+        character = newCharacter;
+        ResetMode();
     }
 
     public void SwitchMode()
