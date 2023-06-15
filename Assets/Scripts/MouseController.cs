@@ -129,8 +129,10 @@ public class MouseController : MonoBehaviour
         isSkillLineMode = false;
         isDynamicSkill = false;
         isSkillMode = false;
-        isAtkMode = false;
-        tilesViewer.GetInRangeTiles(character);
+        isAtkMode = (character.CanMove()) ? false : true;
+
+        if (isAtkMode) tilesViewer.GetAttackableTiles(character);
+        else tilesViewer.GetInRangeTiles(character);
     }
 
     public void SwitchCharacter(CharacterInfo newCharacter)
@@ -249,6 +251,8 @@ public class MouseController : MonoBehaviour
             if (isSkillMode && isDynamicSkill)
             {
                 character.gameObject.GetComponent<AbilityHolder>().UseSkillZone(tilesViewer.GetInRangeTiles());
+
+                ResetMode();
             }
 
             if (overlayTile.isAttackableTile && character.CanAttack())
@@ -284,8 +288,10 @@ public class MouseController : MonoBehaviour
                 }
                 else
                 {
-                    character.gameObject.GetComponent<AbilityHolder>().UseSkill(targetCharacter.gameObject);
+                    character.gameObject.GetComponent<AbilityHolder>().UseSkill(overlayTile);
                 }
+
+                ResetMode();
             }
 
             if (targetCharacter.GetStats().currentHealth <= 0)
@@ -334,8 +340,14 @@ public class MouseController : MonoBehaviour
 
     public void EnterSkillMode()
     {
+        AbilityHolder abilityHolder = character.GetComponent<AbilityHolder>();
+
+        if (abilityHolder.CurrentState != AbilityState.ready) return;
+        ResetMode();
+
         isSkillMode = (character.CanAttack()) ? true : false;
         isAtkMode = true;
+
         AbilitySO userAbility = character.GetComponent<CharacterInfo>().GetStats().skill;
         tilesViewer.GetSkillTiles(character, userAbility);
 

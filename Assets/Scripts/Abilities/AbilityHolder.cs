@@ -33,20 +33,24 @@ public class AbilityHolder : MonoBehaviour
         PhaseManager.OnTurnEnded.RemoveListener(UpdateAbilityCooldown);
     }
 
-    public void UseSkill(GameObject target)
+    public void UseSkill(OverlayTile target)
     {
         if (CurrentState != AbilityState.ready) return;
 
-        Ability.Execute(GetComponent<CharacterInfo>(), target);
-        SetOnCooldown();
+        bool executed = Ability.Execute(GetComponent<CharacterInfo>(), target);
+        if (executed)
+            SetOnCooldown();
     }
 
     public void UseSkillZone(List<OverlayTile> targets)
     {
         if (CurrentState != AbilityState.ready) return;
 
-        Ability.ExecuteMultipleTarget(GetComponent<CharacterInfo>(), targets);
-        SetOnCooldown();
+        bool executed = Ability.ExecuteMultipleTarget(GetComponent<CharacterInfo>(), targets);
+
+        Debug.Log("EXECUTED  " + executed);
+        if (executed)
+            SetOnCooldown();
     }
 
     private void SetOnCooldown()
