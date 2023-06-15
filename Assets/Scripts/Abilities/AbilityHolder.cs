@@ -20,7 +20,7 @@ public class AbilityHolder : MonoBehaviour
 
     void Start()
     {
-        Ability = GetComponent<CharacterInfo>().stats.skill;
+        ability = GetComponent<CharacterInfo>().GetStats().skill;
     }
 
     private void OnEnable()
@@ -38,14 +38,28 @@ public class AbilityHolder : MonoBehaviour
         if (CurrentState != AbilityState.ready) return;
 
         Ability.Execute(GetComponent<CharacterInfo>(), target);
+        SetOnCooldown();
+    }
+
+    public void UseSkillZone(List<OverlayTile> targets)
+    {
+        if (CurrentState != AbilityState.ready) return;
+
+        Ability.ExecuteMultipleTarget(GetComponent<CharacterInfo>(), targets);
+        SetOnCooldown();
+    }
+
+    private void SetOnCooldown()
+    {
         CurrentState = AbilityState.cooldown;
+        Ability.currentCooldown = Ability.cooldown;
     }
 
     private void UpdateAbilityCooldown()
     {
         if (CurrentState == AbilityState.ready) return;
 
-        Ability.currentCooldown = (Ability.currentCooldown > 0) ? Ability.currentCooldown-- : 0;
+        Ability.currentCooldown = (Ability.currentCooldown > 0) ? Ability.currentCooldown - 1 : 0;
 
         if (Ability.currentCooldown == 0)
         {

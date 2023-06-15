@@ -29,6 +29,7 @@ public class MouseController : MonoBehaviour
     public bool isAtkMode = false;
     private bool isSkillMode = false;
     private bool isSkillLineMode = false;
+    private bool isDynamicSkill = false;
     private bool moveOrderInit = false;
 
     public void Start()
@@ -82,7 +83,12 @@ public class MouseController : MonoBehaviour
 
                 if (isSkillLineMode)
                 {
-                    tilesViewer.PreviewSkillLine(character, character.GetComponent<AbilityHolder>().Ability, this);
+                    tilesViewer.PreviewSkillLine(character, this);
+                }
+
+                if (isDynamicSkill)
+                {
+                    tilesViewer.PreviewDynamicSkill(character, this);
                 }
 
             }
@@ -121,6 +127,7 @@ public class MouseController : MonoBehaviour
         tilesViewer.ResetPreviewedTiles();
 
         isSkillLineMode = false;
+        isDynamicSkill = false;
         isSkillMode = false;
         isAtkMode = false;
         tilesViewer.GetInRangeTiles(character);
@@ -136,6 +143,7 @@ public class MouseController : MonoBehaviour
     {
         isSkillMode = false;
         isSkillLineMode = false;
+        isDynamicSkill = false;
         isAtkMode = !isAtkMode;
 
         if (character.CanMove() || character.CanAttack())
@@ -238,6 +246,11 @@ public class MouseController : MonoBehaviour
     {
         if (tilesViewer.GetInRangeTiles().Contains(overlayTile) && character.activeTile != overlayTile)
         {
+            if (isSkillMode && isDynamicSkill)
+            {
+                character.gameObject.GetComponent<AbilityHolder>().UseSkillZone(tilesViewer.GetInRangeTiles());
+            }
+
             if (overlayTile.isAttackableTile && character.CanAttack())
             {
                 AttackCharacterOnTile(overlayTile);
@@ -265,7 +278,14 @@ public class MouseController : MonoBehaviour
 
             if (isSkillMode)
             {
-                character.gameObject.GetComponent<AbilityHolder>().UseSkill(targetCharacter.gameObject);
+                if (isDynamicSkill)
+                {
+                    character.gameObject.GetComponent<AbilityHolder>().UseSkillZone(tilesViewer.GetInRangeTiles());
+                }
+                else
+                {
+                    character.gameObject.GetComponent<AbilityHolder>().UseSkill(targetCharacter.gameObject);
+                }
             }
 
             if (targetCharacter.GetStats().currentHealth <= 0)
@@ -316,12 +336,16 @@ public class MouseController : MonoBehaviour
     {
         isSkillMode = (character.CanAttack()) ? true : false;
         isAtkMode = true;
-        AbilitySO userAbility = character.GetComponent<AbilityHolder>().Ability;
+        AbilitySO userAbility = character.GetComponent<CharacterInfo>().GetStats().skill;
         tilesViewer.GetSkillTiles(character, userAbility);
 
         if (userAbility.rangeType == RangeType.Line)
         {
             isSkillLineMode = true;
+        }
+        else if (userAbility.zoneType == ZoneType.ZoneTarget)
+        {
+            isDynamicSkill = true;
         }
     }
 }

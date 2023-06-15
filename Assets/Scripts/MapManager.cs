@@ -104,33 +104,37 @@ public class MapManager : MonoBehaviour
         return neighbours;
     }
 
-    private List<OverlayTile> CheckSquare(OverlayTile currentOverlayTile, Dictionary<Vector2Int, OverlayTile> tileToSearch, bool isAttacking = false)
+    private List<OverlayTile> CheckSquare(OverlayTile currentOverlayTile, Dictionary<Vector2Int, OverlayTile> tileToSearch, Vector2Int direction, bool isAttacking = false)
     {
         List<OverlayTile> neighbours = new List<OverlayTile>();
 
+        // Center (only if multiple target)
+        if (direction != new Vector2Int(0, 0))
+            LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x, direction.y);
+
         // Top
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, 1);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x, direction.y + 1);
 
         // Bottom
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 0, -1);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x, direction.y - 1);
 
         // Right
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, 0);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x + 1, direction.y);
 
         // Left
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, 0);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x - 1, direction.y);
 
         // Top right
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, 1);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x + 1, direction.y + 1);
 
         // Top left
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, 1);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x - 1, direction.y + 1);
 
         // Bottom right
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, 1, -1);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x + 1, direction.y - 1);
 
         // Bottom left
-        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, -1, -1);
+        LocationToCheck(tileToSearch, currentOverlayTile, neighbours, isAttacking, direction.x - 1, direction.y - 1);
 
         return neighbours;
     }
@@ -200,7 +204,10 @@ public class MapManager : MonoBehaviour
         }
         else if (skill.rangeType == RangeType.Square)
         {
-            neighboursFinal = CheckSquare(currentOverlayTile, tileToSearch, true);
+            if (skill.zoneType == ZoneType.SingleTarget)
+                neighboursFinal = CheckSquare(currentOverlayTile, tileToSearch, new Vector2Int(0, 0), true);
+            else
+                neighboursFinal = CheckSquare(currentOverlayTile, tileToSearch, direction, true);
         }
         else if (skill.rangeType == RangeType.Line)
         {

@@ -29,4 +29,6 @@ public class AbilitySO : ScriptableObject
     [HideInInspector] public int currentCooldown;
 
     public virtual void Execute(CharacterInfo user, GameObject target) { }
+
+    public virtual void ExecuteMultipleTarget(CharacterInfo user, List<OverlayTile> targets) { }
 }

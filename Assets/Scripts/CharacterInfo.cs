@@ -10,6 +10,7 @@ public struct CharStats
     public int attack;
     public int range;
     public int atkRange;
+    public AbilitySO skill;
 }
 
 public class CharacterInfo : MonoBehaviour
@@ -33,6 +34,7 @@ public class CharacterInfo : MonoBehaviour
         _charStats.attack = stats.baseAttack;
         _charStats.range = stats.baseRange;
         _charStats.atkRange = stats.baseAtkRange;
+        _charStats.skill = stats.skill;
         _canAttack = true;
         _canMove = true;
         _animation = GetComponent<CharacterAnimation>();
