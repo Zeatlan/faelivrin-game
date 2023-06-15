@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class AbilityHolder : MonoBehaviour
 {
-    public AbilitySO ability;
+    private AbilitySO ability;
 
     public enum AbilityState
     {
@@ -16,6 +16,12 @@ public class AbilityHolder : MonoBehaviour
     private AbilityState _currentState = AbilityState.ready;
 
     public AbilityState CurrentState { get => _currentState; set => _currentState = value; }
+    public AbilitySO Ability { get => ability; set => ability = value; }
+
+    void Start()
+    {
+        Ability = GetComponent<CharacterInfo>().stats.skill;
+    }
 
     private void OnEnable()
     {
@@ -31,7 +37,7 @@ public class AbilityHolder : MonoBehaviour
     {
         if (CurrentState != AbilityState.ready) return;
 
-        ability.Execute(GetComponent<CharacterInfo>(), target);
+        Ability.Execute(GetComponent<CharacterInfo>(), target);
         CurrentState = AbilityState.cooldown;
     }
 
@@ -39,9 +45,9 @@ public class AbilityHolder : MonoBehaviour
     {
         if (CurrentState == AbilityState.ready) return;
 
-        ability.currentCooldown = (ability.currentCooldown > 0) ? ability.currentCooldown-- : 0;
+        Ability.currentCooldown = (Ability.currentCooldown > 0) ? Ability.currentCooldown-- : 0;
 
-        if (ability.currentCooldown == 0)
+        if (Ability.currentCooldown == 0)
         {
             CurrentState = AbilityState.ready;
         }

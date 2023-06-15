@@ -82,7 +82,7 @@ public class MouseController : MonoBehaviour
 
                 if (isSkillLineMode)
                 {
-                    tilesViewer.PreviewSkillLine(character, character.GetComponent<AbilityHolder>().ability, this);
+                    tilesViewer.PreviewSkillLine(character, character.GetComponent<AbilityHolder>().Ability, this);
                 }
 
             }
@@ -316,7 +316,7 @@ public class MouseController : MonoBehaviour
     {
         isSkillMode = (character.CanAttack()) ? true : false;
         isAtkMode = true;
-        AbilitySO userAbility = character.GetComponent<AbilityHolder>().ability;
+        AbilitySO userAbility = character.GetComponent<AbilityHolder>().Ability;
         tilesViewer.GetSkillTiles(character, userAbility);
 
         if (userAbility.rangeType == RangeType.Line)

@@ -11,4 +11,5 @@ public class CharacterStatsSO : ScriptableObject
     public int baseRange;
     public int baseAtkRange = 1;
     public Sprite icon;
+    public AbilitySO skill;
 }
