@@ -315,6 +315,7 @@ public class MouseController : MonoBehaviour
     public void EnterSkillMode()
     {
         isSkillMode = (character.CanAttack()) ? true : false;
+        isAtkMode = true;
         AbilitySO userAbility = character.GetComponent<AbilityHolder>().ability;
         tilesViewer.GetSkillTiles(character, userAbility);
 
