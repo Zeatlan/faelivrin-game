@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class TilesViewer
 {
-    private RangeFinder rangeFinder;
-    private List<OverlayTile> inRangeTiles;
-    private List<OverlayTile> previewedTiles;
+    private RangeFinder _rangeFinder;
+    private List<OverlayTile> _inRangeTiles;
+    private List<OverlayTile> _previewedTiles;
 
     public TilesViewer()
     {
-        inRangeTiles = new List<OverlayTile>();
-        previewedTiles = new List<OverlayTile>();
-        rangeFinder = new RangeFinder();
+        _inRangeTiles = new List<OverlayTile>();
+        _previewedTiles = new List<OverlayTile>();
+        _rangeFinder = new RangeFinder();
     }
 
-    public List<OverlayTile> GetInRangeTiles() { return inRangeTiles; }
-    public List<OverlayTile> GetPreviewedTiles() { return previewedTiles; }
+    public List<OverlayTile> GetInRangeTiles() { return _inRangeTiles; }
+    public List<OverlayTile> GetPreviewedTiles() { return _previewedTiles; }
 
     public void GetInRangeTiles(CharacterInfo character)
     {
         ResetInRangeTile();
 
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().range);
+        _inRangeTiles = _rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().range);
 
-        foreach (OverlayTile item in inRangeTiles)
+        foreach (OverlayTile item in _inRangeTiles)
         {
             item.ShowTile();
         }
@@ -34,9 +34,9 @@ public class TilesViewer
     {
         ResetInRangeTile();
 
-        inRangeTiles = rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().atkRange, true);
+        _inRangeTiles = _rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().atkRange, true);
 
-        foreach (OverlayTile tile in inRangeTiles)
+        foreach (OverlayTile tile in _inRangeTiles)
         {
             tile.ShowAttackableTile();
         }
@@ -46,9 +46,9 @@ public class TilesViewer
     {
         ResetPreviewedTiles();
 
-        previewedTiles = rangeFinder.GetTilesInRange(startingTile, character.GetStats().atkRange, true);
+        _previewedTiles = _rangeFinder.GetTilesInRange(startingTile, character.GetStats().atkRange, true);
 
-        foreach (OverlayTile tile in previewedTiles)
+        foreach (OverlayTile tile in _previewedTiles)
         {
             tile.ShowPreviewAtackableTile();
         }
@@ -58,9 +58,9 @@ public class TilesViewer
     {
         ResetInRangeTile();
 
-        inRangeTiles = rangeFinder.GetSkillRange(character.activeTile, skill, new Vector2Int(1, 0));
+        _inRangeTiles = _rangeFinder.GetSkillRange(character.activeTile, skill, new Vector2Int(1, 0));
 
-        foreach (OverlayTile tile in inRangeTiles)
+        foreach (OverlayTile tile in _inRangeTiles)
         {
             tile.ShowAttackableTile();
         }
@@ -85,9 +85,9 @@ public class TilesViewer
         ResetInRangeTile();
 
         AbilitySO skill = character.GetStats().skill;
-        inRangeTiles = rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
+        _inRangeTiles = _rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
 
-        foreach (OverlayTile tile in inRangeTiles)
+        foreach (OverlayTile tile in _inRangeTiles)
         {
             tile.ShowAttackableTile();
         }
@@ -114,9 +114,9 @@ public class TilesViewer
         ResetInRangeTile();
 
         AbilitySO skill = character.GetStats().skill;
-        inRangeTiles = rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
+        _inRangeTiles = _rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
 
-        foreach (OverlayTile tile in inRangeTiles)
+        foreach (OverlayTile tile in _inRangeTiles)
         {
             tile.ShowAttackableTile();
         }
@@ -125,17 +125,17 @@ public class TilesViewer
 
     public void ResetPreviewedTiles()
     {
-        List<OverlayTile> previewedTilesCopy = new List<OverlayTile>(previewedTiles);
+        List<OverlayTile> previewedTilesCopy = new List<OverlayTile>(_previewedTiles);
         foreach (OverlayTile tile in previewedTilesCopy)
         {
             tile.HidePreview();
-            previewedTiles.Remove(tile);
+            _previewedTiles.Remove(tile);
         }
     }
 
     public void ResetInRangeTile()
     {
-        foreach (OverlayTile tile in inRangeTiles)
+        foreach (OverlayTile tile in _inRangeTiles)
         {
             tile.HideTile();
         }

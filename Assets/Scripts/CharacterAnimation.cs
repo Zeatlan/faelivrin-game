@@ -11,7 +11,7 @@ public class CharacterAnimation : MonoBehaviour
 
     [SerializeField] private float _dieLeanDuration = 0.7f;
     [SerializeField] private float _maxDieLeanAngle = -90f;
-    private LTDescr leanTweenDescription;
+    private LTDescr _leanTweenDescription;
 
     public void TakeDamageAnim(CharacterInfo character)
     {
@@ -25,12 +25,12 @@ public class CharacterAnimation : MonoBehaviour
         Quaternion originalRotation = transform.rotation;
         Quaternion targetRotation = originalRotation * Quaternion.Euler(0, 0, _maxDamageLeanAngle);
 
-        if (leanTweenDescription != null)
+        if (_leanTweenDescription != null)
         {
-            LeanTween.cancel(leanTweenDescription.uniqueId);
+            LeanTween.cancel(_leanTweenDescription.uniqueId);
         }
 
-        leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDamageLeanAngle, _damageLeanDuration)
+        _leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDamageLeanAngle, _damageLeanDuration)
         .setEaseOutCubic()
         .setLoopPingPong(1)
         .setOnComplete(() =>
@@ -52,12 +52,12 @@ public class CharacterAnimation : MonoBehaviour
 
     private IEnumerator DieCoroutine()
     {
-        if (leanTweenDescription != null)
+        if (_leanTweenDescription != null)
         {
-            LeanTween.cancel(leanTweenDescription.uniqueId);
+            LeanTween.cancel(_leanTweenDescription.uniqueId);
         }
 
-        leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDieLeanAngle, _dieLeanDuration)
+        _leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDieLeanAngle, _dieLeanDuration)
             .setEaseOutCubic()
             .setOnComplete(() =>
             {

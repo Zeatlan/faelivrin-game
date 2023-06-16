@@ -12,22 +12,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform characterList;
 
     [Header("Tour du joueur")]
-    [SerializeField] private Transform playerPhaseObj;
-    [SerializeField] private Transform playerPhaseUI;
-    [SerializeField] private TextMeshProUGUI modeText;
+    [SerializeField] private Transform _playerPhaseObj;
+    [SerializeField] private Transform _playerPhaseUI;
+    [SerializeField] private TextMeshProUGUI _modeText;
 
     [Header("Tour de l'ennemie")]
-    [SerializeField] private Transform enemyPhaseObj;
+    [SerializeField] private Transform _enemyPhaseObj;
 
     [Header("UI général")]
-    [SerializeField] private Transform unitPanel;
-    [SerializeField] private Transform victoryPhase;
-    [SerializeField] private Transform defeatPhase;
+    [SerializeField] private Transform _unitPanel;
+    [SerializeField] private Transform _victoryPhase;
+    [SerializeField] private Transform _defeatPhase;
 
     [Header("Autres scripts")]
-    [SerializeField] private MouseController mouseController;
+    [SerializeField] private MouseController _mouseController;
 
-    private LTDescr leanTweenDescription;
+    private LTDescr _leanTweenDescription;
 
     void Awake()
     {
@@ -36,16 +36,16 @@ public class UIManager : MonoBehaviour
         readyButton.gameObject.SetActive(true);
         startingPhaseObj.gameObject.SetActive(true);
         characterList.gameObject.SetActive(true);
-        playerPhaseObj.gameObject.SetActive(true);
-        enemyPhaseObj.gameObject.SetActive(true);
-        victoryPhase.gameObject.SetActive(true);
-        defeatPhase.gameObject.SetActive(true);
+        _playerPhaseObj.gameObject.SetActive(true);
+        _enemyPhaseObj.gameObject.SetActive(true);
+        _victoryPhase.gameObject.SetActive(true);
+        _defeatPhase.gameObject.SetActive(true);
 
         ResetObjPos(startingPhaseObj);
-        ResetObjPos(playerPhaseObj);
-        ResetObjPos(enemyPhaseObj);
-        ResetObjPos(victoryPhase);
-        ResetObjPos(defeatPhase);
+        ResetObjPos(_playerPhaseObj);
+        ResetObjPos(_enemyPhaseObj);
+        ResetObjPos(_victoryPhase);
+        ResetObjPos(_defeatPhase);
     }
 
     private void ResetObjPos(Transform obj)
@@ -60,22 +60,22 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator PlayerPhaseAnim()
     {
-        yield return StartCoroutine(PhaseMovementCoroutine(playerPhaseObj));
+        yield return StartCoroutine(PhaseMovementCoroutine(_playerPhaseObj));
     }
 
     public IEnumerator EnemyPhaseAnim()
     {
-        yield return StartCoroutine(PhaseMovementCoroutine(enemyPhaseObj));
+        yield return StartCoroutine(PhaseMovementCoroutine(_enemyPhaseObj));
     }
 
     public void VictoryPhaseAnim()
     {
-        StartCoroutine(PhaseMovementCoroutine(victoryPhase));
+        StartCoroutine(PhaseMovementCoroutine(_victoryPhase));
     }
 
     public void DefeatPhaseAnim()
     {
-        StartCoroutine(PhaseMovementCoroutine(defeatPhase));
+        StartCoroutine(PhaseMovementCoroutine(_defeatPhase));
     }
 
     private IEnumerator PhaseMovementCoroutine(Transform obj)
@@ -85,7 +85,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.001f);
 
-        leanTweenDescription = LeanTween.moveLocal(obj.gameObject, new Vector3(0, 0, 0), 1)
+        _leanTweenDescription = LeanTween.moveLocal(obj.gameObject, new Vector3(0, 0, 0), 1)
             .setEaseOutExpo()
             .setOnComplete(() =>
             {
@@ -102,14 +102,14 @@ public class UIManager : MonoBehaviour
 
     public void ShowPlayerPhaseUI()
     {
-        playerPhaseUI.gameObject.SetActive(true);
-        unitPanel.gameObject.SetActive(true);
+        _playerPhaseUI.gameObject.SetActive(true);
+        _unitPanel.gameObject.SetActive(true);
     }
 
     public void ShowEnemyPhaseUI()
     {
-        playerPhaseUI.gameObject.SetActive(false);
-        unitPanel.gameObject.SetActive(true);
+        _playerPhaseUI.gameObject.SetActive(false);
+        _unitPanel.gameObject.SetActive(true);
     }
 
     private IEnumerator HideStartingUICoroutine()
@@ -123,21 +123,21 @@ public class UIManager : MonoBehaviour
 
     public void SwitchMode()
     {
-        mouseController.SwitchMode();
+        _mouseController.SwitchMode();
 
-        if (mouseController.character.CanMove() && !mouseController.isAtkMode)
+        if (_mouseController.character.CanMove() && !_mouseController.isAtkMode)
             SetModeTextToAtk();
-        else if (mouseController.character.CanAttack() && mouseController.isAtkMode)
+        else if (_mouseController.character.CanAttack() && _mouseController.isAtkMode)
             SetModeTextToMove();
     }
 
     public void SetModeTextToAtk()
     {
-        modeText.SetText("Attaquer");
+        _modeText.SetText("Attaquer");
     }
 
     public void SetModeTextToMove()
     {
-        modeText.SetText("Déplacer");
+        _modeText.SetText("Déplacer");
     }
 }

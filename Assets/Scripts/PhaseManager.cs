@@ -16,9 +16,9 @@ public class PhaseManager : MonoBehaviour
     }
 
     public Phase phaseState;
-    [SerializeField] private UIManager uiManager;
-    [SerializeField] private MouseController mouseController;
-    [SerializeField] private CharacterSpawner characterSpawner;
+    [SerializeField] private UIManager _uiManager;
+    [SerializeField] private MouseController _mouseController;
+    [SerializeField] private CharacterSpawner _characterSpawner;
 
     public static UnityEvent OnTurnEnded = new UnityEvent();
     public static bool isGamePaused = false;
@@ -27,7 +27,7 @@ public class PhaseManager : MonoBehaviour
     void Start()
     {
         phaseState = Phase.Start;
-        uiManager.StartingPhaseAnim();
+        _uiManager.StartingPhaseAnim();
     }
 
     void Update()
@@ -36,12 +36,12 @@ public class PhaseManager : MonoBehaviour
         {
             if (MapManager.Instance.GetPlayerUnits().Count == 0)
             {
-                uiManager.DefeatPhaseAnim();
+                _uiManager.DefeatPhaseAnim();
             }
 
             if (MapManager.Instance.GetEnemyUnits().Count == 0)
             {
-                uiManager.VictoryPhaseAnim();
+                _uiManager.VictoryPhaseAnim();
             }
         }
     }
@@ -79,14 +79,14 @@ public class PhaseManager : MonoBehaviour
             character.SetActive();
         }
 
-        mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
-        yield return StartCoroutine(uiManager.PlayerPhaseAnim());
-        uiManager.ShowPlayerPhaseUI();
+        _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+        yield return StartCoroutine(_uiManager.PlayerPhaseAnim());
+        _uiManager.ShowPlayerPhaseUI();
         yield return StartCoroutine(DisplayInfo());
 
 
         ResetActionOfEveryone();
-        mouseController.ResetMode();
+        _mouseController.ResetMode();
     }
 
     public IEnumerator SwitchToEnemyTurn()
@@ -99,8 +99,8 @@ public class PhaseManager : MonoBehaviour
         phaseState = Phase.EnnemyTurn;
 
         RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
-        yield return StartCoroutine(uiManager.EnemyPhaseAnim());
-        uiManager.ShowEnemyPhaseUI();
+        yield return StartCoroutine(_uiManager.EnemyPhaseAnim());
+        _uiManager.ShowEnemyPhaseUI();
         yield return StartCoroutine(DisplayInfo());
 
         ResetActionOfEveryone();
@@ -116,15 +116,15 @@ public class PhaseManager : MonoBehaviour
     private IEnumerator DisplayInfo()
     {
         yield return new WaitForSeconds(0.001f);
-        mouseController.character.DisplayInfo();
+        _mouseController.character.DisplayInfo();
     }
 
     private void DestroyStartingPhase()
     {
         if (MapManager.Instance.GetPlayerUnits().Count == 0) return;
-        uiManager.hideStartingUI();
+        _uiManager.hideStartingUI();
         MapManager.Instance.HideStartingTiles();
-        characterSpawner.DestroyPreview();
+        _characterSpawner.DestroyPreview();
     }
 
     private void SwitchPhase()
@@ -180,7 +180,7 @@ public class PhaseManager : MonoBehaviour
 
             if (!character.CanAttack() && !character.CanMove())
             {
-                mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+                _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
                 character.DisplayInfo();
             }
         }
@@ -197,10 +197,10 @@ public class PhaseManager : MonoBehaviour
 
     public void EndCharacterTurn()
     {
-        if (mouseController.isMoving) return;
+        if (_mouseController.isMoving) return;
 
-        PlayAction(mouseController.character, ActionCharacter.Idle);
+        PlayAction(_mouseController.character, ActionCharacter.Idle);
         if (MapManager.Instance.GetPlayableUnits().Count > 0)
-            mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+            _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
     }
 }

@@ -6,29 +6,29 @@ using UnityEngine.UI;
 
 public class UnitPanel : MonoBehaviour
 {
-    [SerializeField] private Slider slider;
-    [SerializeField] private TextMeshProUGUI healthText;
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private Image icon;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private TextMeshProUGUI _healthText;
+    [SerializeField] private TextMeshProUGUI _nameText;
+    [SerializeField] private Image _icon;
 
     public void SetMaxHealth(int health)
     {
-        slider.maxValue = health;
+        _slider.maxValue = health;
     }
 
     public void SetHealth(int health)
     {
-        slider.value = health;
-        healthText.SetText(health + "/" + slider.maxValue);
+        _slider.value = health;
+        _healthText.SetText(health + "/" + _slider.maxValue);
     }
 
     public void SetName(string name)
     {
-        nameText.SetText(name);
+        _nameText.SetText(name);
     }
 
     public void SetIcon(Sprite sprite)
     {
-        icon.sprite = sprite;
+        _icon.sprite = sprite;
     }
 }

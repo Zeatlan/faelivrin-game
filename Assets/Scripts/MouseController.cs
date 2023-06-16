@@ -11,15 +11,15 @@ public class MouseController : MonoBehaviour
 {
     public CharacterInfo character;
 
-    private PathFinder pathFinder;
-    private RangeFinder rangeFinder;
-    private ArrowTranslator arrowTranslator;
+    private PathFinder _pathFinder;
+    private RangeFinder _rangeFinder;
+    private ArrowTranslator _arrowTranslator;
 
-    private List<OverlayTile> path = new List<OverlayTile>();
+    private List<OverlayTile> _path = new List<OverlayTile>();
 
-    [SerializeField] private PhaseManager phaseManager;
-    [SerializeField] private CharacterSpawner characterSpawner;
-    [SerializeField] private UIManager uiManager;
+    [SerializeField] private PhaseManager _phaseManager;
+    [SerializeField] private CharacterSpawner _characterSpawner;
+    [SerializeField] private UIManager _uiManager;
 
     [SerializeField] private OrderRecorder _orderRecorder;
     private OverlayTile _clickedTile;
@@ -34,9 +34,9 @@ public class MouseController : MonoBehaviour
 
     public void Start()
     {
-        pathFinder = new PathFinder();
-        rangeFinder = new RangeFinder();
-        arrowTranslator = new ArrowTranslator();
+        _pathFinder = new PathFinder();
+        _rangeFinder = new RangeFinder();
+        _arrowTranslator = new ArrowTranslator();
 
         _orderRecorder = new OrderRecorder();
         tilesViewer = new TilesViewer();
@@ -60,20 +60,20 @@ public class MouseController : MonoBehaviour
             transform.position = overlayTile.transform.position;
             gameObject.GetComponent<SpriteRenderer>().sortingOrder = overlayTile.GetComponent<SpriteRenderer>().sortingOrder;
 
-            if (phaseManager.phaseState == Phase.Start)
+            if (_phaseManager.phaseState == Phase.Start)
             {
                 if (overlayTile.isStartingTile)
                 {
-                    characterSpawner.DisplayPreview(overlayTile);
+                    _characterSpawner.DisplayPreview(overlayTile);
                 }
                 else
                 {
-                    characterSpawner.HidePreview();
+                    _characterSpawner.HidePreview();
                 }
             }
 
 
-            if (phaseManager.phaseState == Phase.PlayerTurn)
+            if (_phaseManager.phaseState == Phase.PlayerTurn)
             {
                 if (!isAtkMode && !isMoving && character.CanMove())
                 {
@@ -95,19 +95,19 @@ public class MouseController : MonoBehaviour
 
             HandleLeftLick(overlayTile);
 
-            if (path.Count == 0 && moveOrderInit)
+            if (_path.Count == 0 && moveOrderInit)
             {
                 moveOrderInit = false;
-                phaseManager.PlayAction(character, ActionCharacter.Move);
+                _phaseManager.PlayAction(character, ActionCharacter.Move);
                 SwitchMode();
-                uiManager.SwitchMode();
+                _uiManager.SwitchMode();
                 if (tilesViewer.GetPreviewedTiles().Count > 0) tilesViewer.ResetPreviewedTiles();
                 isMoving = false;
             }
 
-            if (path.Count > 0 && isMoving)
+            if (_path.Count > 0 && isMoving)
             {
-                IOrder moveOrder = new MoveOrder(character, path);
+                IOrder moveOrder = new MoveOrder(character, _path);
 
                 if (!moveOrderInit)
                 {
@@ -183,12 +183,12 @@ public class MouseController : MonoBehaviour
 
         if (character.CanMove())
         {
-            uiManager.SetModeTextToAtk();
+            _uiManager.SetModeTextToAtk();
             tilesViewer.GetInRangeTiles(character);
         }
         else
         {
-            uiManager.SetModeTextToMove();
+            _uiManager.SetModeTextToMove();
             tilesViewer.GetAttackableTiles(character);
         }
     }
@@ -197,23 +197,23 @@ public class MouseController : MonoBehaviour
     {
         if (tilesViewer.GetInRangeTiles().Contains(overlayTile) && !isMoving)
         {
-            path = pathFinder.FindPath(character.activeTile, overlayTile, new List<OverlayTile>());
+            _path = _pathFinder.FindPath(character.activeTile, overlayTile, new List<OverlayTile>());
 
             foreach (OverlayTile tile in tilesViewer.GetInRangeTiles())
             {
                 tile.SetArrowSprite(ArrowDirection.None);
             }
 
-            for (int i = 0; i < path.Count; i++)
+            for (int i = 0; i < _path.Count; i++)
             {
-                OverlayTile previousTile = i > 0 ? path[i - 1] : character.activeTile;
-                OverlayTile futureTile = i < path.Count - 1 ? path[i + 1] : null;
+                OverlayTile previousTile = i > 0 ? _path[i - 1] : character.activeTile;
+                OverlayTile futureTile = i < _path.Count - 1 ? _path[i + 1] : null;
 
-                ArrowDirection arrowDir = arrowTranslator.TranslateDirection(previousTile, path[i], futureTile);
-                path[i].SetArrowSprite(arrowDir);
+                ArrowDirection arrowDir = _arrowTranslator.TranslateDirection(previousTile, _path[i], futureTile);
+                _path[i].SetArrowSprite(arrowDir);
             }
 
-            tilesViewer.GetPreviewAttackableTiles(path[path.Count - 1], character);
+            tilesViewer.GetPreviewAttackableTiles(_path[_path.Count - 1], character);
         }
 
     }
@@ -231,12 +231,12 @@ public class MouseController : MonoBehaviour
                 overlayTile.isStartingTile
             );
 #endif
-            if (phaseManager.phaseState == Phase.Start)
+            if (_phaseManager.phaseState == Phase.Start)
             {
-                characterSpawner.SpawnCharacterOnTile(overlayTile);
+                _characterSpawner.SpawnCharacterOnTile(overlayTile);
             }
 
-            if (phaseManager.phaseState == Phase.PlayerTurn)
+            if (_phaseManager.phaseState == Phase.PlayerTurn)
             {
                 if (character.CanMove() || character.CanAttack()) ClickOnMap(overlayTile);
                 if (overlayTile.isBlocked && !overlayTile.isAttackableTile) ClickOnCharacter(overlayTile);
@@ -278,7 +278,7 @@ public class MouseController : MonoBehaviour
 
             IOrder attackOrder = new AttackOrder(character, targetCharacter);
             _orderRecorder.AddOrder(attackOrder);
-            phaseManager.PlayAction(character, ActionCharacter.Attack);
+            _phaseManager.PlayAction(character, ActionCharacter.Attack);
 
             if (isSkillMode)
             {

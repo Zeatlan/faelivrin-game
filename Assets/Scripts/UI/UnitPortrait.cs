@@ -5,15 +5,16 @@ using UnityEngine.UI;
 
 public class UnitPortrait : MonoBehaviour
 {
+
+    private const float ANIMATION_DURATION = 0.3f;
+    private const float BASE_POS = 50f;
+    private const float ELEVATED_POS = 75f;
+
     [SerializeField] private Image _border;
     [SerializeField] private Image _fill;
     [SerializeField] private Image _icon;
 
     public bool isActive { get; set; }
-
-    private const float ANIMATION_DURATION = 0.3f;
-    private const float BASE_POS = 50f;
-    private const float ELEVATED_POS = 75f;
 
     void Awake()
     {

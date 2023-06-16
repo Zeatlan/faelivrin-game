@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> characterList;
+    [SerializeField] private List<GameObject> _characterList;
 
-    private CharacterInfo currentCharacter;
-    private int cursor;
+    private CharacterInfo _currentCharacter;
+    private int _cursor;
 
-    [SerializeField] private GameObject characterPrefab;
-    [SerializeField] private GameObject previewCharacter;
+    [SerializeField] private GameObject _characterPrefab;
+    [SerializeField] private GameObject _previewCharacter;
 
     [Header("UI")]
-    [SerializeField] private Transform characterListUI;
-    [SerializeField] private GameObject characterCardPrefab;
+    [SerializeField] private Transform _characterListUI;
+    [SerializeField] private GameObject _characterCardPrefab;
     private List<UnitPortrait> _unitPortraits;
 
     public void Start()
@@ -27,7 +27,7 @@ public class CharacterSpawner : MonoBehaviour
 
     public void SwitchCharacter(int targetCursor)
     {
-        characterPrefab = characterList[targetCursor];
+        _characterPrefab = _characterList[targetCursor];
     }
 
     public void SpawnCharacterOnTile(OverlayTile tile)
@@ -38,25 +38,25 @@ public class CharacterSpawner : MonoBehaviour
 
             if (MapManager.Instance.FindCharacterOnTile(tile) != null) return;
 
-            currentCharacter = Instantiate(characterPrefab).GetComponent<CharacterInfo>();
-            CharacterInfo existingCharacter = MapManager.Instance.GetPlayerUnitByName(currentCharacter.gameObject.name);
+            _currentCharacter = Instantiate(_characterPrefab).GetComponent<CharacterInfo>();
+            CharacterInfo existingCharacter = MapManager.Instance.GetPlayerUnitByName(_currentCharacter.gameObject.name);
 
             if (existingCharacter != null)
             {
                 MapManager.Instance.RemovePlayerUnit(existingCharacter);
                 Destroy(existingCharacter.gameObject);
             }
-            MapManager.Instance.PositionCharacterOnTile(tile, currentCharacter);
-            MapManager.Instance.AddPlayerUnit(currentCharacter);
+            MapManager.Instance.PositionCharacterOnTile(tile, _currentCharacter);
+            MapManager.Instance.AddPlayerUnit(_currentCharacter);
         }
     }
 
 
     private void GenerateCharacterListUI()
     {
-        foreach (GameObject character in characterList)
+        foreach (GameObject character in _characterList)
         {
-            UnitPortrait newCard = Instantiate(characterCardPrefab, characterListUI).GetComponent<UnitPortrait>();
+            UnitPortrait newCard = Instantiate(_characterCardPrefab, _characterListUI).GetComponent<UnitPortrait>();
             newCard.SetIcon(character.GetComponent<CharacterInfo>().stats.icon);
             _unitPortraits.Add(newCard);
         }
@@ -66,8 +66,8 @@ public class CharacterSpawner : MonoBehaviour
 
     private void UpdateCursor(int newCursor)
     {
-        cursor = newCursor;
-        SwitchCharacter(cursor);
+        _cursor = newCursor;
+        SwitchCharacter(_cursor);
         SwitchPreviewCharacter();
     }
 
@@ -89,38 +89,38 @@ public class CharacterSpawner : MonoBehaviour
 
     private void SwitchPreviewCharacter()
     {
-        if (characterPrefab)
+        if (_characterPrefab)
         {
-            if (previewCharacter) Destroy(previewCharacter);
+            if (_previewCharacter) Destroy(_previewCharacter);
 
-            previewCharacter = Instantiate(characterPrefab);
-            previewCharacter.name = "PreviewCharacter";
-            previewCharacter.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+            _previewCharacter = Instantiate(_characterPrefab);
+            _previewCharacter.name = "PreviewCharacter";
+            _previewCharacter.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
             HidePreview();
         }
     }
 
     public void DisplayPreview(OverlayTile tile)
     {
-        if (!previewCharacter) return;
+        if (!_previewCharacter) return;
 
-        if (currentCharacter)
+        if (_currentCharacter)
         {
-            if (currentCharacter.activeTile == tile || MapManager.Instance.FindCharacterOnTile(tile))
+            if (_currentCharacter.activeTile == tile || MapManager.Instance.FindCharacterOnTile(tile))
             {
                 HidePreview();
                 return;
             }
         }
 
-        previewCharacter.SetActive(true);
-        MapManager.Instance.PositionCharacterOnTile(tile, previewCharacter.GetComponent<CharacterInfo>());
+        _previewCharacter.SetActive(true);
+        MapManager.Instance.PositionCharacterOnTile(tile, _previewCharacter.GetComponent<CharacterInfo>());
     }
 
     public void HidePreview()
     {
-        if (!previewCharacter) return;
-        previewCharacter.SetActive(false);
+        if (!_previewCharacter) return;
+        _previewCharacter.SetActive(false);
     }
 
     public void SpawnEnemies(BattleMapSO battleMapData)
@@ -146,6 +146,6 @@ public class CharacterSpawner : MonoBehaviour
 
     public void DestroyPreview()
     {
-        Destroy(previewCharacter);
+        Destroy(_previewCharacter);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class AbilityHolder : MonoBehaviour
 {
-    private AbilitySO ability;
+    private AbilitySO _ability;
 
     public enum AbilityState
     {
@@ -16,11 +16,11 @@ public class AbilityHolder : MonoBehaviour
     private AbilityState _currentState = AbilityState.ready;
 
     public AbilityState CurrentState { get => _currentState; set => _currentState = value; }
-    public AbilitySO Ability { get => ability; set => ability = value; }
+    public AbilitySO Ability { get => _ability; set => _ability = value; }
 
     void Start()
     {
-        ability = GetComponent<CharacterInfo>().GetStats().skill;
+        _ability = GetComponent<CharacterInfo>().GetStats().skill;
     }
 
     private void OnEnable()

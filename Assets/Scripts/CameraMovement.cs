@@ -6,16 +6,16 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField]
-    private Camera cam;
+    private Camera _cam;
 
     [SerializeField]
-    private Vector2 minLimit;
+    private Vector2 _minLimit;
     [SerializeField]
-    private Vector2 maxLimit;
+    private Vector2 _maxLimit;
 
-    private float moveSpeed = 5f;
-    private float scrollSpeed = 5f;
-    private float scrollZoneSize = 10f;
+    private float _moveSpeed = 5f;
+    private float _scrollSpeed = 5f;
+    private float _scrollZoneSize = 10f;
 
     void Update()
     {
@@ -31,7 +31,7 @@ public class CameraMovement : MonoBehaviour
         float vertical = Input.GetAxisRaw("Vertical");
 
         Vector3 moveDirection = new Vector3(horizontal, vertical, 0f).normalized;
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        transform.position += moveDirection * _moveSpeed * Time.deltaTime;
     }
 
     private void MoveCameraWithCursor()
@@ -40,30 +40,30 @@ public class CameraMovement : MonoBehaviour
         float screenWidth = Screen.width;
         float screenHeight = Screen.height;
 
-        if (mousePosition.x < scrollZoneSize)
+        if (mousePosition.x < _scrollZoneSize)
         {
-            transform.position += Vector3.left * scrollSpeed * Time.deltaTime;
+            transform.position += Vector3.left * _scrollSpeed * Time.deltaTime;
         }
-        else if (mousePosition.x > screenWidth - scrollZoneSize)
+        else if (mousePosition.x > screenWidth - _scrollZoneSize)
         {
-            transform.position += Vector3.right * scrollSpeed * Time.deltaTime;
+            transform.position += Vector3.right * _scrollSpeed * Time.deltaTime;
         }
 
-        if (mousePosition.y < scrollZoneSize)
+        if (mousePosition.y < _scrollZoneSize)
         {
-            transform.position += Vector3.down * scrollSpeed * Time.deltaTime;
+            transform.position += Vector3.down * _scrollSpeed * Time.deltaTime;
         }
-        else if (mousePosition.y > screenHeight - scrollZoneSize)
+        else if (mousePosition.y > screenHeight - _scrollZoneSize)
         {
-            transform.position += Vector3.up * scrollSpeed * Time.deltaTime;
+            transform.position += Vector3.up * _scrollSpeed * Time.deltaTime;
         }
     }
 
     private void LimitMovements()
     {
         Vector3 clampedPosition = transform.position;
-        clampedPosition.x = Mathf.Clamp(clampedPosition.x, minLimit.x, maxLimit.x);
-        clampedPosition.y = Mathf.Clamp(clampedPosition.y, minLimit.y, maxLimit.y);
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, _minLimit.x, _maxLimit.x);
+        clampedPosition.y = Mathf.Clamp(clampedPosition.y, _minLimit.y, _maxLimit.y);
         transform.position = clampedPosition;
     }
 }

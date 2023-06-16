@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a100121a54dad7d488aa2e1e787d0042, type: 3}
   m_Name: Arrows rain
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  efficiencyMultiplicator: 0
-  cooldown: 0
-  range: 0
-  rangeType: 0
-  zoneType: 0
-  currentCooldown: 0
+  name: "Pluie de fl\xE8ches"
+  description: "Inflige x2 d\xE9g\xE2ts \xE0 tous les ennemis dans la zone."
+  efficiencyMultiplicator: 2
+  cooldown: 2
+  range: 1
+  rangeType: 1
+  zoneType: 1
+  currentCooldown: 1

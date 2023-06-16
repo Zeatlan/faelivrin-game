@@ -7,24 +7,24 @@ public class AIManager : MonoBehaviour
     private List<CharacterInfo> _playerUnits;
 
     [SerializeField] private OrderRecorder _orderRecorder;
-    private MouseController mouseController;
+    private MouseController _mouseController;
 
     private IOrder _moveOrder;
     private List<OverlayTile> _path = new List<OverlayTile>();
     private CharacterInfo _currentUnit;
-    private PhaseManager phaseManager;
+    private PhaseManager _phaseManager;
 
     private Scenario _bestScenario;
-    private TilesViewer tilesViewer;
+    private TilesViewer _tilesViewer;
 
     private bool _isMoving = false;
 
     void Start()
     {
         _currentUnit = GetComponent<CharacterInfo>();
-        tilesViewer = new TilesViewer();
-        phaseManager = GameObject.Find("PhaseManager").GetComponent<PhaseManager>();
-        mouseController = GameObject.Find("Cursor").GetComponent<MouseController>();
+        _tilesViewer = new TilesViewer();
+        _phaseManager = GameObject.Find("PhaseManager").GetComponent<PhaseManager>();
+        _mouseController = GameObject.Find("Cursor").GetComponent<MouseController>();
     }
 
     void Update()
@@ -87,9 +87,9 @@ public class AIManager : MonoBehaviour
 
         if (_bestScenario.Distance <= _currentUnit.GetStats().atkRange)
         {
-            tilesViewer.GetAttackableTiles(_currentUnit);
+            _tilesViewer.GetAttackableTiles(_currentUnit);
 
-            if (tilesViewer.GetInRangeTiles().Contains(_bestScenario.PlayerUnit.activeTile))
+            if (_tilesViewer.GetInRangeTiles().Contains(_bestScenario.PlayerUnit.activeTile))
             {
                 AttackPlayerUnit(_bestScenario.PlayerUnit);
             }
@@ -109,7 +109,7 @@ public class AIManager : MonoBehaviour
         IOrder attackOrder = new AttackOrder(_currentUnit, player);
         _orderRecorder.AddOrder(attackOrder);
         attackOrder.Execute();
-        phaseManager.PlayAction(_currentUnit, ActionCharacter.Attack);
+        _phaseManager.PlayAction(_currentUnit, ActionCharacter.Attack);
     }
 
     private void MoveTowardsPlayerUnit(CharacterInfo player)
@@ -126,11 +126,11 @@ public class AIManager : MonoBehaviour
             }
         }
 
-        tilesViewer.GetInRangeTiles(_currentUnit);
+        _tilesViewer.GetInRangeTiles(_currentUnit);
 
-        if (!tilesViewer.GetInRangeTiles().Contains(bestPlayerTile))
+        if (!_tilesViewer.GetInRangeTiles().Contains(bestPlayerTile))
         {
-            foreach (OverlayTile tile in tilesViewer.GetInRangeTiles())
+            foreach (OverlayTile tile in _tilesViewer.GetInRangeTiles())
             {
                 if (Vector3.Distance(tile.gridLocation, bestPlayerTile.gridLocation) < Vector3.Distance(bestTile.gridLocation, bestPlayerTile.gridLocation))
                 {
@@ -159,18 +159,18 @@ public class AIManager : MonoBehaviour
     private void OnMovementFinished()
     {
         _isMoving = false;
-        phaseManager.PlayAction(_currentUnit, ActionCharacter.Move);
-        tilesViewer.ResetInRangeTile();
+        _phaseManager.PlayAction(_currentUnit, ActionCharacter.Move);
+        _tilesViewer.ResetInRangeTile();
 
-        tilesViewer.GetAttackableTiles(_currentUnit);
+        _tilesViewer.GetAttackableTiles(_currentUnit);
 
-        if (tilesViewer.GetInRangeTiles().Contains(_bestScenario.PlayerUnit.activeTile))
+        if (_tilesViewer.GetInRangeTiles().Contains(_bestScenario.PlayerUnit.activeTile))
         {
             AttackPlayerUnit(_bestScenario.PlayerUnit);
         }
         else
         {
-            phaseManager.PlayAction(_currentUnit, ActionCharacter.Idle);
+            _phaseManager.PlayAction(_currentUnit, ActionCharacter.Idle);
         }
     }
 }

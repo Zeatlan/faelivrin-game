@@ -13,7 +13,7 @@ public class MapManager : MonoBehaviour
     public GameObject overlayContainer;
 
     public Dictionary<Vector2Int, OverlayTile> map;
-    private List<OverlayTile> startingTiles;
+    private List<OverlayTile> _startingTiles;
 
     public BattleMapSO battleMapData;
 
@@ -39,7 +39,7 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        startingTiles = new List<OverlayTile>();
+        _startingTiles = new List<OverlayTile>();
         characterSpawner = GameObject.Find("CharacterSpawner").GetComponent<CharacterSpawner>();
 
         Tilemap tileMap = gameObject.GetComponentInChildren<Tilemap>();
@@ -77,7 +77,7 @@ public class MapManager : MonoBehaviour
             if (battleMapData.playerPossiblePos.Contains(overlayTile.gridLocation))
             {
                 overlayTile.ShowStartingTile();
-                startingTiles.Add(overlayTile);
+                _startingTiles.Add(overlayTile);
             }
 
             map.Add(tileKey, overlayTile);
@@ -266,7 +266,7 @@ public class MapManager : MonoBehaviour
 
     public void HideStartingTiles()
     {
-        foreach (OverlayTile tile in startingTiles)
+        foreach (OverlayTile tile in _startingTiles)
         {
             bool isTileAssignedToUnit = playerUnits.Any(unit => unit.activeTile == tile);
 
