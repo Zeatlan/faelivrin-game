@@ -1,38 +1,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void MoveOrderCallback();
-
-public class MoveOrder : IOrder
+namespace BattleSystem.Commands
 {
-    private readonly CharacterInfo _character;
-    private readonly List<OverlayTile> _path;
-    private MoveOrderCallback _callback;
+    public delegate void MoveOrderCallback();
 
-    private OverlayTile _lastTile;
-    private OverlayTile _currentTargetTile;
-
-    public MoveOrder(CharacterInfo character, List<OverlayTile> path, MoveOrderCallback callback = null)
+    public class MoveOrder : IOrder
     {
-        _character = character;
-        _path = path;
-        _callback = callback;
-    }
+        private readonly CharacterInfo _character;
+        private readonly List<OverlayTile> _path;
+        private MoveOrderCallback _callback;
 
-    public void Execute()
-    {
-        _lastTile = _character.activeTile;
-        _character.Move(_path);
+        private OverlayTile _lastTile;
+        private OverlayTile _currentTargetTile;
 
-        if (_path.Count == 0)
+        public MoveOrder(CharacterInfo character, List<OverlayTile> path, MoveOrderCallback callback = null)
         {
-            _callback?.Invoke();
+            _character = character;
+            _path = path;
+            _callback = callback;
         }
-    }
 
-    public void Undo()
-    {
-        _character.SetCanMove(true);
-        _character.Move(new List<OverlayTile>() { _lastTile });
+        public void Execute()
+        {
+            _lastTile = _character.activeTile;
+            _character.Move(_path);
+
+            if (_path.Count == 0)
+            {
+                _callback?.Invoke();
+            }
+        }
+
+        public void Undo()
+        {
+            _character.SetCanMove(true);
+            _character.Move(new List<OverlayTile>() { _lastTile });
+        }
     }
 }

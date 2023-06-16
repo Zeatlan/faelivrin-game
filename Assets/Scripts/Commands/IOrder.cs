@@ -1,6 +1,9 @@
-public interface IOrder
+namespace BattleSystem.Commands
 {
-    void Execute();
+    public interface IOrder
+    {
+        void Execute();
 
-    void Undo();
+        void Undo();
+    }
 }

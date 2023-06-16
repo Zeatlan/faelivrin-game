@@ -2,75 +2,78 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterAnimation : MonoBehaviour
+namespace BattleSystem
 {
-    private SpriteRenderer _sprite;
-
-    [SerializeField] private float _damageLeanDuration = 0.3f;
-    [SerializeField] private float _maxDamageLeanAngle = -15f;
-
-    [SerializeField] private float _dieLeanDuration = 0.7f;
-    [SerializeField] private float _maxDieLeanAngle = -90f;
-    private LTDescr _leanTweenDescription;
-
-    public void TakeDamageAnim(CharacterInfo character)
+    public class CharacterAnimation : MonoBehaviour
     {
-        _sprite = character.GetComponent<SpriteRenderer>();
+        private SpriteRenderer _sprite;
 
-        StartCoroutine(TakeDamageCoroutine());
-    }
+        [SerializeField] private float _damageLeanDuration = 0.3f;
+        [SerializeField] private float _maxDamageLeanAngle = -15f;
 
-    private IEnumerator TakeDamageCoroutine()
-    {
-        Quaternion originalRotation = transform.rotation;
-        Quaternion targetRotation = originalRotation * Quaternion.Euler(0, 0, _maxDamageLeanAngle);
+        [SerializeField] private float _dieLeanDuration = 0.7f;
+        [SerializeField] private float _maxDieLeanAngle = -90f;
+        private LTDescr _leanTweenDescription;
 
-        if (_leanTweenDescription != null)
+        public void TakeDamageAnim(CharacterInfo character)
         {
-            LeanTween.cancel(_leanTweenDescription.uniqueId);
+            _sprite = character.GetComponent<SpriteRenderer>();
+
+            StartCoroutine(TakeDamageCoroutine());
         }
 
-        _leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDamageLeanAngle, _damageLeanDuration)
-        .setEaseOutCubic()
-        .setLoopPingPong(1)
-        .setOnComplete(() =>
+        private IEnumerator TakeDamageCoroutine()
         {
-            transform.rotation = originalRotation;
-        });
+            Quaternion originalRotation = transform.rotation;
+            Quaternion targetRotation = originalRotation * Quaternion.Euler(0, 0, _maxDamageLeanAngle);
 
-        _sprite.color = new Color(1f, 0.5f, 0.5f, 1f);
-        yield return new WaitForSeconds(_damageLeanDuration);
-        _sprite.color = new Color(1f, 1f, 1f, 1f);
-    }
+            if (_leanTweenDescription != null)
+            {
+                LeanTween.cancel(_leanTweenDescription.uniqueId);
+            }
 
-    public void DieAnim(CharacterInfo character)
-    {
-        _sprite = character.GetComponent<SpriteRenderer>();
-
-        StartCoroutine(DieCoroutine());
-    }
-
-    private IEnumerator DieCoroutine()
-    {
-        if (_leanTweenDescription != null)
-        {
-            LeanTween.cancel(_leanTweenDescription.uniqueId);
-        }
-
-        _leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDieLeanAngle, _dieLeanDuration)
+            _leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDamageLeanAngle, _damageLeanDuration)
             .setEaseOutCubic()
+            .setLoopPingPong(1)
             .setOnComplete(() =>
             {
-                transform.rotation = Quaternion.Euler(0, 0, _maxDieLeanAngle);
+                transform.rotation = originalRotation;
             });
 
-        yield return new WaitForSeconds(_dieLeanDuration);
+            _sprite.color = new Color(1f, 0.5f, 0.5f, 1f);
+            yield return new WaitForSeconds(_damageLeanDuration);
+            _sprite.color = new Color(1f, 1f, 1f, 1f);
+        }
 
-        _sprite.color = new Color(0.2f, 0.2f, 0.2f, 0.7f);
+        public void DieAnim(CharacterInfo character)
+        {
+            _sprite = character.GetComponent<SpriteRenderer>();
 
-        yield return new WaitForSeconds(1f);
+            StartCoroutine(DieCoroutine());
+        }
 
-        Destroy(_sprite.gameObject);
+        private IEnumerator DieCoroutine()
+        {
+            if (_leanTweenDescription != null)
+            {
+                LeanTween.cancel(_leanTweenDescription.uniqueId);
+            }
+
+            _leanTweenDescription = LeanTween.rotateZ(gameObject, _maxDieLeanAngle, _dieLeanDuration)
+                .setEaseOutCubic()
+                .setOnComplete(() =>
+                {
+                    transform.rotation = Quaternion.Euler(0, 0, _maxDieLeanAngle);
+                });
+
+            yield return new WaitForSeconds(_dieLeanDuration);
+
+            _sprite.color = new Color(0.2f, 0.2f, 0.2f, 0.7f);
+
+            yield return new WaitForSeconds(1f);
+
+            Destroy(_sprite.gameObject);
+        }
+
     }
-
 }

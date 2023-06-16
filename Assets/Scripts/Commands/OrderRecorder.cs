@@ -1,27 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrderRecorder
+namespace BattleSystem.Commands
 {
-    Stack<IOrder> _orderList;
-
-    public OrderRecorder()
+    public class OrderRecorder
     {
-        _orderList = new Stack<IOrder>();
-    }
+        Stack<IOrder> _orderList;
 
-    public void AddOrder(IOrder newOrder)
-    {
-        newOrder.Execute();
-        _orderList.Push(newOrder);
-    }
-
-    public void UndoCommand()
-    {
-        if (_orderList.Count > 0)
+        public OrderRecorder()
         {
-            IOrder latestOrder = _orderList.Pop();
-            latestOrder.Undo();
+            _orderList = new Stack<IOrder>();
+        }
+
+        public void AddOrder(IOrder newOrder)
+        {
+            newOrder.Execute();
+            _orderList.Push(newOrder);
+        }
+
+        public void UndoCommand()
+        {
+            if (_orderList.Count > 0)
+            {
+                IOrder latestOrder = _orderList.Pop();
+                latestOrder.Undo();
+            }
         }
     }
 }

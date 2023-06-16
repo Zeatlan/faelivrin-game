@@ -3,204 +3,207 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PhaseManager : MonoBehaviour
+namespace BattleSystem
 {
-
-    public enum Phase
+    public class PhaseManager : MonoBehaviour
     {
-        Start = 1,
-        PlayerTurn = 2,
-        AllyTurn = 3,
-        EnnemyTurn = 4,
-        End = 5
-    }
 
-    public Phase phaseState;
-    [SerializeField] private UIManager _uiManager;
-    [SerializeField] private MouseController _mouseController;
-    [SerializeField] private CharacterSpawner _characterSpawner;
-
-    public static UnityEvent OnTurnEnded = new UnityEvent();
-    public static bool isGamePaused = false;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        phaseState = Phase.Start;
-        _uiManager.StartingPhaseAnim();
-    }
-
-    void Update()
-    {
-        if (phaseState != Phase.Start)
+        public enum Phase
         {
-            if (MapManager.Instance.GetPlayerUnits().Count == 0)
+            Start = 1,
+            PlayerTurn = 2,
+            AllyTurn = 3,
+            EnnemyTurn = 4,
+            End = 5
+        }
+
+        public Phase phaseState;
+        [SerializeField] private UIManager _uiManager;
+        [SerializeField] private MouseController _mouseController;
+        [SerializeField] private CharacterSpawner _characterSpawner;
+
+        public static UnityEvent OnTurnEnded = new UnityEvent();
+        public static bool isGamePaused = false;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            phaseState = Phase.Start;
+            _uiManager.StartingPhaseAnim();
+        }
+
+        void Update()
+        {
+            if (phaseState != Phase.Start)
             {
-                _uiManager.DefeatPhaseAnim();
-            }
+                if (MapManager.Instance.GetPlayerUnits().Count == 0)
+                {
+                    _uiManager.DefeatPhaseAnim();
+                }
 
-            if (MapManager.Instance.GetEnemyUnits().Count == 0)
+                if (MapManager.Instance.GetEnemyUnits().Count == 0)
+                {
+                    _uiManager.VictoryPhaseAnim();
+                }
+            }
+        }
+
+        private void RefillPlayableCharacter(List<CharacterInfo> characters)
+        {
+            foreach (CharacterInfo character in characters)
             {
-                _uiManager.VictoryPhaseAnim();
+                MapManager.Instance.AddPlayableUnit(character);
             }
         }
-    }
 
-    private void RefillPlayableCharacter(List<CharacterInfo> characters)
-    {
-        foreach (CharacterInfo character in characters)
-        {
-            MapManager.Instance.AddPlayableUnit(character);
-        }
-    }
-
-    public void StartTheGame()
-    {
-        StartCoroutine(SwitchToPlayerTurn());
-    }
-
-    public IEnumerator SwitchToPlayerTurn()
-    {
-
-        MapManager.Instance.HideAllTiles();
-        if (phaseState == Phase.Start)
-        {
-            DestroyStartingPhase();
-        }
-
-        if (MapManager.Instance.GetPlayerUnits().Count == 0) yield break;
-
-        phaseState = Phase.PlayerTurn;
-
-        RefillPlayableCharacter(MapManager.Instance.GetPlayerUnits());
-
-        foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
-        {
-            character.SetActive();
-        }
-
-        _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
-        yield return StartCoroutine(_uiManager.PlayerPhaseAnim());
-        _uiManager.ShowPlayerPhaseUI();
-        yield return StartCoroutine(DisplayInfo());
-
-
-        ResetActionOfEveryone();
-        _mouseController.ResetMode();
-    }
-
-    public IEnumerator SwitchToEnemyTurn()
-    {
-
-        MapManager.Instance.HideAllTiles();
-        OnTurnEnded.Invoke();
-        if (MapManager.Instance.GetEnemyUnits().Count == 0) yield break;
-
-        phaseState = Phase.EnnemyTurn;
-
-        RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
-        yield return StartCoroutine(_uiManager.EnemyPhaseAnim());
-        _uiManager.ShowEnemyPhaseUI();
-        yield return StartCoroutine(DisplayInfo());
-
-        ResetActionOfEveryone();
-
-        foreach (CharacterInfo enemy in MapManager.Instance.GetPlayableUnits())
-        {
-            AIManager ai = enemy.GetComponent<AIManager>();
-            ai.SetPlayerUnits(MapManager.Instance.GetPlayerUnits());
-            ai.IATurn();
-        }
-    }
-
-    private IEnumerator DisplayInfo()
-    {
-        yield return new WaitForSeconds(0.001f);
-        _mouseController.character.DisplayInfo();
-    }
-
-    private void DestroyStartingPhase()
-    {
-        if (MapManager.Instance.GetPlayerUnits().Count == 0) return;
-        _uiManager.hideStartingUI();
-        MapManager.Instance.HideStartingTiles();
-        _characterSpawner.DestroyPreview();
-    }
-
-    private void SwitchPhase()
-    {
-        if (phaseState == Phase.PlayerTurn)
-        {
-            StartCoroutine(SwitchToEnemyTurn());
-        }
-        else if (phaseState == Phase.EnnemyTurn)
+        public void StartTheGame()
         {
             StartCoroutine(SwitchToPlayerTurn());
         }
-    }
 
-    private void ResetActionOfEveryone()
-    {
-        foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
-        {
-            character.SetCanAttack(true);
-            character.SetCanMove(true);
-        }
-    }
-
-    public void PlayAction(CharacterInfo character, ActionCharacter action)
-    {
-        switch (action)
-        {
-            case ActionCharacter.Attack:
-                character.SetCanAttack(false);
-                break;
-            case ActionCharacter.Move:
-                character.SetCanMove(false);
-                break;
-            case ActionCharacter.Idle:
-                character.SetCanAttack(false);
-                character.SetCanMove(false);
-                break;
-            default:
-                return;
-        }
-
-        MapManager.Instance.HideAllTiles();
-
-        if (!character.CanAttack() && !character.CanMove())
-            MapManager.Instance.RemovePlayableUnit(character);
-
-        if (MapManager.Instance.GetPlayableUnits().Count == 0)
-        {
-            SwitchPhase();
-        }
-        else
+        public IEnumerator SwitchToPlayerTurn()
         {
 
-            if (!character.CanAttack() && !character.CanMove())
+            MapManager.Instance.HideAllTiles();
+            if (phaseState == Phase.Start)
             {
-                _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
-                character.DisplayInfo();
+                DestroyStartingPhase();
+            }
+
+            if (MapManager.Instance.GetPlayerUnits().Count == 0) yield break;
+
+            phaseState = Phase.PlayerTurn;
+
+            RefillPlayableCharacter(MapManager.Instance.GetPlayerUnits());
+
+            foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
+            {
+                character.SetActive();
+            }
+
+            _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+            yield return StartCoroutine(_uiManager.PlayerPhaseAnim());
+            _uiManager.ShowPlayerPhaseUI();
+            yield return StartCoroutine(DisplayInfo());
+
+
+            ResetActionOfEveryone();
+            _mouseController.ResetMode();
+        }
+
+        public IEnumerator SwitchToEnemyTurn()
+        {
+
+            MapManager.Instance.HideAllTiles();
+            OnTurnEnded.Invoke();
+            if (MapManager.Instance.GetEnemyUnits().Count == 0) yield break;
+
+            phaseState = Phase.EnnemyTurn;
+
+            RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
+            yield return StartCoroutine(_uiManager.EnemyPhaseAnim());
+            _uiManager.ShowEnemyPhaseUI();
+            yield return StartCoroutine(DisplayInfo());
+
+            ResetActionOfEveryone();
+
+            foreach (CharacterInfo enemy in MapManager.Instance.GetPlayableUnits())
+            {
+                AIManager ai = enemy.GetComponent<AIManager>();
+                ai.SetPlayerUnits(MapManager.Instance.GetPlayerUnits());
+                ai.IATurn();
             }
         }
-    }
 
-    public void EndTurn()
-    {
-        List<CharacterInfo> playableUnitsCopy = new List<CharacterInfo>(MapManager.Instance.GetPlayableUnits());
-        foreach (CharacterInfo playableUnit in playableUnitsCopy)
+        private IEnumerator DisplayInfo()
         {
-            PlayAction(playableUnit, ActionCharacter.Idle);
+            yield return new WaitForSeconds(0.001f);
+            _mouseController.character.DisplayInfo();
         }
-    }
 
-    public void EndCharacterTurn()
-    {
-        if (_mouseController.isMoving) return;
+        private void DestroyStartingPhase()
+        {
+            if (MapManager.Instance.GetPlayerUnits().Count == 0) return;
+            _uiManager.hideStartingUI();
+            MapManager.Instance.HideStartingTiles();
+            _characterSpawner.DestroyPreview();
+        }
 
-        PlayAction(_mouseController.character, ActionCharacter.Idle);
-        if (MapManager.Instance.GetPlayableUnits().Count > 0)
-            _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+        private void SwitchPhase()
+        {
+            if (phaseState == Phase.PlayerTurn)
+            {
+                StartCoroutine(SwitchToEnemyTurn());
+            }
+            else if (phaseState == Phase.EnnemyTurn)
+            {
+                StartCoroutine(SwitchToPlayerTurn());
+            }
+        }
+
+        private void ResetActionOfEveryone()
+        {
+            foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
+            {
+                character.SetCanAttack(true);
+                character.SetCanMove(true);
+            }
+        }
+
+        public void PlayAction(CharacterInfo character, ActionCharacter action)
+        {
+            switch (action)
+            {
+                case ActionCharacter.Attack:
+                    character.SetCanAttack(false);
+                    break;
+                case ActionCharacter.Move:
+                    character.SetCanMove(false);
+                    break;
+                case ActionCharacter.Idle:
+                    character.SetCanAttack(false);
+                    character.SetCanMove(false);
+                    break;
+                default:
+                    return;
+            }
+
+            MapManager.Instance.HideAllTiles();
+
+            if (!character.CanAttack() && !character.CanMove())
+                MapManager.Instance.RemovePlayableUnit(character);
+
+            if (MapManager.Instance.GetPlayableUnits().Count == 0)
+            {
+                SwitchPhase();
+            }
+            else
+            {
+
+                if (!character.CanAttack() && !character.CanMove())
+                {
+                    _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+                    character.DisplayInfo();
+                }
+            }
+        }
+
+        public void EndTurn()
+        {
+            List<CharacterInfo> playableUnitsCopy = new List<CharacterInfo>(MapManager.Instance.GetPlayableUnits());
+            foreach (CharacterInfo playableUnit in playableUnitsCopy)
+            {
+                PlayAction(playableUnit, ActionCharacter.Idle);
+            }
+        }
+
+        public void EndCharacterTurn()
+        {
+            if (_mouseController.isMoving) return;
+
+            PlayAction(_mouseController.character, ActionCharacter.Idle);
+            if (MapManager.Instance.GetPlayableUnits().Count > 0)
+                _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
+        }
     }
 }

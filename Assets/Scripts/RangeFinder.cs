@@ -1,59 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.SO;
 using UnityEngine;
 
-public class RangeFinder
+namespace BattleSystem
 {
-
-    public List<OverlayTile> GetTilesInRange(OverlayTile startingTile, int range, bool isAttacking = false)
+    public class RangeFinder
     {
-        List<OverlayTile> inRangeTiles = new List<OverlayTile>();
-        int stepCount = 0;
 
-        List<OverlayTile> tileForPreviousStep = new List<OverlayTile>();
-        tileForPreviousStep.Add(startingTile);
-
-        while (stepCount < range)
+        public List<OverlayTile> GetTilesInRange(OverlayTile startingTile, int range, bool isAttacking = false)
         {
-            List<OverlayTile> surroundingTiles = new List<OverlayTile>();
+            List<OverlayTile> inRangeTiles = new List<OverlayTile>();
+            int stepCount = 0;
 
-            foreach (OverlayTile tile in tileForPreviousStep)
+            List<OverlayTile> tileForPreviousStep = new List<OverlayTile>();
+            tileForPreviousStep.Add(startingTile);
+
+            while (stepCount < range)
             {
-                surroundingTiles.AddRange(MapManager.Instance.GetNeighbourTiles(tile, new List<OverlayTile>(), isAttacking));
+                List<OverlayTile> surroundingTiles = new List<OverlayTile>();
+
+                foreach (OverlayTile tile in tileForPreviousStep)
+                {
+                    surroundingTiles.AddRange(MapManager.Instance.GetNeighbourTiles(tile, new List<OverlayTile>(), isAttacking));
+                }
+
+                inRangeTiles.AddRange(surroundingTiles);
+                tileForPreviousStep = surroundingTiles.Distinct().ToList();
+                stepCount++;
             }
 
-            inRangeTiles.AddRange(surroundingTiles);
-            tileForPreviousStep = surroundingTiles.Distinct().ToList();
-            stepCount++;
+            return inRangeTiles.Distinct().ToList();
         }
 
-        return inRangeTiles.Distinct().ToList();
-    }
-
-    public List<OverlayTile> GetSkillRange(OverlayTile startingTile, AbilitySO skill, Vector2Int direction)
-    {
-        List<OverlayTile> inRangeTiles = new List<OverlayTile>();
-        int stepCount = 0;
-
-        List<OverlayTile> tileForPreviousStep = new List<OverlayTile>();
-        tileForPreviousStep.Add(startingTile);
-
-        while (stepCount < skill.range)
+        public List<OverlayTile> GetSkillRange(OverlayTile startingTile, AbilitySO skill, Vector2Int direction)
         {
-            List<OverlayTile> surroundingTiles = new List<OverlayTile>();
+            List<OverlayTile> inRangeTiles = new List<OverlayTile>();
+            int stepCount = 0;
 
-            foreach (OverlayTile tile in tileForPreviousStep)
+            List<OverlayTile> tileForPreviousStep = new List<OverlayTile>();
+            tileForPreviousStep.Add(startingTile);
+
+            while (stepCount < skill.range)
             {
-                surroundingTiles.AddRange(MapManager.Instance.GetNeighbourSkillTiles(tile, new List<OverlayTile>(), skill, direction));
+                List<OverlayTile> surroundingTiles = new List<OverlayTile>();
+
+                foreach (OverlayTile tile in tileForPreviousStep)
+                {
+                    surroundingTiles.AddRange(MapManager.Instance.GetNeighbourSkillTiles(tile, new List<OverlayTile>(), skill, direction));
+                }
+
+                inRangeTiles.AddRange(surroundingTiles);
+                tileForPreviousStep = surroundingTiles.Distinct().ToList();
+                stepCount++;
             }
 
-            inRangeTiles.AddRange(surroundingTiles);
-            tileForPreviousStep = surroundingTiles.Distinct().ToList();
-            stepCount++;
+            return inRangeTiles.Distinct().ToList();
         }
 
-        return inRangeTiles.Distinct().ToList();
     }
-
 }

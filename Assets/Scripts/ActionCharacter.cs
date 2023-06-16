@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ActionCharacter
+namespace BattleSystem
 {
-    Attack = 0,
-    Move = 1,
-    Idle = 3
+    public enum ActionCharacter
+    {
+        Attack = 0,
+        Move = 1,
+        Idle = 3
+    }
 }

@@ -4,25 +4,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Stats : MonoBehaviour
+namespace BattleSystem.UI
 {
-
-    [SerializeField] private TextMeshProUGUI _atkAmount;
-    [SerializeField] private TextMeshProUGUI _rangeAmount;
-    [SerializeField] private TextMeshProUGUI _atkRangeAmount;
-
-    public void SetAttack(int atk)
+    public class Stats : MonoBehaviour
     {
-        _atkAmount.SetText(atk.ToString());
-    }
 
-    public void SetRange(int range)
-    {
-        _rangeAmount.SetText(range.ToString());
-    }
+        [SerializeField] private TextMeshProUGUI _atkAmount;
+        [SerializeField] private TextMeshProUGUI _rangeAmount;
+        [SerializeField] private TextMeshProUGUI _atkRangeAmount;
 
-    public void SetAtkRange(int range)
-    {
-        _atkRangeAmount.SetText(range.ToString());
+        public void SetAttack(int atk)
+        {
+            _atkAmount.SetText(atk.ToString());
+        }
+
+        public void SetRange(int range)
+        {
+            _rangeAmount.SetText(range.ToString());
+        }
+
+        public void SetAtkRange(int range)
+        {
+            _atkRangeAmount.SetText(range.ToString());
+        }
     }
 }

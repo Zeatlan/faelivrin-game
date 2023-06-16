@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using BattleSystem.SO;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Smash", menuName = "Game/Battle/Abilities/Smash")]
-public class Smash : AbilitySO
+namespace BattleSystem.Abilities
 {
-    public override bool Execute(CharacterInfo user, OverlayTile target)
+    [CreateAssetMenu(fileName = "Smash", menuName = "Game/Battle/Abilities/Smash")]
+    public class Smash : AbilitySO
     {
-        CharacterInfo targetCharacter = MapManager.Instance.FindCharacterOnTile(target);
-
-        if (targetCharacter != null)
+        public override bool Execute(CharacterInfo user, OverlayTile target)
         {
-            int totalDamage = Mathf.FloorToInt(user.GetStats().attack * efficiencyMultiplicator);
-            targetCharacter.TakeDamage(totalDamage);
-            return true;
-        }
+            CharacterInfo targetCharacter = MapManager.Instance.FindCharacterOnTile(target);
 
-        return false;
+            if (targetCharacter != null)
+            {
+                int totalDamage = Mathf.FloorToInt(user.GetStats().attack * efficiencyMultiplicator);
+                targetCharacter.TakeDamage(totalDamage);
+                return true;
+            }
+
+            return false;
+        }
     }
 }

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BattleMap", menuName = "Game/Battle/Map")]
-public class BattleMapSO : ScriptableObject
+namespace BattleSystem.SO
 {
-    public List<Vector3Int> playerPossiblePos;
-    public List<Vector3Int> ennemiesSpawnPos;
-    public List<CharacterInfo> ennemies;
+    [CreateAssetMenu(fileName = "BattleMap", menuName = "Game/Battle/Map")]
+    public class BattleMapSO : ScriptableObject
+    {
+        public List<Vector3Int> playerPossiblePos;
+        public List<Vector3Int> ennemiesSpawnPos;
+        public List<CharacterInfo> ennemies;
+    }
 }

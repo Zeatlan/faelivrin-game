@@ -1,36 +1,40 @@
-public class AttackOrder : IOrder
+
+namespace BattleSystem.Commands
 {
-    private readonly CharacterInfo _character;
-    private readonly CharacterInfo _target;
-
-    private int _damageAmount;
-    private bool _isExecuted;
-
-    public AttackOrder(CharacterInfo character, CharacterInfo target)
+    public class AttackOrder : IOrder
     {
-        _character = character;
-        _target = target;
+        private readonly CharacterInfo _character;
+        private readonly CharacterInfo _target;
 
-        _damageAmount = _character.GetStats().attack;
-        _isExecuted = false;
-    }
+        private int _damageAmount;
+        private bool _isExecuted;
 
-    public void Execute()
-    {
-        if (!_isExecuted)
+        public AttackOrder(CharacterInfo character, CharacterInfo target)
         {
-            _character.Attack(_target);
-            _isExecuted = true;
+            _character = character;
+            _target = target;
+
+            _damageAmount = _character.GetStats().attack;
+            _isExecuted = false;
         }
-    }
 
-    public void Undo()
-    {
-        _target.HealHealth(_damageAmount);
-    }
+        public void Execute()
+        {
+            if (!_isExecuted)
+            {
+                _character.Attack(_target);
+                _isExecuted = true;
+            }
+        }
 
-    public bool IsComplete()
-    {
-        return _isExecuted;
+        public void Undo()
+        {
+            _target.HealHealth(_damageAmount);
+        }
+
+        public bool IsComplete()
+        {
+            return _isExecuted;
+        }
     }
 }
