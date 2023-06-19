@@ -19,6 +19,7 @@ namespace BattleSystem
 
         public Phase phaseState;
         [SerializeField] private UIManager _uiManager;
+        [SerializeField] private UIController _uiController;
         [SerializeField] private MouseController _mouseController;
         [SerializeField] private CharacterSpawner _characterSpawner;
 
@@ -29,7 +30,7 @@ namespace BattleSystem
         void Start()
         {
             phaseState = Phase.Start;
-            _uiManager.StartingPhaseAnim();
+            _uiController.StartingPhaseAnim();
         }
 
         void Update()
@@ -38,12 +39,12 @@ namespace BattleSystem
             {
                 if (MapManager.Instance.GetPlayerUnits().Count == 0)
                 {
-                    _uiManager.DefeatPhaseAnim();
+                    _uiController.DefeatPhaseAnim();
                 }
 
                 if (MapManager.Instance.GetEnemyUnits().Count == 0)
                 {
-                    _uiManager.VictoryPhaseAnim();
+                    _uiController.VictoryPhaseAnim();
                 }
             }
         }
@@ -82,8 +83,8 @@ namespace BattleSystem
             }
 
             _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
-            yield return StartCoroutine(_uiManager.PlayerPhaseAnim());
-            _uiManager.ShowPlayerPhaseUI();
+            yield return StartCoroutine(_uiController.PlayerPhaseAnim());
+            _uiController.ShowPlayerPhaseUI();
             yield return StartCoroutine(DisplayInfo());
 
 
@@ -101,8 +102,8 @@ namespace BattleSystem
             phaseState = Phase.EnnemyTurn;
 
             RefillPlayableCharacter(MapManager.Instance.GetEnemyUnits());
-            yield return StartCoroutine(_uiManager.EnemyPhaseAnim());
-            _uiManager.ShowEnemyPhaseUI();
+            yield return StartCoroutine(_uiController.EnemyPhaseAnim());
+            _uiController.ShowEnemyPhaseUI();
             yield return StartCoroutine(DisplayInfo());
 
             ResetActionOfEveryone();
@@ -124,7 +125,7 @@ namespace BattleSystem
         private void DestroyStartingPhase()
         {
             if (MapManager.Instance.GetPlayerUnits().Count == 0) return;
-            _uiManager.hideStartingUI();
+            _uiController.HideStartingUI();
             MapManager.Instance.HideStartingTiles();
             _characterSpawner.DestroyPreview();
         }

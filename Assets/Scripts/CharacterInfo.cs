@@ -47,17 +47,7 @@ namespace BattleSystem
         public void DisplayInfo()
         {
             _unitPanel = GameObject.Find("UnitPanel").GetComponent<UnitPanel>();
-            _unitPanel.SetIcon(stats.icon);
-
-            _unitPanel.SetName(stats.characterName);
-
-            _unitPanel.SetMaxHealth(_charStats.maxHealth);
-            _unitPanel.SetHealth(_charStats.currentHealth);
-
-            _statsUI = GameObject.Find("Stats").GetComponent<Stats>();
-            _statsUI.SetAttack(_charStats.attack);
-            _statsUI.SetRange(_charStats.range);
-            _statsUI.SetAtkRange(_charStats.atkRange);
+            _unitPanel.InitializePanel(this);
         }
 
         public void Attack(CharacterInfo unit)
@@ -144,6 +134,11 @@ namespace BattleSystem
         public void HealHealth(int amount)
         {
             _charStats.currentHealth += amount;
+
+            if (_charStats.currentHealth > _charStats.maxHealth)
+            {
+                _charStats.currentHealth = _charStats.maxHealth;
+            }
         }
     }
 }

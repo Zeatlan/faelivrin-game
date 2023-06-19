@@ -1,0 +1,72 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/UI/battleUss.uss?fileID=7433441132597879392&amp;guid=414b080edb7b30542b7127c263581eea&amp;type=3#battleUss" />
+    <ui:VisualElement name="UI__root" style="height: 100%; width: 100%;">
+        <ui:VisualElement name="Panel__Switch" style="width: 100%; height: 100%; position: absolute; align-items: center; justify-content: center; left: auto;">
+            <ui:VisualElement name="Phase__prep" class="phaseWindow">
+                <ui:GroupBox name="Prep__group" class="phaseGroup">
+                    <ui:Label text="Phase préparatoire" display-tooltip-when-elided="true" name="Prep__title" class="phaseGroupTitle" />
+                    <ui:Label text="Placez toutes vos unités." display-tooltip-when-elided="true" name="Prep__subtitle" class="phaseGroupSubtitle" />
+                </ui:GroupBox>
+            </ui:VisualElement>
+            <ui:VisualElement name="Phase__player" class="phaseWindow">
+                <ui:GroupBox name="Player__group" class="phaseGroup" style="background-color: rgba(38, 152, 154, 0.78);">
+                    <ui:Label text="C&apos;est votre tour" display-tooltip-when-elided="true" name="Player__title" class="phaseGroupTitle" />
+                    <ui:Label text="Vous pouvez déplacez vos unités." display-tooltip-when-elided="true" name="Player__subtitle" class="phaseGroupSubtitle" />
+                </ui:GroupBox>
+            </ui:VisualElement>
+            <ui:VisualElement name="Phase__enemy" class="phaseWindow">
+                <ui:GroupBox name="Enemy__group" class="phaseGroup" style="background-color: rgba(147, 34, 55, 0.78);">
+                    <ui:Label text="Tour de l&apos;adversaire" display-tooltip-when-elided="true" name="Enemy__title" class="phaseGroupTitle" />
+                    <ui:Label text="Votre adversaire est en train de jouer" display-tooltip-when-elided="true" name="Enemy__subtitle" class="phaseGroupSubtitle" />
+                </ui:GroupBox>
+            </ui:VisualElement>
+            <ui:VisualElement name="Phase__victory" class="phaseWindow">
+                <ui:GroupBox name="Victory__group" class="phaseGroup" style="background-color: rgba(38, 190, 33, 0.78);">
+                    <ui:Label text="VICTOIRE" display-tooltip-when-elided="true" name="Victory__title" class="phaseGroupTitle" />
+                </ui:GroupBox>
+            </ui:VisualElement>
+            <ui:VisualElement name="Phase__defeat" class="phaseWindow">
+                <ui:GroupBox name="Defeat__group" class="phaseGroup" style="background-color: rgba(190, 33, 43, 0.78);">
+                    <ui:Label text="DÉFAITE" display-tooltip-when-elided="true" name="Defeat__title" class="phaseGroupTitle" />
+                </ui:GroupBox>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Prep__phase" class="phase" style="height: 122px;">
+            <ui:Button text="Prêt" display-tooltip-when-elided="true" name="Button__ready" style="margin-top: 50px; background-color: rgb(97, 155, 226); color: rgb(255, 255, 255); font-size: 24px; padding-right: 50px; padding-left: 50px; border-left-color: rgb(86, 98, 188); border-right-color: rgb(86, 98, 188); border-top-color: rgb(86, 98, 188); border-bottom-color: rgb(86, 98, 188); border-left-width: 3px; border-right-width: 3px; border-top-width: 3px; border-bottom-width: 3px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Player__phase" style="height: 100%;">
+            <ui:GroupBox name="Player__actions" class="playerActions">
+                <ui:Button text="Fin" display-tooltip-when-elided="true" name="Action__idleCharacter" class="playerActionsButton" />
+                <ui:Button text="Compétence" display-tooltip-when-elided="true" name="Action__skills" class="playerActionsButton" />
+                <ui:Button text="Attaquer" display-tooltip-when-elided="true" name="Action__switchMode" class="playerActionsButton" />
+                <ui:Button text="Fin du tour" display-tooltip-when-elided="true" name="Action__endTurn" class="playerActionsButton playerEndTurnButton" />
+            </ui:GroupBox>
+        </ui:VisualElement>
+        <ui:VisualElement name="Character__box" style="position: absolute; left: 15px; bottom: 15px; width: 50%; height: 20%; background-color: rgba(12, 15, 34, 0.8); flex-direction: row; display: flex;">
+            <ui:GroupBox name="Character__img_container" style="height: 100%; justify-content: center; width: 150px;">
+                <ui:IMGUIContainer name="Character__img" style="height: 150px; width: 150px; background-image: url(&apos;project://database/Packages/com.unity.2d.animation/Editor/Assets/SkinningModule/Icons/Selected/character_Mode@3x.png?fileID=2800000&amp;guid=dcea51d6065d64246aeec467afeff684&amp;type=3#character_Mode@3x&apos;); -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0; -unity-background-scale-mode: stretch-to-fill; position: absolute; bottom: -40px;" />
+            </ui:GroupBox>
+            <ui:VisualElement name="Character__info" style="width: 100%; justify-content: flex-start; flex-direction: column;">
+                <ui:GroupBox name="Character__info_container" style="height: auto; width: 100%; justify-content: flex-start;">
+                    <ui:Label text="Mystery guy" display-tooltip-when-elided="true" name="Character__name" style="color: rgb(255, 255, 255); -unity-font-style: bold; font-size: 22px;" />
+                    <BattleSystem.UI.HealthBar width="300" height="25" value="1" fill-type="Horizontal" />
+                </ui:GroupBox>
+                <ui:GroupBox name="Character__stats" style="width: 100%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 6px; margin-right: 0; margin-top: 0; margin-bottom: 0; flex-direction: row;">
+                    <ui:GroupBox name="Character__Atk" focusable="false" usage-hints="None" class="characterStatsInput">
+                        <ui:IMGUIContainer name="Atk__icon" style="background-image: resource(&apos;Icons/sword-icon&apos;); background-color: rgba(0, 0, 0, 0); width: 16px; height: 16px;" />
+                        <ui:Label text="15" display-tooltip-when-elided="true" name="Atk__value" enable-rich-text="false" />
+                    </ui:GroupBox>
+                    <ui:GroupBox name="Character__Range" class="characterStatsInput">
+                        <ui:IMGUIContainer name="Range__icon" style="background-image: resource(&apos;Icons/range-icon&apos;); background-color: rgba(0, 0, 0, 0); width: 16px; height: 16px;" />
+                        <ui:Label text="15" display-tooltip-when-elided="true" name="Range__value" enable-rich-text="false" />
+                    </ui:GroupBox>
+                    <ui:GroupBox name="Character__AtkRange" class="characterStatsInput">
+                        <ui:IMGUIContainer name="AtkRange__icon" style="background-image: resource(&apos;Icons/atkRange-icon&apos;); background-color: rgba(0, 0, 0, 0); width: 16px; height: 16px;" />
+                        <ui:Label text="15" display-tooltip-when-elided="true" name="AtkRange__value" enable-rich-text="false" />
+                    </ui:GroupBox>
+                </ui:GroupBox>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Units__portrait" style="position: absolute; bottom: 25px; align-items: center; justify-content: center; width: 100%; height: 100px; flex-direction: row;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,12 @@
+.text {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 255);
+    -unity-font-style: bold;
+    -unity-text-outline-width: 0;
+    -unity-text-outline-color: rgba(0, 0, 0, 255);
+    font-size: 14px;
+    transform-origin: left;
+}

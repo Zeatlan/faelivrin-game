@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/UI/healthBarUss.uss?fileID=7433441132597879392&amp;guid=5f88b0f0a071a9c45a2989a8bf30774b&amp;type=3#healthBarUss" />
+    <ui:VisualElement name="Character__healthBar" style="height: 25px;">
+        <ui:VisualElement name="HP__background" style="flex-grow: 1; background-color: rgb(17, 18, 29); overflow: hidden;">
+            <ui:VisualElement name="HP__foreground" style="flex-grow: 1; background-color: rgb(204, 61, 61); transform-origin: left bottom;" />
+        </ui:VisualElement>
+        <ui:GroupBox name="HP__texts" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; align-items: center; justify-content: center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; position: absolute; width: 100%;">
+            <ui:Label text="100" display-tooltip-when-elided="true" name="HP__currentHealth" class="text" />
+            <ui:Label text="/" display-tooltip-when-elided="true" name="HP__separator" class="text" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+            <ui:Label text="100" display-tooltip-when-elided="true" name="HP__maxHealth" enable-rich-text="true" class="text" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+        </ui:GroupBox>
+    </ui:VisualElement>
+</ui:UXML>

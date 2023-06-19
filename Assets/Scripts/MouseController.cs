@@ -24,7 +24,7 @@ namespace BattleSystem
 
         [SerializeField] private PhaseManager _phaseManager;
         [SerializeField] private CharacterSpawner _characterSpawner;
-        [SerializeField] private UIManager _uiManager;
+        [SerializeField] private UIController _uiController;
 
         [SerializeField] private OrderRecorder _orderRecorder;
         private OverlayTile _clickedTile;
@@ -105,7 +105,7 @@ namespace BattleSystem
                     moveOrderInit = false;
                     _phaseManager.PlayAction(character, ActionCharacter.Move);
                     SwitchMode();
-                    _uiManager.SwitchMode();
+                    _uiController.SwitchMode(new UnityEngine.UIElements.ClickEvent(), "");
                     if (tilesViewer.GetPreviewedTiles().Count > 0) tilesViewer.ResetPreviewedTiles();
                     isMoving = false;
                 }
@@ -188,12 +188,12 @@ namespace BattleSystem
 
             if (character.CanMove())
             {
-                _uiManager.SetModeTextToAtk();
+                _uiController.SetModeTextToAtk();
                 tilesViewer.GetInRangeTiles(character);
             }
             else
             {
-                _uiManager.SetModeTextToMove();
+                _uiController.SetModeTextToMove();
                 tilesViewer.GetAttackableTiles(character);
             }
         }

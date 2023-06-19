@@ -1,0 +1,29 @@
+.unitPortrait {
+    width: 85px;
+    height: 125px;
+    background-color: rgb(13, 18, 32);
+    align-items: center;
+    justify-content: center;
+    transition-duration: 300ms;
+}
+
+.unitPortrait-selected {
+    width: 85px;
+    height: 125px;
+    background-color: rgb(21, 58, 23);
+    align-items: center;
+    justify-content: center;
+    border-left-color: rgb(76, 159, 100);
+    border-right-color: rgb(76, 159, 100);
+    border-top-color: rgb(76, 159, 100);
+    border-bottom-color: rgb(76, 159, 100);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    translate: 0 -25px;
+}

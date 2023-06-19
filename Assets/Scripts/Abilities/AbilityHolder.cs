@@ -51,7 +51,6 @@ namespace BattleSystem.Abilities
 
             bool executed = Ability.ExecuteMultipleTarget(GetComponent<CharacterInfo>(), targets);
 
-            Debug.Log("EXECUTED  " + executed);
             if (executed)
                 SetOnCooldown();
         }

@@ -4,6 +4,8 @@ using System.Linq;
 using BattleSystem.SO;
 using BattleSystem.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static BattleSystem.PhaseManager;
 
 namespace BattleSystem
 {
@@ -18,15 +20,30 @@ namespace BattleSystem
         [SerializeField] private GameObject _previewCharacter;
 
         [Header("UI")]
-        [SerializeField] private Transform _characterListUI;
-        [SerializeField] private GameObject _characterCardPrefab;
-        private List<UnitPortrait> _unitPortraits;
+        [SerializeField] private UIDocument hud;
+        private UnitPortrait _unitPortrait;
+        private VisualElement _root;
+        private VisualElement _unitPortraitHUD;
+
+        private List<UnitPortrait> _unitPortraitsList;
+
+        [SerializeField] private PhaseManager _phaseManager;
 
         public void Start()
         {
-            _unitPortraits = new List<UnitPortrait>();
+            _root = hud.rootVisualElement;
+            _unitPortraitHUD = _root.Q<VisualElement>("Units__portrait");
+            _unitPortraitsList = new List<UnitPortrait>();
             UpdateCursor(0);
             GenerateCharacterListUI();
+        }
+
+        public void Update()
+        {
+            if (_phaseManager.phaseState != Phase.Start)
+            {
+                HideCharacterListUI();
+            }
         }
 
         public void SwitchCharacter(int targetCursor)
@@ -60,12 +77,19 @@ namespace BattleSystem
         {
             foreach (GameObject character in _characterList)
             {
-                UnitPortrait newCard = Instantiate(_characterCardPrefab, _characterListUI).GetComponent<UnitPortrait>();
-                newCard.SetIcon(character.GetComponent<CharacterInfo>().stats.icon);
-                _unitPortraits.Add(newCard);
+                CharacterInfo characterInfo = character.GetComponent<CharacterInfo>();
+
+                _unitPortrait = new UnitPortrait();
+                _unitPortrait.SetIcon(new StyleBackground(characterInfo.stats.icon));
+                _unitPortrait.SetName(characterInfo.stats.characterName);
+
+                _unitPortrait.OnClick += ChangeCharacterActiveUI;
+
+                _unitPortraitHUD.Add(_unitPortrait.Bg);
+                _unitPortraitsList.Add(_unitPortrait);
             }
 
-            _unitPortraits[0].SetActive();
+            _unitPortraitsList[0].Select();
         }
 
         private void UpdateCursor(int newCursor)
@@ -77,19 +101,29 @@ namespace BattleSystem
 
         public void ChangeCharacterActiveUI(UnitPortrait selectedCard)
         {
-            for (int i = 0; i < _unitPortraits.Count; i++)
+            for (int i = 0; i < _unitPortraitsList.Count; i++)
             {
 
-                if (_unitPortraits[i].isActive) _unitPortraits[i].SetInactive();
+                if (_unitPortraitsList[i].IsActive) _unitPortraitsList[i].Unselect();
 
-                if (_unitPortraits[i] == selectedCard)
+                if (_unitPortraitsList[i] == selectedCard)
                 {
                     UpdateCursor(i);
                 }
             }
 
-            selectedCard.SetActive();
+            selectedCard.Select();
         }
+
+        private void HideCharacterListUI()
+        {
+            for (int i = 0; i < _unitPortraitsList.Count; i++)
+            {
+                _unitPortraitsList[i].Unselect();
+            }
+            _unitPortraitHUD.style.display = DisplayStyle.None;
+        }
+
 
         private void SwitchPreviewCharacter()
         {

@@ -1,0 +1,156 @@
+.phase {
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    position: relative;
+}
+
+.phaseWindow {
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    left: -100%;
+    position: absolute;
+}
+
+.phaseGroup {
+    background-color: rgba(34, 84, 147, 0.65);
+    width: 75%;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition-property: position;
+    transition-duration: 600ms;
+    transition-timing-function: ease-in-back;
+    transition-delay: 0s;
+    top: auto;
+    bottom: auto;
+    left: auto;
+}
+
+.phaseGroupTitle {
+    -unity-text-align: upper-center;
+    font-size: 24px;
+    background-color: rgba(255, 255, 255, 0);
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+.phaseGroupSubtitle {
+    -unity-text-align: upper-center;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(224, 224, 224);
+}
+
+.playerActions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 30%;
+    height: 25%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-basis: auto;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.playerActionsButton {
+    width: 45%;
+    justify-content: flex-start;
+    align-items: auto;
+    font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 15px;
+    margin-bottom: 0;
+    background-color: rgb(61, 178, 100);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition-duration: 300ms;
+    -unity-font-style: bold;
+    color: rgb(236, 230, 230);
+}
+
+.playerActionsButton:hover {
+    width: 45%;
+    justify-content: flex-start;
+    align-items: auto;
+    font-size: 18px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 15px;
+    margin-bottom: 0;
+    background-color: rgb(31, 111, 57);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    transition-duration: 300ms;
+    -unity-font-style: bold;
+    color: rgb(236, 230, 230);
+}
+
+.playerEndTurnButton {
+    background-color: rgb(195, 69, 65);
+}
+
+.playerEndTurnButton:hover {
+    background-color: rgb(144, 45, 42);
+}
+
+.unity-progress-bar__progress {
+    background-color: rgb(209, 76, 76);
+    width: auto;
+}
+
+.unity-progress-bar__background {
+    background-color: rgb(21, 24, 38);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.characterStatsInput {
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    color: rgb(255, 255, 255);
+    margin-left: 0;
+    margin-right: 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-font-style: bold;
+}
