@@ -58,7 +58,7 @@ namespace BattleSystem
 
         public void TakeDamage(int damage)
         {
-            _charStats.currentHealth -= damage;
+            _charStats.currentHealth = Mathf.Clamp(_charStats.currentHealth - damage, 0, _charStats.maxHealth);
             _animation.TakeDamageAnim(this);
 
             if (_charStats.currentHealth <= 0)
@@ -66,7 +66,7 @@ namespace BattleSystem
                 Die();
             }
 
-            if (_unitPanel) _unitPanel.SetHealth(_charStats.currentHealth);
+            _unitPanel?.SetHealth(_charStats.currentHealth);
         }
 
         public void Move(List<OverlayTile> path)
@@ -133,12 +133,10 @@ namespace BattleSystem
 
         public void HealHealth(int amount)
         {
-            _charStats.currentHealth += amount;
+            _charStats.currentHealth = Mathf.Clamp(_charStats.currentHealth + amount, 0, _charStats.maxHealth);
+            _animation.ReceiveHeal(this);
 
-            if (_charStats.currentHealth > _charStats.maxHealth)
-            {
-                _charStats.currentHealth = _charStats.maxHealth;
-            }
+            _unitPanel?.SetHealth(_charStats.currentHealth);
         }
     }
 }
