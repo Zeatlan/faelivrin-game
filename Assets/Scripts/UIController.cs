@@ -77,7 +77,7 @@ namespace BattleSystem
             _characterBox.style.display = DisplayStyle.None;
 
             _endCharacterTurnBtn = _root.Q<Button>("Action__idleCharacter");
-            _endCharacterTurnBtn.RegisterCallback<ClickEvent, string>(SwitchMode, "");
+            _endCharacterTurnBtn.RegisterCallback<ClickEvent, string>(EndCharacterTurn, "");
 
             _skillBtn = _root.Q<Button>("Action__skills");
             _skillBtn.RegisterCallback<ClickEvent, string>(UseSkill, "");

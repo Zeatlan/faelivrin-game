@@ -18,7 +18,6 @@ namespace BattleSystem
         }
 
         public Phase phaseState;
-        [SerializeField] private UIManager _uiManager;
         [SerializeField] private UIController _uiController;
         [SerializeField] private MouseController _mouseController;
         [SerializeField] private CharacterSpawner _characterSpawner;
