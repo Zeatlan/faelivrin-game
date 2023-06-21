@@ -46,6 +46,15 @@ namespace BattleSystem
             _playerUnits = playerUnits;
         }
 
+        /** <summary>
+                <para>
+                [IA AGRESSIVE]
+                </para>
+                Calcule le potentiel pour attaquer, plus ce potentiel est faible dans le scénario, plus il est tenté d'attaquer.
+                Cette méthode se base sur la distance ainsi que la santé du joueur pour attaquer le plus faible et le plus proche.
+            </summary>
+            <param name="player">Quel joueur visons-nous</param>
+        */
         private float CalculateAttackPotential(CharacterInfo player)
         {
             float potential = 0;
@@ -60,15 +69,20 @@ namespace BattleSystem
 
             potential += distance;
 
-            Debug.LogFormat("Potential for {0} : {1}", player.stats.characterName, potential);
             return potential;
         }
 
+        /**
+            <summary>
+                Méthode appelée par les autres méthodes pour faire jouer l'IA.
+            </summary>
+        */
         public void IATurn()
         {
             List<Scenario> scenarios = new List<Scenario>();
             _orderRecorder = new OrderRecorder();
 
+            // Calcul de tous les scénarios
             foreach (CharacterInfo player in _playerUnits)
             {
                 Scenario scenario = new Scenario(
@@ -89,6 +103,7 @@ namespace BattleSystem
 
             _bestScenario = scenarios[0];
 
+            // Jouer le meilleur scénario
             if (_bestScenario.Distance <= _currentUnit.GetStats().atkRange)
             {
                 _tilesViewer.GetAttackableTiles(_currentUnit);
@@ -108,12 +123,16 @@ namespace BattleSystem
             }
         }
 
+        #region Actions toward player
         private void AttackPlayerUnit(CharacterInfo player)
         {
             IOrder attackOrder = new AttackOrder(_currentUnit, player);
             _orderRecorder.AddOrder(attackOrder);
             attackOrder.Execute();
             _phaseManager.PlayAction(_currentUnit, ActionCharacter.Attack);
+
+            _tilesViewer.ResetInRangeTile();
+            _phaseManager.PlayAction(_currentUnit, ActionCharacter.Idle);
         }
 
         private void MoveTowardsPlayerUnit(CharacterInfo player)
@@ -150,8 +169,6 @@ namespace BattleSystem
             PathFinder pathFinder = new PathFinder();
             _path = pathFinder.FindPath(_currentUnit.activeTile, bestTile, new List<OverlayTile>());
 
-            Debug.LogFormat("Best tile : {0}", bestTile.gridLocation);
-
             _moveOrder = new MoveOrder(_currentUnit, _path, () =>
             {
                 OnMovementFinished();
@@ -159,6 +176,7 @@ namespace BattleSystem
             _orderRecorder.AddOrder(_moveOrder);
             _isMoving = true;
         }
+        #endregion
 
         private void OnMovementFinished()
         {
