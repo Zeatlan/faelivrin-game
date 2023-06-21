@@ -12,13 +12,22 @@ namespace BattleSystem.Abilities
         {
             List<CharacterInfo> targetedCharacters = new List<CharacterInfo>();
 
+            // True = Player Unit | False = Ennemy Unit
+            bool isUserAPlayerUnit = MapManager.Instance.GetPlayerUnits().Contains(user);
+
             foreach (OverlayTile tile in targets)
             {
                 CharacterInfo searchCharacter = MapManager.Instance.FindCharacterOnTile(tile);
 
+
                 if (searchCharacter != null)
                 {
-                    targetedCharacters.Add(searchCharacter);
+                    bool isTargetAPlayerUnit = MapManager.Instance.GetPlayerUnits().Contains(searchCharacter);
+
+                    if (isUserAPlayerUnit != isTargetAPlayerUnit)
+                    {
+                        targetedCharacters.Add(searchCharacter);
+                    }
                 }
             }
 
