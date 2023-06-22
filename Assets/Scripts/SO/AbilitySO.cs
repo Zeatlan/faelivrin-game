@@ -20,6 +20,7 @@ namespace BattleSystem.SO
 
     public class AbilitySO : ScriptableObject
     {
+        public Sprite icon;
         public new string name;
         public string description;
         public float efficiencyMultiplicator;

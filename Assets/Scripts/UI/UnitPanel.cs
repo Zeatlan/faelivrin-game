@@ -11,6 +11,7 @@ namespace BattleSystem.UI
     public class UnitPanel : MonoBehaviour
     {
         public UIDocument hud;
+        private Tooltip _tooltip;
 
         #region heathBar
         private HealthBar _healthBar;
@@ -30,15 +31,36 @@ namespace BattleSystem.UI
         private Label _range;
         private Label _atkRange;
         #endregion
+
+        #region Groupboxs
+        private GroupBox _atkGroup;
+        private GroupBox _rangeGroup;
+        private GroupBox _atkRangeGroup;
+        #endregion
+
+
         void Start()
         {
             var root = hud.rootVisualElement;
+            _tooltip = new Tooltip(root);
 
             _healthBar = root.Q<HealthBar>();
 
             _name = root.Q<Label>("Character__name");
 
             _icon = root.Q<IMGUIContainer>("Character__img");
+
+            _atkGroup = root.Q<GroupBox>("Character__Atk");
+            _atkGroup.RegisterCallback<MouseEnterEvent, string>(DisplayTooltip, "Attaque");
+            _atkGroup.RegisterCallback<MouseLeaveEvent>(HideTooltip);
+
+            _rangeGroup = root.Q<GroupBox>("Character__Range");
+            _rangeGroup.RegisterCallback<MouseEnterEvent, string>(DisplayTooltip, "Portée");
+            _rangeGroup.RegisterCallback<MouseLeaveEvent>(HideTooltip);
+
+            _atkRangeGroup = root.Q<GroupBox>("Character__AtkRange");
+            _atkRangeGroup.RegisterCallback<MouseEnterEvent, string>(DisplayTooltip, "Portée d'attaque");
+            _atkRangeGroup.RegisterCallback<MouseLeaveEvent>(HideTooltip);
 
             _atk = root.Q<Label>("Atk__value");
             _range = root.Q<Label>("Range__value");
@@ -78,6 +100,7 @@ namespace BattleSystem.UI
             }
         }
 
+        #region setters
         public void SetMaxHealth(int health)
         {
             _maxHealth = health;
@@ -114,6 +137,22 @@ namespace BattleSystem.UI
         {
             _atkRange.text = atkRange.ToString();
         }
+        #endregion
 
+        #region Tooltip handler
+        private void DisplayTooltip(MouseEnterEvent evt, string message)
+        {
+            Vector2 mousePosition = evt.mousePosition;
+
+            _tooltip.SetOffset(0, 55);
+            _tooltip.ShowTooltip(mousePosition, message);
+            _tooltip.AutoSizeTooltip();
+        }
+
+        private void HideTooltip(MouseLeaveEvent evt)
+        {
+            _tooltip.HideTooltip();
+        }
+        #endregion
     }
 }
