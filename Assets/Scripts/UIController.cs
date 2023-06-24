@@ -119,14 +119,14 @@ namespace BattleSystem
             yield return StartCoroutine(PhaseMovementCoroutine(_enemyPhaseWindow));
         }
 
-        public void VictoryPhaseAnim()
+        public IEnumerator VictoryPhaseAnim()
         {
-            StartCoroutine(PhaseMovementCoroutine(_victoryPhaseWindow));
+            yield return StartCoroutine(PhaseMovementCoroutine(_victoryPhaseWindow));
         }
 
-        public void DefeatPhaseAnim()
+        public IEnumerator DefeatPhaseAnim()
         {
-            StartCoroutine(PhaseMovementCoroutine(_defeatPhaseWindow));
+            yield return StartCoroutine(PhaseMovementCoroutine(_defeatPhaseWindow));
         }
 
         private void ResetPanelPosition(VisualElement phasePanel)

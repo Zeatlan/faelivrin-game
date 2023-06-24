@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+<<<<<<< Updated upstream:Assets/Scripts/PhaseManager.cs
+=======
+using BattleSystem.UI;
+using UnityEngine.SceneManagement;
+>>>>>>> Stashed changes:Assets/Scripts/Battle/PhaseManager.cs
 
 namespace BattleSystem
 {
@@ -38,14 +43,28 @@ namespace BattleSystem
             {
                 if (MapManager.Instance.GetPlayerUnits().Count == 0)
                 {
-                    _uiController.DefeatPhaseAnim();
+                    StartCoroutine(playResult("defeat"));
                 }
 
                 if (MapManager.Instance.GetEnemyUnits().Count == 0)
                 {
-                    _uiController.VictoryPhaseAnim();
+                    StartCoroutine(playResult("victory"));
                 }
             }
+        }
+
+        private IEnumerator playResult(string result)
+        {
+            if (result.Equals("defeat"))
+            {
+                yield return StartCoroutine(_uiController.DefeatPhaseAnim());
+            }
+            else
+            {
+                yield return StartCoroutine(_uiController.VictoryPhaseAnim());
+            }
+
+            SceneManager.LoadScene("MainMenu");
         }
 
         private void RefillPlayableCharacter(List<CharacterInfo> characters)
