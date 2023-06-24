@@ -5,6 +5,7 @@ using System.Linq;
 using BattleSystem.Abilities;
 using BattleSystem.Commands;
 using BattleSystem.SO;
+using BattleSystem.UI;
 using UnityEngine;
 using static BattleSystem.Abilities.AbilityHolder;
 using static BattleSystem.ArrowTranslator;
@@ -105,7 +106,7 @@ namespace BattleSystem
                     moveOrderInit = false;
                     _phaseManager.PlayAction(character, ActionCharacter.Move);
                     SwitchMode();
-                    _uiController.SwitchMode(new UnityEngine.UIElements.ClickEvent(), "");
+                    _uiController.SwitchMode(new UnityEngine.UIElements.ClickEvent());
                     if (tilesViewer.GetPreviewedTiles().Count > 0) tilesViewer.ResetPreviewedTiles();
                     isMoving = false;
                 }

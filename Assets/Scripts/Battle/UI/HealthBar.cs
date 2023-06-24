@@ -81,7 +81,7 @@ namespace BattleSystem.UI
                 healthBarClass.fillType = _fillType.GetValueFromBag(bag, cc);
 
                 healthBarClass.Clear();
-                VisualTreeAsset vt = Resources.Load<VisualTreeAsset>("UI/HealthBar");
+                VisualTreeAsset vt = Resources.Load<VisualTreeAsset>("UI/Battle/HealthBar");
                 VisualElement healthBarElement = vt.Instantiate();
 
                 healthBarClass._healthBarParent = healthBarElement.Q<VisualElement>("Character__healthBar");

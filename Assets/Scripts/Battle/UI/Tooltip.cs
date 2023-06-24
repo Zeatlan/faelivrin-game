@@ -62,7 +62,7 @@ public class Tooltip
     {
         if (_isActive) return;
 
-        VisualTreeAsset vt = Resources.Load<VisualTreeAsset>("UI/Tooltip");
+        VisualTreeAsset vt = Resources.Load<VisualTreeAsset>("UI/Battle/Tooltip");
         _bg = vt.Instantiate();
 
         SetBackground(position);
