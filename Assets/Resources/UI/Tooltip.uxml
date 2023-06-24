@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Tooltip__bg" style="background-color: rgba(22, 22, 31, 0.5); min-width: 50px; min-height: 50px; width: auto; height: auto; max-width: initial; max-height: initial; flex-direction: row; flex-basis: auto; align-items: center; justify-content: flex-start; position: absolute; top: auto;">
+        <ui:IMGUIContainer name="Tooltip__icon" style="width: 45px; height: 45px; margin-left: 2px; margin-top: 2px; background-color: rgba(17, 26, 34, 0.7); justify-content: flex-start; align-items: stretch;" />
+        <ui:VisualElement name="Texts" style="margin-left: 5px; width: 100%; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; justify-content: space-between;">
+            <ui:Label text="Label" display-tooltip-when-elided="true" name="Main__text" style="-unity-font-style: bold; color: rgb(255, 255, 255); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 20px;" />
+            <ui:Label text="Labelrezarezarezarezarezarzearezrezraerezarezarzaerazeraze" display-tooltip-when-elided="true" name="Secondary__text" enable-rich-text="true" style="-unity-font-style: normal; color: rgb(161, 173, 180); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 16px; max-width: 400px; flex-wrap: wrap; white-space: normal;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

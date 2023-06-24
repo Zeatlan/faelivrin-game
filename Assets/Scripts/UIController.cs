@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using BattleSystem.SO;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.UIElements.Experimental;
 
 namespace BattleSystem
 {
@@ -44,11 +44,14 @@ namespace BattleSystem
 
         private VisualElement _root;
 
+        private Tooltip _tooltip;
+
         void Awake()
         {
             LeanTween.init(1000);
 
             _root = _uiDocument.rootVisualElement;
+            _tooltip = new Tooltip(_root);
 
             _prepPhaseWindow = _root.Q<VisualElement>("Phase__prep");
             _playerPhaseWindow = _root.Q<VisualElement>("Phase__player");
@@ -81,6 +84,8 @@ namespace BattleSystem
 
             _skillBtn = _root.Q<Button>("Action__skills");
             _skillBtn.RegisterCallback<ClickEvent, string>(UseSkill, "");
+            _skillBtn.RegisterCallback<MouseEnterEvent>(ShowSkillTooltip);
+            _skillBtn.RegisterCallback<MouseLeaveEvent>(HideSkillTooltip);
 
             _switchModeBtn = _root.Q<Button>("Action__switchMode");
             _switchModeBtn.RegisterCallback<ClickEvent, string>(SwitchMode, "");
@@ -88,6 +93,8 @@ namespace BattleSystem
             _endTurnBtn = _root.Q<Button>("Action__endTurn");
             _endTurnBtn.RegisterCallback<ClickEvent, string>(EndTurn, "");
         }
+
+
         #endregion
 
         private void StartGame(ClickEvent evt, string args)
@@ -220,5 +227,18 @@ namespace BattleSystem
         }
         #endregion
 
+        #region button hovered handlers
+        private void ShowSkillTooltip(MouseEnterEvent evt)
+        {
+            Vector2 mousePosition = evt.mousePosition;
+            AbilitySO playerAbility = _mouseController.character.GetStats().skill;
+            _tooltip.ShowTooltip(mousePosition, playerAbility.name, playerAbility.description, playerAbility.icon);
+        }
+
+        private void HideSkillTooltip(MouseLeaveEvent evt)
+        {
+            _tooltip.HideTooltip();
+        }
+        #endregion
     }
 }

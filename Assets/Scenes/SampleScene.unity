@@ -553,6 +553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiDocument: {fileID: 1593146515}
+  _ability: {fileID: 11400000, guid: a52bbbc4aea05f9499886c7aaf8d828c, type: 2}
   _phaseManager: {fileID: 1363686106}
   _mouseController: {fileID: 129747757}
 --- !u!1 &682458436
@@ -2058,7 +2059,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phaseState: 0
-  _uiManager: {fileID: 0}
   _uiController: {fileID: 528675438}
   _mouseController: {fileID: 129747757}
   _characterSpawner: {fileID: 160786582}
