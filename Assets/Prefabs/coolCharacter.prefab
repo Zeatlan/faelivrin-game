@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 4431755537057064639}
   - component: {fileID: 409437123900460136}
   - component: {fileID: 741402830457365730}
+  - component: {fileID: 4590048890435521666}
   - component: {fileID: 1449679421871208670}
+  - component: {fileID: 9044725216746501777}
   m_Layer: 0
   m_Name: coolCharacter
   m_TagString: Untagged
@@ -28,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6022562023336559474}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.796, y: -0.19690003, z: 2}
+  m_LocalPosition: {x: -4.796, y: -0.19690003, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -55,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 26ded62a3d42f2c40aedd000a497240c, type: 3}
+  m_Sprite: {fileID: -1315897692, guid: 0fd6df50339775649adcfbf9f8857678, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,12 +103,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activeTile: {fileID: 0}
   stats: {fileID: 11400000, guid: 7f7e627299ca01c4e82366063809594a, type: 2}
+  _characterMovement: {fileID: 4590048890435521666}
   _charStats:
     maxHealth: 0
     currentHealth: 0
     attack: 0
     range: 0
     atkRange: 0
+    skill: {fileID: 0}
 --- !u!114 &741402830457365730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,8 +125,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageLeanDuration: 0.3
   _maxDamageLeanAngle: -15
+  _jumpDuration: 0.3
   _dieLeanDuration: 0.7
   _maxDieLeanAngle: -90
+--- !u!114 &4590048890435521666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022562023336559474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4767eac67fadeb24aa8aafe7b4dc745c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 4431755537057064639}
+  _swSprites:
+  - {fileID: -1315897692, guid: 0fd6df50339775649adcfbf9f8857678, type: 3}
+  _seSprites:
+  - {fileID: 614601211, guid: 0fd6df50339775649adcfbf9f8857678, type: 3}
+  _neSprites:
+  - {fileID: 1850320528, guid: 0fd6df50339775649adcfbf9f8857678, type: 3}
+  _nwSprites:
+  - {fileID: 496606712, guid: 0fd6df50339775649adcfbf9f8857678, type: 3}
 --- !u!114 &1449679421871208670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,4 +161,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5b5385cf1fa9254aa4bab609e9ce250, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ability: {fileID: 11400000, guid: 4a3bf1cba45a75845a75849ab8033153, type: 2}
+--- !u!114 &9044725216746501777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022562023336559474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShadowGroup: 0
+  m_ComponentVersion: 1
+  m_HasRenderer: 1
+  m_UseRendererSilhouette: 1
+  m_CastsShadows: 1
+  m_SelfShadows: 0
+  m_ApplyToSortingLayers: 00000000
+  m_ShapePath:
+  - {x: -0.07755852, y: 0.03870012, z: 0}
+  - {x: -0.04863882, y: 0.07095921, z: 0}
+  - {x: 0.021708012, y: 0.086307004, z: 0}
+  - {x: 0.078645706, y: 0.06350574, z: 0}
+  - {x: 0.08621693, y: -0.0015674084, z: 0}
+  - {x: 0.074765205, y: -0.045573667, z: 0}
+  - {x: 0.0030999184, y: -0.041663885, z: 0}
+  - {x: -0.06998968, y: -0.023195997, z: 0}
+  m_ShapePathHash: 682388301
+  m_Mesh: {fileID: 0}
+  m_InstanceId: 86758

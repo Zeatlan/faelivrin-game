@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: DemoBattle
   m_EditorClassIdentifier: 
   playerPossiblePos:
-  - {x: -5, y: 2, z: 1}
-  - {x: -5, y: 3, z: 1}
-  - {x: -5, y: 4, z: 1}
-  - {x: -6, y: 3, z: 1}
+  - {x: -3, y: -25, z: 4}
+  - {x: -3, y: -24, z: 4}
+  - {x: -4, y: -24, z: 4}
+  - {x: -4, y: -25, z: 4}
   ennemiesSpawnPos:
-  - {x: -4, y: 3, z: 1}
+  - {x: -8, y: -31, z: 1}
   ennemies:
   - {fileID: 409437123900460136, guid: 9b271bf5533b5804a85ecbf762e2373b, type: 3}

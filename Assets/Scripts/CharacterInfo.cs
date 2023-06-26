@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BattleSystem.SO;
 using BattleSystem.UI;
 using UnityEngine;
+using static BattleSystem.CharacterMovement;
 
 namespace BattleSystem
 {
@@ -24,6 +25,7 @@ namespace BattleSystem
 
         private UnitPanel _unitPanel;
         private Stats _statsUI;
+        [SerializeField] private CharacterMovement _characterMovement;
 
         [SerializeField] private CharStats _charStats;
         private bool _canAttack;
@@ -74,9 +76,34 @@ namespace BattleSystem
             float step = _speed * Time.deltaTime;
             float zIndex = path[0].transform.position.z;
 
+            Vector3 targetPosition = path[0].transform.position;
+            Vector3 direction = targetPosition - transform.position;
+
             activeTile.isBlocked = false;
             transform.position = Vector2.MoveTowards(transform.position, path[0].transform.position, step);
             transform.position = new Vector3(transform.position.x, transform.position.y, zIndex);
+
+            // Détermine la direction relative
+            if (direction.x > 0 && direction.y > 0)
+            {
+                // Cible au nord-est
+                _characterMovement.Direction = CharacterDirection.NorthEast;
+            }
+            else if (direction.x < 0 && direction.y > 0)
+            {
+                // Cible au nord-ouest
+                _characterMovement.Direction = CharacterDirection.NorthWest;
+            }
+            else if (direction.x < 0 && direction.y < 0)
+            {
+                // Cible au sud-ouest
+                _characterMovement.Direction = CharacterDirection.SouthWest;
+            }
+            else if (direction.x > 0 && direction.y < 0)
+            {
+                // Cible au sud-est
+                _characterMovement.Direction = CharacterDirection.SouthEast;
+            }
 
             if (Vector2.Distance(transform.position, path[0].transform.position) < 0.0001f)
             {

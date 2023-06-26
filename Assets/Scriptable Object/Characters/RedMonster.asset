@@ -17,4 +17,5 @@ MonoBehaviour:
   baseAttack: 25
   baseRange: 3
   baseAtkRange: 1
-  icon: {fileID: 21300000, guid: 01654de3ccf039348bc07f369e2e40c4, type: 3}
+  icon: {fileID: -1051742912, guid: 9f557c672eb300247ab713b9bd5afbb8, type: 3}
+  skill: {fileID: 0}

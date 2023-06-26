@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae493b3358f9cf74e8fca8871cefc0a4, type: 3}
   m_Name: SecondCharacter
   m_EditorClassIdentifier: 
-  characterName: Elfe
+  characterName: Lune
   baseHealth: 15
   baseAttack: 1
   baseRange: 4
   baseAtkRange: 3
-  icon: {fileID: 21300000, guid: e0a73995203a7f24ab1d5ae57ebd1fe8, type: 3}
+  icon: {fileID: -2033850125, guid: 797c624da1bf44845be9e70f594530c6, type: 3}
   skill: {fileID: 11400000, guid: a52bbbc4aea05f9499886c7aaf8d828c, type: 2}
