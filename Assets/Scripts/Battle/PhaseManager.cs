@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-<<<<<<< Updated upstream:Assets/Scripts/PhaseManager.cs
-=======
 using BattleSystem.UI;
 using UnityEngine.SceneManagement;
->>>>>>> Stashed changes:Assets/Scripts/Battle/PhaseManager.cs
 
 namespace BattleSystem
 {

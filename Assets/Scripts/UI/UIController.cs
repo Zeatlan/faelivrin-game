@@ -5,7 +5,7 @@ using BattleSystem.SO;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace BattleSystem
+namespace BattleSystem.UI
 {
     public class UIController : MonoBehaviour
     {
@@ -68,7 +68,7 @@ namespace BattleSystem
         {
             _prepPhase = _root.Q<VisualElement>("Prep__phase");
             _readyButton = _root.Q<Button>("Button__ready");
-            _readyButton.RegisterCallback<ClickEvent, string>(StartGame, "");
+            _readyButton.RegisterCallback<ClickEvent>(StartGame);
         }
 
         private void InitializePlayerPhase()
@@ -80,27 +80,30 @@ namespace BattleSystem
             _characterBox.style.display = DisplayStyle.None;
 
             _endCharacterTurnBtn = _root.Q<Button>("Action__idleCharacter");
-            _endCharacterTurnBtn.RegisterCallback<ClickEvent, string>(EndCharacterTurn, "");
+            _endCharacterTurnBtn.RegisterCallback<ClickEvent>(EndCharacterTurn);
 
             _skillBtn = _root.Q<Button>("Action__skills");
-            _skillBtn.RegisterCallback<ClickEvent, string>(UseSkill, "");
+            _skillBtn.RegisterCallback<ClickEvent>(UseSkill);
             _skillBtn.RegisterCallback<MouseEnterEvent>(ShowSkillTooltip);
             _skillBtn.RegisterCallback<MouseLeaveEvent>(HideSkillTooltip);
 
             _switchModeBtn = _root.Q<Button>("Action__switchMode");
-            _switchModeBtn.RegisterCallback<ClickEvent, string>(SwitchMode, "");
+            _switchModeBtn.RegisterCallback<ClickEvent>(SwitchMode);
 
             _endTurnBtn = _root.Q<Button>("Action__endTurn");
-            _endTurnBtn.RegisterCallback<ClickEvent, string>(EndTurn, "");
+            _endTurnBtn.RegisterCallback<ClickEvent>(EndTurn);
         }
 
 
         #endregion
 
-        private void StartGame(ClickEvent evt, string args)
+        private void StartGame(ClickEvent evt)
         {
-            HideStartingUI();
-            _phaseManager.StartTheGame();
+            if (MapManager.Instance.GetPlayerUnits().Count > 0)
+            {
+                HideStartingUI();
+                _phaseManager.StartTheGame();
+            }
         }
 
         #region Phase transitions
@@ -119,14 +122,14 @@ namespace BattleSystem
             yield return StartCoroutine(PhaseMovementCoroutine(_enemyPhaseWindow));
         }
 
-        public IEnumerator VictoryPhaseAnim()
+        public void VictoryPhaseAnim()
         {
-            yield return StartCoroutine(PhaseMovementCoroutine(_victoryPhaseWindow));
+            StartCoroutine(PhaseMovementCoroutine(_victoryPhaseWindow));
         }
 
-        public IEnumerator DefeatPhaseAnim()
+        public void DefeatPhaseAnim()
         {
-            yield return StartCoroutine(PhaseMovementCoroutine(_defeatPhaseWindow));
+            StartCoroutine(PhaseMovementCoroutine(_defeatPhaseWindow));
         }
 
         private void ResetPanelPosition(VisualElement phasePanel)
@@ -201,7 +204,7 @@ namespace BattleSystem
             _switchModeBtn.text = "Déplacer";
         }
 
-        public void SwitchMode(ClickEvent evt, string args)
+        public void SwitchMode(ClickEvent evt)
         {
             _mouseController.SwitchMode();
 
@@ -211,17 +214,17 @@ namespace BattleSystem
                 SetModeTextToMove();
         }
 
-        private void UseSkill(ClickEvent evt, string args)
+        private void UseSkill(ClickEvent evt)
         {
             _mouseController.EnterSkillMode();
         }
 
-        private void EndCharacterTurn(ClickEvent evt, string args)
+        private void EndCharacterTurn(ClickEvent evt)
         {
             _phaseManager.EndCharacterTurn();
         }
 
-        private void EndTurn(ClickEvent evt, string args)
+        private void EndTurn(ClickEvent evt)
         {
             _phaseManager.EndTurn();
         }
