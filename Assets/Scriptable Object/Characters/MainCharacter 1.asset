@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae493b3358f9cf74e8fca8871cefc0a4, type: 3}
   m_Name: MainCharacter 1
   m_EditorClassIdentifier: 
+<<<<<<< HEAD
   characterName: Euphelia
   baseHealth: 50
   baseAttack: 5
+=======
+  characterName: Tudors
+  baseHealth: 25
+  baseAttack: 2
+>>>>>>> feat/battle-system
   baseRange: 3
   baseAtkRange: 1
   icon: {fileID: -1315897692, guid: 0fd6df50339775649adcfbf9f8857678, type: 3}
