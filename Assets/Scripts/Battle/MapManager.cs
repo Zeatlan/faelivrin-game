@@ -248,7 +248,8 @@ namespace BattleSystem
         public void PositionCharacterOnTile(OverlayTile tile, CharacterInfo character)
         {
             if (character.activeTile) tile.SetBlocked(false);
-            character.transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y + 0.0001f, tile.transform.position.z);
+
+            character.transform.position = new Vector3(tile.transform.position.x, tile.transform.position.y + 0.0001f, tile.transform.position.z + 5);
             character.GetComponent<SpriteRenderer>().sortingOrder = tile.GetComponent<SpriteRenderer>().sortingOrder;
             character.activeTile = tile;
             tile.SetBlocked(true);
