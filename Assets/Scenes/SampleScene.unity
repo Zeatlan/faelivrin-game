@@ -549,11 +549,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 528675436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32f6d42feb3e47a42af179c83a53210b, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f12ffe613d7c8f419af4bbe8b387cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _uiDocument: {fileID: 1593146515}
-  _ability: {fileID: 11400000, guid: a52bbbc4aea05f9499886c7aaf8d828c, type: 2}
   _phaseManager: {fileID: 1363686106}
   _mouseController: {fileID: 129747757}
 --- !u!1 &682458436
