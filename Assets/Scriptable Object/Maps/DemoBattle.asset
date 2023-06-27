@@ -18,10 +18,6 @@ MonoBehaviour:
   - {x: -4, y: -24, z: 4}
   - {x: -4, y: -25, z: 4}
   ennemiesSpawnPos:
-<<<<<<< HEAD
   - {x: -8, y: -31, z: 1}
-=======
-  - {x: 3, y: 0, z: 1}
->>>>>>> feat/battle-system
   ennemies:
   - {fileID: 409437123900460136, guid: 9b271bf5533b5804a85ecbf762e2373b, type: 3}

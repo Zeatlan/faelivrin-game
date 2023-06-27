@@ -12,15 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae493b3358f9cf74e8fca8871cefc0a4, type: 3}
   m_Name: SecondCharacter
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   characterName: Lune
   baseHealth: 15
   baseAttack: 1
-=======
-  characterName: Elfe
-  baseHealth: 10
-  baseAttack: 5
->>>>>>> feat/battle-system
   baseRange: 4
   baseAtkRange: 3
   icon: {fileID: -2033850125, guid: 797c624da1bf44845be9e70f594530c6, type: 3}

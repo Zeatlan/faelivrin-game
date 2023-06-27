@@ -137,7 +137,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6022562023336559474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4767eac67fadeb24aa8aafe7b4dc745c, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c7ff02806dc929438d371dd7a82cd70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 4431755537057064639}
@@ -189,4 +189,4 @@ MonoBehaviour:
   - {x: 0.18170214, y: -0.07070255, z: 0}
   m_ShapePathHash: -1397293315
   m_Mesh: {fileID: 0}
-  m_InstanceId: 38056
+  m_InstanceId: 38010
