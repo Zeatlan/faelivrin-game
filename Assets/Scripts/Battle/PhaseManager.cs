@@ -30,8 +30,8 @@ namespace BattleSystem
         // Start is called before the first frame update
         void Start()
         {
+            isGamePaused = true;
             phaseState = Phase.Start;
-            _uiController.StartingPhaseAnim();
         }
 
         void Update()

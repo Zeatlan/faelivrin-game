@@ -32,10 +32,10 @@ namespace BattleSystem
         public void Start()
         {
             _root = hud.rootVisualElement;
-            _unitPortraitHUD = _root.Q<VisualElement>("Units__portrait");
-            _unitPortraitsList = new List<UnitPortrait>();
-            UpdateCursor(0);
-            GenerateCharacterListUI();
+            /*             _unitPortraitHUD = _root.Q<VisualElement>("Units__portrait");
+                        _unitPortraitsList = new List<UnitPortrait>();
+                        UpdateCursor(0);
+                        GenerateCharacterListUI(); */
         }
 
         public void Update()
