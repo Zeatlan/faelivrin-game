@@ -208,9 +208,9 @@ namespace BattleSystem.UI
         {
             _mouseController.SwitchMode();
 
-            if (_mouseController.character.CanMove() && !_mouseController.isAtkMode)
+            if (_mouseController.character.character.CanMove && !_mouseController.isAtkMode)
                 SetModeTextToAtk();
-            else if (_mouseController.character.CanAttack() && _mouseController.isAtkMode)
+            else if (_mouseController.character.character.CanAttack && _mouseController.isAtkMode)
                 SetModeTextToMove();
         }
 
@@ -234,7 +234,7 @@ namespace BattleSystem.UI
         private void ShowSkillTooltip(MouseEnterEvent evt)
         {
             Vector2 mousePosition = evt.mousePosition;
-            AbilitySO playerAbility = _mouseController.character.GetStats().skill;
+            AbilitySO playerAbility = _mouseController.character.stats.skill;
             _tooltip.ShowTooltip(mousePosition, playerAbility.name, playerAbility.description, playerAbility.icon);
         }
 

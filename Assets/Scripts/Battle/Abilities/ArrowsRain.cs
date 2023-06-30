@@ -1,24 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using BattleSystem.Character;
 using BattleSystem.SO;
 using UnityEngine;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem.Abilities
 {
     [CreateAssetMenu(fileName = "Arrows rain", menuName = "Game/Battle/Abilities/ArrowsRain")]
     public class ArrowsRain : AbilitySO
     {
-        public override bool ExecuteMultipleTarget(CharacterInfo user, List<OverlayTile> targets)
+        public override bool ExecuteMultipleTarget(CharacterBase user, List<OverlayTile> targets)
         {
-            List<CharacterInfo> targetedCharacters = new List<CharacterInfo>();
+            List<CharacterBase> targetedCharacters = new List<CharacterBase>();
 
             // True = Player Unit | False = Ennemy Unit
-            bool isUserAPlayerUnit = MapManager.Instance.GetPlayerUnits().Contains(user);
+            bool isUserAPlayerUnit = MapManager.Instance.GetPlayerUnits().Contains(user.GetComponent<CharacterInfo>());
 
             foreach (OverlayTile tile in targets)
             {
                 CharacterInfo searchCharacter = MapManager.Instance.FindCharacterOnTile(tile);
-
 
                 if (searchCharacter != null)
                 {
@@ -26,18 +27,18 @@ namespace BattleSystem.Abilities
 
                     if (isUserAPlayerUnit != isTargetAPlayerUnit)
                     {
-                        targetedCharacters.Add(searchCharacter);
+                        targetedCharacters.Add(searchCharacter.GetComponent<CharacterBase>());
                     }
                 }
             }
 
             if (targetedCharacters.Count == 0) return false;
 
-            int totalDamage = Mathf.FloorToInt(user.GetStats().attack * efficiencyMultiplicator);
+            int totalDamage = Mathf.FloorToInt(user.stats.physicalDamage * efficiencyMultiplicator);
 
-            foreach (CharacterInfo unit in targetedCharacters)
+            foreach (CharacterBase unit in targetedCharacters)
             {
-                unit.TakeDamage(totalDamage);
+                unit.TakeDamage(totalDamage, DamageType.Physical);
             }
 
             return true;

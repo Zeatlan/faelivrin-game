@@ -1,20 +1,22 @@
 
+using BattleSystem.Character;
+
 namespace BattleSystem.Commands
 {
     public class AttackOrder : IOrder
     {
-        private readonly CharacterInfo _character;
-        private readonly CharacterInfo _target;
+        private readonly CharacterBase _character;
+        private readonly CharacterBase _target;
 
         private int _damageAmount;
         private bool _isExecuted;
 
-        public AttackOrder(CharacterInfo character, CharacterInfo target)
+        public AttackOrder(CharacterBase character, CharacterBase target)
         {
             _character = character;
             _target = target;
 
-            _damageAmount = _character.GetStats().attack;
+            _damageAmount = _character.stats.physicalDamage;
             _isExecuted = false;
         }
 

@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using BattleSystem.Character;
 using BattleSystem.SO;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace BattleSystem.Abilities
 {
@@ -23,7 +23,7 @@ namespace BattleSystem.Abilities
 
         void Start()
         {
-            _ability = GetComponent<CharacterInfo>().GetStats().skill;
+            _ability = GetComponent<CharacterBase>().stats.skill;
         }
 
         private void OnEnable()
@@ -40,7 +40,7 @@ namespace BattleSystem.Abilities
         {
             if (CurrentState != AbilityState.ready) return;
 
-            bool executed = Ability.Execute(GetComponent<CharacterInfo>(), target);
+            bool executed = Ability.Execute(GetComponent<CharacterBase>(), target);
             if (executed)
                 SetOnCooldown();
         }
@@ -49,7 +49,7 @@ namespace BattleSystem.Abilities
         {
             if (CurrentState != AbilityState.ready) return;
 
-            bool executed = Ability.ExecuteMultipleTarget(GetComponent<CharacterInfo>(), targets);
+            bool executed = Ability.ExecuteMultipleTarget(GetComponent<CharacterBase>(), targets);
 
             if (executed)
                 SetOnCooldown();

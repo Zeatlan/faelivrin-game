@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using BattleSystem.SO;
 using UnityEngine;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem
 {
@@ -25,7 +26,7 @@ namespace BattleSystem
         {
             ResetInRangeTile();
 
-            _inRangeTiles = _rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().range);
+            _inRangeTiles = _rangeFinder.GetTilesInRange(character.activeTile, character.character.stats.range);
 
             foreach (OverlayTile item in _inRangeTiles)
             {
@@ -37,7 +38,7 @@ namespace BattleSystem
         {
             ResetInRangeTile();
 
-            _inRangeTiles = _rangeFinder.GetTilesInRange(character.activeTile, character.GetStats().atkRange, true);
+            _inRangeTiles = _rangeFinder.GetTilesInRange(character.activeTile, character.character.stats.atkRange, true);
 
             foreach (OverlayTile tile in _inRangeTiles)
             {
@@ -49,7 +50,7 @@ namespace BattleSystem
         {
             ResetPreviewedTiles();
 
-            _previewedTiles = _rangeFinder.GetTilesInRange(startingTile, character.GetStats().atkRange, true);
+            _previewedTiles = _rangeFinder.GetTilesInRange(startingTile, character.character.stats.atkRange, true);
 
             foreach (OverlayTile tile in _previewedTiles)
             {
@@ -87,7 +88,7 @@ namespace BattleSystem
 
             ResetInRangeTile();
 
-            AbilitySO skill = character.GetStats().skill;
+            AbilitySO skill = character.character.stats.skill;
             _inRangeTiles = _rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
 
             foreach (OverlayTile tile in _inRangeTiles)
@@ -110,13 +111,13 @@ namespace BattleSystem
 
             Vector2Int relativePos = overlayTile.grid2DLocation - character.activeTile.grid2DLocation;
 
-            int atkRange = character.GetStats().atkRange - 1;
+            int atkRange = character.character.stats.atkRange - 1;
 
             Vector2Int gridPos = new Vector2Int(Mathf.Clamp(relativePos.x, -atkRange, atkRange), Mathf.Clamp(relativePos.y, -atkRange, atkRange));
 
             ResetInRangeTile();
 
-            AbilitySO skill = character.GetStats().skill;
+            AbilitySO skill = character.character.stats.skill;
             _inRangeTiles = _rangeFinder.GetSkillRange(character.activeTile, skill, gridPos);
 
             foreach (OverlayTile tile in _inRangeTiles)

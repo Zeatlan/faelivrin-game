@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BattleSystem
+namespace BattleSystem.Character
 {
     public class CharacterAnimation : MonoBehaviour
     {
@@ -19,7 +19,7 @@ namespace BattleSystem
         private LTDescr _leanTweenDescription;
 
         #region Take Damage
-        public void TakeDamageAnim(CharacterInfo character)
+        public void TakeDamageAnim(CharacterBase character)
         {
             _sprite = character.GetComponent<SpriteRenderer>();
 
@@ -51,7 +51,7 @@ namespace BattleSystem
         #endregion
 
         #region Receive heal
-        public void ReceiveHeal(CharacterInfo character)
+        public void ReceiveHeal(CharacterBase character)
         {
             _sprite = character.GetComponent<SpriteRenderer>();
 
@@ -89,7 +89,7 @@ namespace BattleSystem
         #endregion
 
         #region Die
-        public void DieAnim(CharacterInfo character)
+        public void DieAnim(CharacterBase character)
         {
             _sprite = character.GetComponent<SpriteRenderer>();
 

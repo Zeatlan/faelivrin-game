@@ -6,6 +6,7 @@ using BattleSystem.UI;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static BattleSystem.PhaseManager;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem
 {

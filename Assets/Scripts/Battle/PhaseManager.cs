@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using BattleSystem.UI;
 using UnityEngine.SceneManagement;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem
 {
@@ -94,7 +95,7 @@ namespace BattleSystem
 
             foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
             {
-                character.SetActive();
+                character.character.SetActive();
             }
 
             _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
@@ -161,8 +162,8 @@ namespace BattleSystem
         {
             foreach (CharacterInfo character in MapManager.Instance.GetPlayableUnits())
             {
-                character.SetCanAttack(true);
-                character.SetCanMove(true);
+                character.character.CanAttack = true;
+                character.character.CanMove = true;
             }
         }
 
@@ -171,14 +172,14 @@ namespace BattleSystem
             switch (action)
             {
                 case ActionCharacter.Attack:
-                    character.SetCanAttack(false);
+                    character.character.CanAttack = false;
                     break;
                 case ActionCharacter.Move:
-                    character.SetCanMove(false);
+                    character.character.CanMove = false;
                     break;
                 case ActionCharacter.Idle:
-                    character.SetCanAttack(false);
-                    character.SetCanMove(false);
+                    character.character.CanAttack = false;
+                    character.character.CanMove = false;
                     break;
                 default:
                     return;
@@ -186,7 +187,7 @@ namespace BattleSystem
 
             MapManager.Instance.HideAllTiles();
 
-            if (!character.CanAttack() && !character.CanMove())
+            if (!character.character.CanAttack && !character.character.CanMove)
                 MapManager.Instance.RemovePlayableUnit(character);
 
             if (MapManager.Instance.GetPlayableUnits().Count == 0)
@@ -196,7 +197,7 @@ namespace BattleSystem
             else
             {
 
-                if (!character.CanAttack() && !character.CanMove())
+                if (!character.character.CanAttack && !character.character.CanMove)
                 {
                     _mouseController.SwitchCharacter(MapManager.Instance.GetPlayableUnits()[0]);
                     character.DisplayInfo();

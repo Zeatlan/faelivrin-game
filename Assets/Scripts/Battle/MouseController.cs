@@ -10,6 +10,7 @@ using UnityEngine;
 using static BattleSystem.Abilities.AbilityHolder;
 using static BattleSystem.ArrowTranslator;
 using static BattleSystem.PhaseManager;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem
 {
@@ -81,7 +82,7 @@ namespace BattleSystem
 
                 if (_phaseManager.phaseState == Phase.PlayerTurn)
                 {
-                    if (!isAtkMode && !isMoving && character.CanMove())
+                    if (!isAtkMode && !isMoving && character.character.CanMove)
                     {
                         tilesViewer.GetInRangeTiles(character);
                         HandleArrowDisplay(overlayTile);
@@ -135,7 +136,7 @@ namespace BattleSystem
             isSkillLineMode = false;
             isDynamicSkill = false;
             isSkillMode = false;
-            isAtkMode = (character.CanMove()) ? false : true;
+            isAtkMode = (character.character.CanMove) ? false : true;
 
             if (isAtkMode) tilesViewer.GetAttackableTiles(character);
             else tilesViewer.GetInRangeTiles(character);
@@ -154,12 +155,12 @@ namespace BattleSystem
             isDynamicSkill = false;
             isAtkMode = !isAtkMode;
 
-            if (character.CanMove() || character.CanAttack())
+            if (character.character.CanMove || character.character.CanAttack)
             {
                 tilesViewer.ResetInRangeTile();
                 tilesViewer.ResetPreviewedTiles();
 
-                if (character.CanMove())
+                if (character.character.CanMove)
                 {
                     if (!isAtkMode) tilesViewer.GetInRangeTiles(character);
                 }
@@ -168,7 +169,7 @@ namespace BattleSystem
                     isAtkMode = true;
                 }
 
-                if (character.CanAttack())
+                if (character.character.CanAttack)
                 {
                     if (isAtkMode) tilesViewer.GetAttackableTiles(character);
                 }
@@ -187,7 +188,7 @@ namespace BattleSystem
             tilesViewer.ResetInRangeTile();
             tilesViewer.ResetPreviewedTiles();
 
-            if (character.CanMove())
+            if (character.character.CanMove)
             {
                 _uiController.SetModeTextToAtk();
                 tilesViewer.GetInRangeTiles(character);
@@ -244,7 +245,7 @@ namespace BattleSystem
 
                 if (_phaseManager.phaseState == Phase.PlayerTurn)
                 {
-                    if (character.CanMove() || character.CanAttack()) ClickOnMap(overlayTile);
+                    if (character.character.CanMove || character.character.CanAttack) ClickOnMap(overlayTile);
                     if (overlayTile.isBlocked && !overlayTile.isAttackableTile) ClickOnCharacter(overlayTile);
                 }
             }
@@ -261,11 +262,11 @@ namespace BattleSystem
                     ResetMode();
                 }
 
-                if (overlayTile.isAttackableTile && character.CanAttack())
+                if (overlayTile.isAttackableTile && character.character.CanAttack)
                 {
                     AttackCharacterOnTile(overlayTile);
                 }
-                else if (!overlayTile.isBlocked && character.CanMove())
+                else if (!overlayTile.isBlocked && character.character.CanMove)
                 {
                     _clickedTile = overlayTile;
                     isMoving = true;
@@ -282,7 +283,7 @@ namespace BattleSystem
 
                 if (isSkillMode && character.gameObject.GetComponent<AbilityHolder>().CurrentState != AbilityState.ready) return;
 
-                IOrder attackOrder = new AttackOrder(character, targetCharacter);
+                IOrder attackOrder = new AttackOrder(character.character, targetCharacter.character);
                 _orderRecorder.AddOrder(attackOrder);
                 _phaseManager.PlayAction(character, ActionCharacter.Attack);
 
@@ -300,7 +301,7 @@ namespace BattleSystem
                     ResetMode();
                 }
 
-                if (targetCharacter.GetStats().currentHealth <= 0)
+                if (targetCharacter.character.stats.currentHealth <= 0)
                 {
                     overlayTile.isAttackableTile = false;
                     overlayTile.isBlocked = false;
@@ -321,7 +322,7 @@ namespace BattleSystem
             {
                 clickedCharacter.DisplayInfo();
 
-                if (MapManager.Instance.GetPlayerUnits().Contains(clickedCharacter) && (clickedCharacter.CanMove() || clickedCharacter.CanAttack()))
+                if (MapManager.Instance.GetPlayerUnits().Contains(clickedCharacter) && (clickedCharacter.character.CanMove || clickedCharacter.character.CanAttack))
                 {
                     character = clickedCharacter;
                     SwitchCharacter();
@@ -351,10 +352,10 @@ namespace BattleSystem
             if (abilityHolder.CurrentState != AbilityState.ready) return;
             ResetMode();
 
-            isSkillMode = (character.CanAttack()) ? true : false;
+            isSkillMode = (character.character.CanAttack) ? true : false;
             isAtkMode = true;
 
-            AbilitySO userAbility = character.GetComponent<CharacterInfo>().GetStats().skill;
+            AbilitySO userAbility = character.GetComponent<CharacterInfo>().character.stats.skill;
             tilesViewer.GetSkillTiles(character, userAbility);
 
             if (userAbility.rangeType == RangeType.Line)

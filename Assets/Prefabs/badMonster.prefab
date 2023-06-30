@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7875414144489794994}
   - component: {fileID: 4431755537057064639}
-  - component: {fileID: 409437123900460136}
-  - component: {fileID: 6381879358611343180}
-  - component: {fileID: 4550623940046501826}
+  - component: {fileID: 2836916673042098747}
+  - component: {fileID: 7035054180988278056}
+  - component: {fileID: 5252390252788844878}
+  - component: {fileID: 1026138936519465756}
   - component: {fileID: -8072121604913736124}
   - component: {fileID: 2319234186305819545}
   m_Layer: 0
@@ -89,7 +90,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &409437123900460136
+--- !u!114 &2836916673042098747
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -98,20 +99,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 6022562023336559474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ce2fef39f4982d4db326cbaea711273, type: 3}
+  m_Script: {fileID: 11500000, guid: f6ee2fd76e4177a4684753688f2b00ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   activeTile: {fileID: 0}
   stats: {fileID: 11400000, guid: 4eff077ab40013842840c91ffa505d5e, type: 2}
-  _characterMovement: {fileID: 4550623940046501826}
-  _charStats:
-    maxHealth: 0
-    currentHealth: 0
-    attack: 0
-    range: 0
-    atkRange: 0
-    skill: {fileID: 0}
---- !u!114 &6381879358611343180
+  characterMovement: {fileID: 7035054180988278056}
+  character: {fileID: 5252390252788844878}
+--- !u!114 &7035054180988278056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,24 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6022562023336559474}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edb48d8c4b689148960fa4aeb08f74c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _damageLeanDuration: 0.3
-  _maxDamageLeanAngle: -15
-  _jumpDuration: 0.3
-  _dieLeanDuration: 0.7
-  _maxDieLeanAngle: -90
---- !u!114 &4550623940046501826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6022562023336559474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c7ff02806dc929438d371dd7a82cd70, type: 3}
+  m_Script: {fileID: 11500000, guid: e5d834ce0e80353478ed6792e92ef872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 4431755537057064639}
@@ -149,6 +127,35 @@ MonoBehaviour:
   - {fileID: 1653752039, guid: 9f557c672eb300247ab713b9bd5afbb8, type: 3}
   _nwSprites:
   - {fileID: 925307970, guid: 9f557c672eb300247ab713b9bd5afbb8, type: 3}
+--- !u!114 &5252390252788844878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022562023336559474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 955532b781a552844a10bfbe966de9ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1026138936519465756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6022562023336559474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a3d2418a24ac14cba109c6cabc090a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _damageLeanDuration: 0.3
+  _maxDamageLeanAngle: -15
+  _jumpDuration: 0.3
+  _dieLeanDuration: 0.7
+  _maxDieLeanAngle: -90
 --- !u!114 &-8072121604913736124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,4 +196,4 @@ MonoBehaviour:
   - {x: 0.18170214, y: -0.07070255, z: 0}
   m_ShapePathHash: -1397293315
   m_Mesh: {fileID: 0}
-  m_InstanceId: 38010
+  m_InstanceId: 38702
