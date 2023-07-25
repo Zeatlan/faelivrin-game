@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using BattleSystem.Character;
 using BattleSystem.Commands;
 using UnityEngine;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem
 {
@@ -59,11 +61,11 @@ namespace BattleSystem
         {
             float potential = 0;
 
-            float baseAttack = _currentUnit.GetStats().attack;
+            float baseAttack = _currentUnit.character.stats.physicalDamage + _currentUnit.character.stats.magicalDamage;
 
             float distance = Vector3.Distance(transform.position, player.transform.position);
 
-            float playerHealth = player.GetStats().currentHealth;
+            float playerHealth = player.character.stats.currentHealth;
 
             potential -= baseAttack * playerHealth;
 
@@ -88,7 +90,7 @@ namespace BattleSystem
                 Scenario scenario = new Scenario(
                     player,
                     Vector3.Distance(transform.position, player.transform.position),
-                    player.GetStats().currentHealth
+                    player.character.stats.currentHealth
                 );
 
                 scenario.atkPotential = CalculateAttackPotential(player);
@@ -104,7 +106,7 @@ namespace BattleSystem
             _bestScenario = scenarios[0];
 
             // Jouer le meilleur scénario
-            if (_bestScenario.Distance <= _currentUnit.GetStats().atkRange)
+            if (_bestScenario.Distance <= _currentUnit.character.stats.atkRange)
             {
                 _tilesViewer.GetAttackableTiles(_currentUnit);
 
@@ -126,7 +128,7 @@ namespace BattleSystem
         #region Actions toward player
         private void AttackPlayerUnit(CharacterInfo player)
         {
-            IOrder attackOrder = new AttackOrder(_currentUnit, player);
+            IOrder attackOrder = new AttackOrder(_currentUnit.GetComponent<CharacterBase>(), player.GetComponent<CharacterBase>());
             _orderRecorder.AddOrder(attackOrder);
             attackOrder.Execute();
             _phaseManager.PlayAction(_currentUnit, ActionCharacter.Attack);

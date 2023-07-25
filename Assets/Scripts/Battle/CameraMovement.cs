@@ -7,20 +7,26 @@ namespace BattleSystem
 {
     public class CameraMovement : MonoBehaviour
     {
-        [SerializeField]
-        private Camera _cam;
+        [SerializeField] private Camera _cam;
 
-        [SerializeField]
-        private Vector2 _minLimit;
-        [SerializeField]
-        private Vector2 _maxLimit;
+        [SerializeField] private Vector2 _minLimit;
+        [SerializeField] private Vector2 _maxLimit;
 
         private float _moveSpeed = 5f;
         private float _scrollSpeed = 5f;
         private float _scrollZoneSize = 10f;
 
+        public bool CanMove { get; set; }
+
+        void Start()
+        {
+            CanMove = false;
+        }
+
         void Update()
         {
+            if (!CanMove) return;
+
             MoveCameraWithKeyboard();
 
             MoveCameraWithCursor();

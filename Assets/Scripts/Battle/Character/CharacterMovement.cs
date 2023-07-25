@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BattleSystem
+namespace BattleSystem.Character
 {
     public class CharacterMovement : MonoBehaviour
     {
@@ -12,6 +12,8 @@ namespace BattleSystem
         [SerializeField] private List<Sprite> _seSprites; // South East
         [SerializeField] private List<Sprite> _neSprites; // North East
         [SerializeField] private List<Sprite> _nwSprites; // North West
+
+        private float _speed = 3f;
 
         public enum CharacterDirection
         {
@@ -27,7 +29,6 @@ namespace BattleSystem
         void Start()
         {
             Direction = CharacterDirection.SouthWest;
-
         }
 
         // Update is called once per frame
@@ -38,6 +39,47 @@ namespace BattleSystem
             if (directionSprites != null)
             {
                 _spriteRenderer.sprite = directionSprites[0];
+            }
+        }
+
+        public void Move(List<OverlayTile> path, CharacterInfo character)
+        {
+            float step = _speed * Time.deltaTime;
+            float zIndex = path[0].transform.position.z;
+
+            Vector3 targetPosition = path[0].transform.position;
+            Vector3 direction = targetPosition - transform.position;
+
+            character.activeTile.isBlocked = false;
+            transform.position = Vector2.MoveTowards(transform.position, path[0].transform.position, step);
+            transform.position = new Vector3(transform.position.x, transform.position.y, zIndex);
+
+            // Détermine la direction relative
+            if (direction.x > 0 && direction.y > 0)
+            {
+                // Cible au nord-est
+                Direction = CharacterDirection.NorthEast;
+            }
+            else if (direction.x < 0 && direction.y > 0)
+            {
+                // Cible au nord-ouest
+                Direction = CharacterDirection.NorthWest;
+            }
+            else if (direction.x < 0 && direction.y < 0)
+            {
+                // Cible au sud-ouest
+                Direction = CharacterDirection.SouthWest;
+            }
+            else if (direction.x > 0 && direction.y < 0)
+            {
+                // Cible au sud-est
+                Direction = CharacterDirection.SouthEast;
+            }
+
+            if (Vector2.Distance(transform.position, path[0].transform.position) < 0.0001f)
+            {
+                MapManager.Instance.PositionCharacterOnTile(path[0], character);
+                path.RemoveAt(0);
             }
         }
 

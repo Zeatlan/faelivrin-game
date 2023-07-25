@@ -1,0 +1,69 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Background" style="background-image: resource(&apos;Sprites/UnitPanel&apos;); width: 450px; height: 400px;">
+        <ui:VisualElement name="Header" style="width: 340px; left: 60px; top: 15px; flex-direction: row; align-items: center; justify-content: space-between;">
+            <ui:Label text="Character Name" display-tooltip-when-elided="true" style="color: rgb(255, 255, 255); font-size: 20px;" />
+            <ui:VisualElement name="Class" style="flex-direction: row; align-items: center;">
+                <ui:IMGUIContainer name="Class__icon" style="background-image: resource(&apos;Icons/sword-icon&apos;); width: 16px; height: 16px;" />
+                <ui:Label text="Epee" display-tooltip-when-elided="true" name="Class__name" style="color: rgb(255, 255, 255); -unity-font: none;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Body" style="width: 380px; left: 35px; top: 95px; flex-direction: row; align-items: flex-start; justify-content: flex-start;">
+            <ui:VisualElement style="width: 220px; height: 210px; margin-right: 10px;" />
+            <ui:IMGUIContainer name="Body__img" style="background-image: resource(&apos;Sprites/Euphelia&apos;); width: 198px; height: 150px; top: 25px; left: -30px; position: absolute;" />
+            <ui:VisualElement style="width: 100%;">
+                <ui:VisualElement name="State" style="flex-direction: row; justify-content: space-around;">
+                    <ui:GroupBox name="HP" style="flex-direction: column; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: auto; -unity-text-align: upper-left; justify-content: center; align-items: flex-end;">
+                        <ui:Label text="PV" display-tooltip-when-elided="true" name="HP__label" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgb(88, 183, 85); font-size: 24px; -unity-font-style: bold;" />
+                        <ui:GroupBox name="HP__value" style="flex-direction: row; align-items: flex-end; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+                            <ui:Label text="22" display-tooltip-when-elided="true" enable-rich-text="true" name="CurrentHp" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; margin-left: 0; margin-right: 3px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 22px;" />
+                            <ui:Label text="/" display-tooltip-when-elided="true" enable-rich-text="true" name="Slash" style="background-color: rgba(0, 0, 0, 0); color: rgb(227, 227, 227); -unity-font-style: bold; margin-left: 0; margin-right: 1px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                            <ui:Label text="22" display-tooltip-when-elided="true" enable-rich-text="true" name="MaxHp" style="background-color: rgba(0, 0, 0, 0); color: rgb(226, 226, 226); -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                        </ui:GroupBox>
+                    </ui:GroupBox>
+                    <ui:GroupBox name="MP" style="flex-direction: column; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; width: auto; -unity-text-align: upper-left; justify-content: center; align-items: flex-end;">
+                        <ui:Label text="PM" display-tooltip-when-elided="true" name="MP__label" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; color: rgb(85, 152, 183); font-size: 24px; -unity-font-style: bold;" />
+                        <ui:GroupBox name="MP__value" style="flex-direction: row; align-items: flex-end; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+                            <ui:Label text="12" display-tooltip-when-elided="true" enable-rich-text="true" name="CurrentMp" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; margin-left: 0; margin-right: 3px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 22px;" />
+                            <ui:Label text="/" display-tooltip-when-elided="true" enable-rich-text="true" name="Slash" style="background-color: rgba(0, 0, 0, 0); color: rgb(227, 227, 227); -unity-font-style: bold; margin-left: 0; margin-right: 1px; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+                            <ui:Label text="12" display-tooltip-when-elided="true" enable-rich-text="true" name="MaxMp" style="background-color: rgba(0, 0, 0, 0); color: rgb(226, 226, 226); -unity-font-style: bold; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+                        </ui:GroupBox>
+                    </ui:GroupBox>
+                </ui:VisualElement>
+                <ui:GroupBox name="Stats" style="flex-direction: row;">
+                    <ui:GroupBox name="Stats__left" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: stretch;">
+                        <ui:GroupBox name="Stats__atkP" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Attaque p." display-tooltip-when-elided="true" name="Stats__atkP-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-left; flex-grow: 1;" />
+                            <ui:Label text="18" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__atkP-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; width: auto;" />
+                        </ui:GroupBox>
+                        <ui:GroupBox name="Stats__def" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Défense" display-tooltip-when-elided="true" name="Stats__def-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-left; flex-grow: 1;" />
+                            <ui:Label text="18" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__def-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; align-items: stretch;" />
+                        </ui:GroupBox>
+                        <ui:GroupBox name="Stats__range" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Portée" display-tooltip-when-elided="true" name="Stats__range-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-left; flex-grow: 1;" />
+                            <ui:Label text="1" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__range-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; align-items: stretch;" />
+                        </ui:GroupBox>
+                        <ui:GroupBox name="Stats__prec" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Précision" display-tooltip-when-elided="true" name="Stats__prec-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-right; flex-grow: 1;" />
+                            <ui:Label text="90%" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__prec-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; align-items: stretch;" />
+                        </ui:GroupBox>
+                    </ui:GroupBox>
+                    <ui:GroupBox name="Stats__right" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: stretch;">
+                        <ui:GroupBox name="Stats__atkM" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Attaque m." display-tooltip-when-elided="true" name="Stats__atkM-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-right; flex-grow: 1;" />
+                            <ui:Label text="153" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__atkM-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
+                        </ui:GroupBox>
+                        <ui:GroupBox name="Stats__res" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Résistance" display-tooltip-when-elided="true" name="Stats__res-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-left; flex-grow: 1;" />
+                            <ui:Label text="18" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__res-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold;" />
+                        </ui:GroupBox>
+                        <ui:GroupBox name="Stats__speed" style="flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; justify-content: space-between;">
+                            <ui:Label text="Vitesse" display-tooltip-when-elided="true" name="Stats__speed-label" style="background-color: rgba(0, 0, 0, 0); color: rgb(251, 185, 84); -unity-text-align: upper-left; flex-grow: 1;" />
+                            <ui:Label text="5" display-tooltip-when-elided="true" enable-rich-text="true" name="Stats__speed-value" style="background-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); -unity-font-style: bold; align-items: stretch;" />
+                        </ui:GroupBox>
+                    </ui:GroupBox>
+                </ui:GroupBox>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

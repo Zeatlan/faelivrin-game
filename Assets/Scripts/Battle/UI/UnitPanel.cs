@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using BattleSystem.SO;
-using TMPro;
+using BattleSystem.Character;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 namespace BattleSystem.UI
@@ -69,15 +65,15 @@ namespace BattleSystem.UI
             _healthBar.value = 1;
         }
 
-        public void InitializePanel(CharacterInfo character)
+        public void InitializePanel(CharacterBase character)
         {
-            SetHealth(character.GetStats().currentHealth);
-            SetMaxHealth(character.GetStats().maxHealth);
+            SetHealth(character.stats.currentHealth);
+            SetMaxHealth(character.stats.maxHealth);
             SetName(character.stats.characterName);
             SetIcon(character.stats.icon);
-            SetAttack(character.GetStats().attack);
-            SetRange(character.GetStats().range);
-            SetAttackRange(character.GetStats().atkRange);
+            SetAttack(character.stats.physicalDamage);
+            SetRange(character.stats.range);
+            SetAttackRange(character.stats.atkRange);
 
             UpdateHealthBar();
         }

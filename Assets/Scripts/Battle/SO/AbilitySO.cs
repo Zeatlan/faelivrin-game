@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using BattleSystem.Character;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BattleSystem.SO
 {
@@ -31,8 +31,8 @@ namespace BattleSystem.SO
 
         [HideInInspector] public int currentCooldown;
 
-        public virtual bool Execute(CharacterInfo user, OverlayTile target) { return true; }
+        public virtual bool Execute(CharacterBase user, OverlayTile target) { return true; }
 
-        public virtual bool ExecuteMultipleTarget(CharacterInfo user, List<OverlayTile> targets) { return true; }
+        public virtual bool ExecuteMultipleTarget(CharacterBase user, List<OverlayTile> targets) { return true; }
     }
 }

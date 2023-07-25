@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem.Commands
 {
@@ -24,7 +25,7 @@ namespace BattleSystem.Commands
         public void Execute()
         {
             _lastTile = _character.activeTile;
-            _character.Move(_path);
+            _character.characterMovement.Move(_path, _character);
 
             if (_path.Count == 0)
             {
@@ -34,8 +35,8 @@ namespace BattleSystem.Commands
 
         public void Undo()
         {
-            _character.SetCanMove(true);
-            _character.Move(new List<OverlayTile>() { _lastTile });
+            _character.character.CanMove = true;
+            _character.characterMovement.Move(new List<OverlayTile>() { _lastTile }, _character);
         }
     }
 }

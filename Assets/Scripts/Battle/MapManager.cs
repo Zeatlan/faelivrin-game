@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using BattleSystem.Character;
 using BattleSystem.SO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using CharacterInfo = BattleSystem.Character.CharacterInfo;
 
 namespace BattleSystem
 {
